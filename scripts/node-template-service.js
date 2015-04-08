@@ -54,7 +54,7 @@
                         var model = {};
                         model.nodes = {};
                         model.instanceRelationships = [];
-                        model.prototypeValues = {};
+                        model.prototypeValue = {};
                         
                         // results is the structure containing the response
                         // results[0] is the node object;
@@ -134,8 +134,8 @@
                             
                             model.instanceRelationships.push(toAdd);
                             
-                            if (leftNode in model.prototypeValues ) {
-                                prototypes = model.prototypeValues[leftNode];
+                            if (leftNode in model.prototypeValue ) {
+                                prototypes = model.prototypeValue[leftNode];
                                 for (var k=0; k<prototypes.length; k++) {
                                     if (prototypes[k].name === leftObj.name) {
                                         found = true;
@@ -143,17 +143,17 @@
                                     }
                                 }
                             } else {
-                                model.prototypeValues[leftNode] = [];
+                                model.prototypeValue[leftNode] = [];
                             }
                             
                             if (!found) {
-                                model.prototypeValues[leftNode].push(leftObj);
+                                model.prototypeValue[leftNode].push(leftObj);
                             }
                             
                             found = false;
                             
-                            if (rightNode in model.prototypeValues ) {
-                                prototypes = model.prototypeValues[rightNode];
+                            if (rightNode in model.prototypeValue ) {
+                                prototypes = model.prototypeValue[rightNode];
                                 for (var l=0; l<prototypes.length; l++) {
                                     if (prototypes[l].name === rightObj.name) {
                                         found = true;
@@ -161,11 +161,11 @@
                                     }
                                 }
                             } else {
-                                model.prototypeValues[rightNode] = [];
+                                model.prototypeValue[rightNode] = [];
                             }
                             
                             if (!found) {
-                                model.prototypeValues[rightNode].push(rightObj);
+                                model.prototypeValue[rightNode].push(rightObj);
                             }
                             
 

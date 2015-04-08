@@ -53,7 +53,7 @@
                     var model = {};
                     model.nodes = this.nodes;
                     model.relationships = this.joins;
-                    model.prototypeValues = this.prototypeValue;
+                    model.prototypeValue = this.prototypeValue;
                     model.instanceRelationships = this.instanceRelationships;
                     
                     NodeTemplateService.add_template_to_model(model);
@@ -68,7 +68,7 @@
                         that.nodes = data.nodes;
                         that.joins = data.joins;
                         that.instanceRelationships = data.instanceRelationships;
-                        that.prototypeValues = data.prototypeValues;
+                        that.prototypeValue = data.prototypeValue;
                             MessageLogService.add_message('Loaded !');
                         },function(data, status) {
                             MessageLogService.add_message('Download failed!' + status);
