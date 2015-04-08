@@ -345,6 +345,8 @@
 
                 cmd = cmd.substring(0, cmd.length - 1);
                 cmd = cmd + "]}";
+                
+                console.log(cmd);
 
 
                 var req = {
