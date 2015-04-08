@@ -67,6 +67,8 @@
                         then(function(data, status, headers) {
                         that.nodes = data.nodes;
                         that.joins = data.joins;
+                        that.instanceRelationships = data.instanceRelationships;
+                        that.prototypeValues = data.prototypeValues;
                             MessageLogService.add_message('Loaded !');
                         },function(data, status) {
                             MessageLogService.add_message('Download failed!' + status);

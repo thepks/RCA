@@ -53,6 +53,8 @@
                         
                         var model = {};
                         model.nodes = {};
+                        model.instanceRelationships = [];
+                        model.prototypeValue = {};
                         
                         // results is the structure containing the response
                         // results[0] is the node object;
@@ -97,6 +99,57 @@
                         }
                         
                         // Now populate out the instances
+                        
+                        for (i=0; i<data.results[2].data.length;i++) {
+                            
+                            // The type is the hash, key 0 and key 3
+                            // The properties are in key 1 and key 4
+                            
+                            var leftNode = data.results[2].data[i].row[0][0];
+                            var rightNode = data.results[2].data[i].row[3][0];
+                            var join = data.results[2].data[i].row[2];
+                            var toAdd = {};
+                            var leftObj = data.results[2].data[i].row[1];
+                            var rightObj = data.results[2].data[i].row[4];
+                            var prototypes = [];
+                            var found = false;
+                            
+                            
+                            toAdd.leftObj = leftObj;
+                            toAdd.leftNodeType = leftNode;
+                            toAdd.rightObj = rightObj;
+                            toAdd.rightNodeType = rightNode;
+                            toAdd.join = join;
+                            
+                            model.instanceRelationships.push(toAdd);
+                            
+                            prototypes = model.prototypeValue[leftNode];
+                            for (var k=0; k<prototypes.length; k++) {
+                                if (prototypes[k].name === leftObj.name) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                model.prototypeValue[leftNode].push(leftObj);
+                            }
+                            
+                            found = false;
+                            
+                            prototypes = model.prototypeValue[rightNode];
+                            for (k=0; k<prototypes.length; k++) {
+                                if (prototypes[k].name === rightObj.name) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                model.prototypeValue[rightNode].push(rightObj);
+                            }
+                            
+
+                            
+                        }
                         
                         console.log(JSON.stringify(model));
                         deferred.resolve(model);
