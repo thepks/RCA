@@ -114,12 +114,12 @@
                         var prototypes = [];
                         var found = false;
 
-                        if ('$$hashkey' in leftObj) {
-                            delete leftObj['$$hashkey'];
+                        if ('$$hashKey' in leftObj) {
+                            delete leftObj['$$hashKey'];
                         }
 
-                        if ('$$hashkey' in rightObj) {
-                            delete rightObj['$$hashkey'];
+                        if ('$$hashKey' in rightObj) {
+                            delete rightObj['$$hashKey'];
                         }
 
 
@@ -207,11 +207,14 @@
                     for (var j = 0; j < model.prototypeValue[proto_keys[i]].length; j++) {
                         // add object
                         obj = model.prototypeValue[proto_keys[i]][j];
-                        obj_keys = Object.keys(obj);
+
 
                         if ('changes' in obj) {
 
                             if (obj.changes.mod === 'add') {
+
+                                delete(obj.changes);
+                                obj_keys = Object.keys(obj);
 
                                 cmd = 'CREATE (a:' + nodetype + ' {';
                                 for (var k = 0; k < obj_keys.length; k++) {
@@ -227,6 +230,10 @@
                                 cmds.push(cmd);
 
                             } else if (obj.changes.mod === 'delete') {
+
+                                delete(obj.changes);
+                                obj_keys = Object.keys(obj);
+
                                 cmd = 'MATCH (a:' + nodetype + ' {';
                                 for (var k = 0; k < obj_keys.length; k++) {
                                     cmd = cmd + obj_keys[k] + ": '" + obj[obj_keys[k]] + "',";
@@ -263,6 +270,12 @@
 
                         if (join_list[l].changes.mod === 'add') {
 
+                            delete(join_list[l].changes);
+
+                            if ('changes' in obj1) {
+                                delete(obj1.changes);
+                            }
+
                             // add object
                             cmd = 'MATCH (a:' + obj1type + '), (b:' + obj2type + ')';
                             var where_clause = 'WHERE ';
@@ -270,6 +283,10 @@
                             obj_keys = Object.keys(obj1);
                             for (var n = 0; n < obj_keys.length; n++) {
                                 where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
+                            }
+
+                            if ('changes' in obj2) {
+                                delete(obj2.changes);
                             }
 
                             obj_keys2 = Object.keys(obj2);
@@ -283,26 +300,37 @@
                             cmd = cmd + where_clause + " CREATE (a)-[:" + join.toUpperCase() + "]->(b);";
                             cmds.push(cmd);
                         } else if (join_list[l].changes.mod === 'delete') {
-                            
+
+                            delete(join_list[l].changes);
+
                             cmd = 'MATCH (a:' + obj1type + ') -[r]- (b:' + obj2type + ')';
                             var where_clause = 'WHERE ';
-                            
+
+                            if ('changes' in obj1) {
+                                delete(obj1.changes);
+                            }
+
                             obj_keys = Object.keys(obj1);
                             for (var n = 0; n < obj_keys.length; n++) {
                                 where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
                             }
-                            
+
+                            if ('changes' in obj2) {
+                                delete(obj2.changes);
+                            }
+
+
                             obj_keys2 = Object.keys(obj2);
                             for (var p = 0; p < obj_keys2.length; p++) {
                                 where_clause = where_clause + "b." + obj_keys2[p] + "='" + obj2[obj_keys2[p]] + "' AND ";
                             }
-                            
+
                             // strip last 
                             where_clause = where_clause.substring(0, where_clause.length - 4);
-                            
+
                             cmd = cmd + where_clause + " DELETE r;";
                             cmds.push(cmd);
-                            
+
                         }
                     }
                 }
