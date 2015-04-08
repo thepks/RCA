@@ -54,7 +54,7 @@
                         var model = {};
                         model.nodes = {};
                         model.instanceRelationships = [];
-                        model.prototypeValue = {};
+                        model.prototypeValues = {};
                         
                         // results is the structure containing the response
                         // results[0] is the node object;
@@ -113,6 +113,15 @@
                             var rightObj = data.results[2].data[i].row[4];
                             var prototypes = [];
                             var found = false;
+
+                            if( '$$hashkey' in leftObj) {
+                                delete leftObj['$$hashkey'];
+                            }
+                            
+                            if( '$$hashkey' in rightObj) {
+                                delete rightObj['$$hashkey'];
+                            }
+
                             
                             
                             toAdd.leftObj = leftObj;
@@ -121,10 +130,12 @@
                             toAdd.rightNodeType = rightNode;
                             toAdd.join = join;
                             
+                            
+                            
                             model.instanceRelationships.push(toAdd);
                             
-                            if (leftNode in model.prototypeValue ) {
-                                prototypes = model.prototypeValue[leftNode];
+                            if (leftNode in model.prototypeValues ) {
+                                prototypes = model.prototypeValues[leftNode];
                                 for (var k=0; k<prototypes.length; k++) {
                                     if (prototypes[k].name === leftObj.name) {
                                         found = true;
@@ -132,17 +143,17 @@
                                     }
                                 }
                             } else {
-                                model.prototypeValue[leftNode] = [];
+                                model.prototypeValues[leftNode] = [];
                             }
                             
                             if (!found) {
-                                model.prototypeValue[leftNode].push(leftObj);
+                                model.prototypeValues[leftNode].push(leftObj);
                             }
                             
                             found = false;
                             
-                            if (rightNode in model.prototypeValue ) {
-                                prototypes = model.prototypeValue[rightNode];
+                            if (rightNode in model.prototypeValues ) {
+                                prototypes = model.prototypeValues[rightNode];
                                 for (var l=0; l<prototypes.length; l++) {
                                     if (prototypes[l].name === rightObj.name) {
                                         found = true;
@@ -150,11 +161,11 @@
                                     }
                                 }
                             } else {
-                                model.prototypeValue[rightNode] = [];
+                                model.prototypeValues[rightNode] = [];
                             }
                             
                             if (!found) {
-                                model.prototypeValue[rightNode].push(rightObj);
+                                model.prototypeValues[rightNode].push(rightObj);
                             }
                             
 
