@@ -230,9 +230,17 @@
                      item.changes.mod = 'delete';
                 };
                 
+                this.restoreInstanceRelationship = function(item) {
+                    delete (item.changes);
+                };
+                
+                this.isInstanceRelationshipDeleted = function(item) {
+                    return item.changes.mod === 'delete';
+                };
+                
                 this.deleteRelationship =function(item) {
                     
-                }
+                };
 
                 this.nodeObjects = function() {
                     return this.nodeObjs;

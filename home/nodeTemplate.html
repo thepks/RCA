@@ -235,10 +235,15 @@
             </div>
             <hr/>
             <div class="row form-group" ng-repeat="item in nodeTemplateCtrl.getInstanceRelationships()"> <span class="col-md-2">
-        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteInstanceRelationship(item) ">
+        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteInstanceRelationship(item)" ng-hide="nodeTemplateCtrl.isInstanceRelationshipDeleted(item)">
             <span class="glyphicon glyphicon-trash"></span>
 
                 </button>
+                
+                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreInstanceRelationship(item)" ng-show="nodeTemplateCtrl.isInstanceRelationshipDeleted(item)">
+                <span class="glyphicon glyphicon-icon-repeat"></span>
+    
+                    </button>
                 </span> <span class="col-md-8">
                 <p>{{ item.leftObj.name}} {{item.join}} {{item.rightObj.name}}</p>
             </span>
