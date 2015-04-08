@@ -187,6 +187,10 @@
                 <span class="glyphicon glyphicon-trash"></span>
 
                 </button>
+                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreItem(item)" ng-show="nodeTemplateCtrl.isItemDeleted(item)">
+                <span class="glyphicon glyphicon-repeat"></span>
+                </button>
+
                 </span> <span class="col-md-8">
                     <span class="col-md-8" ng-repeat="(keylist, valuelist) in item">
                         <p>{{ item[keylist] }} ({{ keylist }})</input>

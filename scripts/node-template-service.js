@@ -353,7 +353,6 @@
                     data: cmd,
                 };
 
-                /*              
                 $http(req).
                     success ( function (data) {
                     deferred.resolve(data);
@@ -362,9 +361,7 @@
                     console.log('Error in loading model');
                     deferred.reject();
                 });
-*/
 
-                deferred.resolve();
                 return deferred.promise;
 
             }
