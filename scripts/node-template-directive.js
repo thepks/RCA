@@ -43,6 +43,7 @@
                     this.nodes = {};
                     this.joins = [];
                     this.prototypeValue = {};
+                    this.instanceRelationships = [];
                 };
 
                 this.isNew = function() {

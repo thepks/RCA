@@ -186,6 +186,9 @@
             
             add_template_to_model : function(model) {
                 
+                var deferred = $q.defer();
+                var url = '/db/data/transaction/commit';
+                
                 var chosen_template = model;
                 var proto_keys = Object.keys(chosen_template.prototypeValues);
                 var join_list = chosen_template.instanceRelationships;
@@ -264,8 +267,23 @@
                 cmd = cmd.substring(0,cmd.length -1);
                 cmd = cmd + "]}";
                 
-                console.log(cmd);
+
+                var req = {
+                    method : 'POST',
+                    url : url,
+                    data: cmd,
+                };
                 
+                $http(req).
+                    success ( function (data) {
+                    deferred.resolve(data);
+                }).
+                error ( function() {
+                    console.log('Error in loading model');
+                    deferred.reject();
+                });
+
+            return deferred.promise;
 
             }
             
