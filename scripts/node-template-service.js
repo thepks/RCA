@@ -123,6 +123,10 @@
                             
                             model.instanceRelationships.push(toAdd);
                             
+                            if (!leftNode in model.prototypeValue ) {
+                                model.prototypeValue[leftNode] = [];
+                            }
+                            
                             prototypes = model.prototypeValue[leftNode];
                             for (var k=0; k<prototypes.length; k++) {
                                 if (prototypes[k].name === leftObj.name) {
@@ -135,6 +139,10 @@
                             }
                             
                             found = false;
+                            
+                            if (!rightNode in model.prototypeValue ) {
+                                model.prototypeValue[rightNode] = [];
+                            }
                             
                             prototypes = model.prototypeValue[rightNode];
                             for (k=0; k<prototypes.length; k++) {
