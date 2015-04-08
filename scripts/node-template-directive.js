@@ -124,7 +124,21 @@
                 };
                                 
                 this.restoreNodeTypeItem = function(item) {
-                    this.deleteNodeType(item);
+                    
+                    var changes = {};
+                    var found = false;
+                    var node = this.nodes[item];
+                    
+                    for (var i=0; i<node.length; i++) {
+                        if (node[i].constructor === Object) {
+                            changes = node[i];
+                            if('mod' in changes && changes.mod === 'delete') {
+                                delete(node[i]);
+                                break;
+                            }
+                        }
+                    }
+
                 };
                 
                 this.isNodeTypeDeleted = function(item) {
