@@ -108,7 +108,7 @@
                     var node = this.nodes[item];
                     
                     for (var i=0; i<node.length; i++) {
-                        if (node[i].constructor === Object) {
+                        if (node[i] && node[i].constructor === Object) {
                             changes = node[i];
                             changes.mod = 'delete';
                             found = true;
@@ -130,7 +130,7 @@
                     var node = this.nodes[item];
                     
                     for (var i=0; i<node.length; i++) {
-                        if (node[i].constructor === Object) {
+                        if (node[i] && node[i].constructor === Object) {
                             changes = node[i];
                             if('mod' in changes && changes.mod === 'delete') {
                                 delete(node[i]);
@@ -147,7 +147,7 @@
                     var node = this.nodes[item];
                     
                     for (var i=0; i<node.length; i++) {
-                        if (node[i].constructor === Object) {
+                        if (node[i] && node[i].constructor === Object) {
                             changes = node[i];
                             if('mod' in changes && changes.mod === 'delete') {
                                 return true;
