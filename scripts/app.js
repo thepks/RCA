@@ -40,7 +40,7 @@
             success(function(data) {
                 that.option = 1;
                 that.logged_on = true;
-                if (data.roles.indexOf('admin') > 0) {
+                if (data.roles.indexOf('admin') >= 0) {
                     that.admin = true;
                 }
                 MessageLogService.add_message("Logon Complete");
