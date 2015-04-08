@@ -62,13 +62,14 @@
 
 
                 this.download = function() {
+                    var that = this;
                     NodeTemplateService.load_model_to_template().
                         then(function(data, status, headers) {
-                        this.nodes = data.nodes;
-                        this.relationships = data.joins;
-                            MessageLogService.log('Loaded !');
+                        that.nodes = data.nodes;
+                        that.relationships = data.joins;
+                            MessageLogService.add_message('Loaded !');
                         },function(data, status) {
-                            MessageLogService.log('Download failed!' + status);
+                            MessageLogService.add_message('Download failed!' + status);
                         });                    
 
                 };
