@@ -104,18 +104,23 @@
                 
                 this.deleteNodeType = function(item) {
                     var changes = {};
-                    var j=0;
+                    var found = false;
                     var node = this.nodes[item];
-                     
-                    if(node.indexOf('changes') <0) {
-                        changes.mod = 'delete';
-                        node.push(changes);
-                    } else {
-                        j = node.indexOf('changes');
-                        changes.mod = 'delete';
-                        node[j] = changes;
+                    
+                    for (var i=0; i<node.length; i++) {
+                        if (node[i].constructor === Object) {
+                            changes = node[i];
+                            changes.mod = 'delete';
+                            found = true;
+                            break;
+                        }
                     }
                     
+                    if (!found) {
+                        changes.mod = 'delete';
+                        node.push(changes);
+                    }
+
                 };
                                 
                 this.restoreNodeTypeItem = function(item) {
