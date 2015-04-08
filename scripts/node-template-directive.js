@@ -160,7 +160,18 @@
 
                 
                 this.nodeAttributeList = function() {
-                    return (this.nodes[this.nodePrototype]); //[0].split(' ');
+                    var togo = [];
+                    var input= [];
+                    input = this.nodes[this.nodePrototype];
+                    
+                    for (var i=0; i<input.length; i++) {
+                        if (input[i] && input[i].constructor !== Object) {
+                            togo.push(input[i]);
+                        }
+                    }
+
+                    return togo;
+                    
                 };
                 
                 this.addNodeType = function() {
