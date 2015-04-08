@@ -235,7 +235,11 @@
                 };
                 
                 this.isInstanceRelationshipDeleted = function(item) {
+                    if ('changes' in item) {
                     return item.changes.mod === 'delete';
+                    } else {
+                        return false;
+                    }
                 };
                 
                 this.deleteRelationship =function(item) {
