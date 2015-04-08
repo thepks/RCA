@@ -26,6 +26,7 @@
                 this.instanceLeftNode = '';
                 this.instanceRightNode = '';
                 this.nameAttribute = 'name';
+                this.transfer_in_progress = false;
 
                 var tab = 1;
 
@@ -36,6 +37,10 @@
                 this.setSection = function(id) {
                     tab = id;
                 };
+                
+                this.isTransferInProgress = function() {
+                    return this.transfer_in_progress;
+                }
 
                 this.new = function() {
                     this.isnew = true;
@@ -52,27 +57,39 @@
 
                 this.upload = function() {
                     var model = {};
+                    var that = this;
                     model.nodes = this.nodes;
-                    model.relationships = this.joins;
+                    model.joins = this.joins;
                     model.prototypeValue = this.prototypeValue;
                     model.instanceRelationships = this.instanceRelationships;
+                    this.transfer_in_progress = true;
                     
-                    NodeTemplateService.add_template_to_model(model);
+                    NodeTemplateService.add_template_to_model(model).
+                        then(function() {
+                            MessageLogService.add_message('Uploaded to model!');
+                            that.transfer_in_progress = false; 
+                        },function() {
+                            MessageLogService.add_message('Uploaded to model failed!');
+                            that.transfer_in_progress = false;
+                        });
                 };
                 
 
 
                 this.download = function() {
                     var that = this;
+                    this.transfer_in_progress = true;
                     NodeTemplateService.load_model_to_template().
-                        then(function(data, status, headers) {
+                        then(function(data) {
                         that.nodes = data.nodes;
                         that.joins = data.joins;
                         that.instanceRelationships = data.instanceRelationships;
                         that.prototypeValue = data.prototypeValue;
                             MessageLogService.add_message('Loaded !');
-                        },function(data, status) {
-                            MessageLogService.add_message('Download failed!' + status);
+                            that.transfer_in_progress = false;
+                        },function() {
+                            MessageLogService.add_message('Download failed!');
+                            that.transfer_in_progress = false;
                         });                    
 
                 };

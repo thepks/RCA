@@ -5,9 +5,9 @@
            <button type="button" class="btn" ng-click="nodeTemplateCtrl.new()"><span class="glyphicon glyphicon-icon-plus-sign"></span> New Elements</button>
 </span>
 <span class="col-sm-3">
-                   <button type="button" class="btn" ng-click="nodeTemplateCtrl.download()"><span class="glyphicon glyphicon-download"></span> Download Model</button>
+                   <button type="button" class="btn" ng-click="nodeTemplateCtrl.download()" ngDisabled="nodeTemplateCtrl.isTransferInProgress()"><span class="glyphicon glyphicon-download"></span> Download Model</button>
         </span> <span class="col-sm-3">
-            <button type="button" class="btn" ng-click="nodeTemplateCtrl.upload()"><span class="glyphicon glyphicon-upload"></span> Upload Model</button>
+            <button type="button" class="btn" ng-click="nodeTemplateCtrl.upload()" ngDisabled="nodeTemplateCtrl.isTransferInProgress()"><span class="glyphicon glyphicon-upload"></span> Upload Model</button>
         </span>
         </span> <span class="col-sm-3">&nbsp;</span>
     </div>

@@ -189,9 +189,8 @@
                 var deferred = $q.defer();
                 var url = '/db/data/transaction/commit';
                 
-                var chosen_template = model;
-                var proto_keys = Object.keys(chosen_template.prototypeValues);
-                var join_list = chosen_template.instanceRelationships;
+                var proto_keys = Object.keys(model.prototypeValue);
+                var join_list = model.instanceRelationships;
                 var obj_keys = {};
                 var obj_keys2;
                 var cmd = '';
@@ -203,9 +202,9 @@
                 // First create these nodes     
                 for (var i=0; i<proto_keys.length;i++) {
                     nodetype = proto_keys[i];
-                    for (var j=0; j<chosen_template.prototypeValues[proto_keys[i]].length;j++) {
+                    for (var j=0; j<model.prototypeValue[proto_keys[i]].length;j++) {
                         // add object
-                        obj = chosen_template.prototypeValues[proto_keys[i]][j];
+                        obj = model.prototypeValue[proto_keys[i]][j];
                         obj_keys = Object.keys(obj);
                         
                         cmd = 'CREATE (a:' + nodetype + ' {' ;
