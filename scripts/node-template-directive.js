@@ -161,12 +161,12 @@
                 
                 this.nodeAttributeList = function() {
                     var togo = [];
-                    var input= [];
-                    input = this.nodes[this.nodePrototype];
+                    var node= [];
+                    node = this.nodes[this.nodePrototype];
                     
-                    for (var i=0; i<input.length; i++) {
-                        if (input[i] && input[i].constructor !== Object) {
-                            togo.push(input[i]);
+                    for (var i=0; i<node.length; i++) {
+                        if (node[i] && node[i].constructor !== Object) {
+                            togo.push(node[i]);
                         }
                     }
 
