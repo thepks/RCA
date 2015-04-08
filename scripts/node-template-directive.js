@@ -268,8 +268,8 @@
                     toAdd.rightObj = this.instanceRightNode;
                     toAdd.rightNodeType = this.rightNode;
                     toAdd.join = join;
-                    toadd.changes = {};
-                    toadd.changes.mod = 'add';
+                    toAdd.changes = {};
+                    toAdd.changes.mod = 'add';
                     
                     this.instanceRelationships.push(toAdd);
                 };
