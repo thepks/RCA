@@ -66,7 +66,7 @@
                     NodeTemplateService.load_model_to_template().
                         then(function(data, status, headers) {
                         that.nodes = data.nodes;
-                        that.relationships = data.joins;
+                        that.joins = data.joins;
                             MessageLogService.add_message('Loaded !');
                         },function(data, status) {
                             MessageLogService.add_message('Download failed!' + status);
