@@ -128,13 +128,19 @@
                 };
                 
                 this.isNodeTypeDeleted = function(item) {
-                    var i=0;
-                    if (item.indexOf('changes') >0) {
-                        i = item.indexOf('changes');
-                        if(item[i].changes.mod === 'delete') {
-                            return true;
+                    var changes = {};
+                    var found = false;
+                    var node = this.nodes[item];
+                    
+                    for (var i=0; i<node.length; i++) {
+                        if (node[i].constructor === Object) {
+                            changes = node[i];
+                            if('mod' in changes && changes.mod === 'delete') {
+                                return true;
+                            }
                         }
                     }
+                    
                     return false;
                 };
 
