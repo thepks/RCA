@@ -116,6 +116,22 @@
                     }
                     
                 };
+                                
+                this.restoreNodeTypeItem = function(item) {
+                    this.deleteNodeType(item);
+                };
+                
+                this.isNodeTypeDeleted = function(item) {
+                    var i=0;
+                    if (item.indexOf('changes') >0) {
+                        i = item.indexOf('changes');
+                        if(item[i].changes.mod === 'delete') {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+
                 
                 this.nodeAttributeList = function() {
                     return (this.nodes[this.nodePrototype]); //[0].split(' ');

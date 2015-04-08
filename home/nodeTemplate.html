@@ -60,10 +60,10 @@
             </div>
             <hr/>
             <div class="row form-group " ng-repeat="(item,values) in nodeTemplateCtrl.nodeTypes()"> <span class="col-sm-1">
-        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteNodeType(item)" ng-hide="nodeTemplateCtrl.isItemDeleted(item)"><span class="glyphicon glyphicon-trash "></span>
+        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteNodeType(item)" ng-hide="nodeTemplateCtrl.isNodeTypeDeleted(item)"><span class="glyphicon glyphicon-trash "></span>
 
                 </button>
-                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreItem(item)" ng-show="nodeTemplateCtrl.isItemDeleted(item)">
+                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreNodeTypeItem(item)" ng-show="nodeTemplateCtrl.isNodeTypeDeleted(item)">
                 <span class="glyphicon glyphicon-repeat"></span>
                 </button>
                 
