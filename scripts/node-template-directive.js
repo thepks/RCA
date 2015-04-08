@@ -1,14 +1,14 @@
 (function() {
 
-    var app = angular.module("nodeTemplate", ["NodeTemplateService"]);
+    var app = angular.module("nodeTemplate", ["NodeTemplateService","MessageLogService"]);
 
-    app.directive('nodeTemplate', [ "NodeTemplateService", function(NodeTemplateService) {
+    app.directive('nodeTemplate', [ "NodeTemplateService", "MessageLogService", function(NodeTemplateService, MessageLogService) {
 
         return {
 
             restrict: 'E',
             templateUrl: 'nodeTemplate.html',
-            controller: ["NodeTemplateService",function(NodeTemplateService) {
+            controller: ["NodeTemplateService", "MessageLogService",function(NodeTemplateService, MessageLogService) {
 
                 this.isnew = false;
                 this.nodes = {};
@@ -63,12 +63,14 @@
 
                 this.download = function() {
                     NodeTemplateService.load_model_to_template().
-                    success(function(model) {
-                        this.nodes = model.nodes;
-                        this.relationships = model.joins;
-                        
-                    });
-                    
+                        then(function(data, status, headers) {
+                        this.nodes = data.nodes;
+                        this.relationships = data.joins;
+                            MessageLogService.log('Loaded !');
+                        },function(data, status) {
+                            MessageLogService.log('Download failed!' + status);
+                        });                    
+
                 };
 
 
