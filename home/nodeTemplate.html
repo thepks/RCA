@@ -1,0 +1,253 @@
+<div id="templateAdmin" class="container">
+    <form role="form" id="templateAdmin"></form>
+    <div class="row form-group"> 
+<span class="col-sm-3">
+           <button type="button" class="btn" ng-click="nodeTemplateCtrl.new()"><span class="glyphicon glyphicon-icon-plus-sign"></span> New Elements</button>
+</span>
+<span class="col-sm-3">
+                   <button type="button" class="btn" ng-click="nodeTemplateCtrl.download()"><span class="glyphicon glyphicon-download"></span> Download Model</button>
+        </span> <span class="col-sm-3">
+            <button type="button" class="btn" ng-click="nodeTemplateCtrl.upload()"><span class="glyphicon glyphicon-upload"></span> Upload Model</button>
+        </span>
+        </span> <span class="col-sm-3">&nbsp;</span>
+    </div>
+    <div>
+        <hr/>
+        <ul class="nav nav-tabs">
+            <li ng-class="{active : nodeTemplateCtrl.isSection(1)}">
+                <a href="#" ng-click="nodeTemplateCtrl.setSection(1)">Objects</a>
+            </li>
+            <li ng-class="{active : nodeTemplateCtrl.isSection(2)}">
+                <a href="#" ng-click="nodeTemplateCtrl.setSection(2)">Object Relationships</a>
+            </li>
+            <li ng-class="{active : nodeTemplateCtrl.isSection(3)}">
+                <a href="#" ng-click="nodeTemplateCtrl.setSection(3)">Node Instances</a>
+            </li>
+            <li ng-class="{active : nodeTemplateCtrl.isSection(4)}">
+                <a href="#" ng-click="nodeTemplateCtrl.setSection(4)">Node Relationships</a>
+            </li>
+            <li ng-class="{active : nodeTemplateCtrl.isSection(5)}">
+                <a href="#" ng-click="nodeTemplateCtrl.setSection(5)">Visualise Preview</a>
+            </li>
+        </ul>
+        <div ng-show="nodeTemplateCtrl.isSection(1)">
+             <h4>Object Types &amp; Characteristics</h4>
+
+            <div class="row form-group"> <span class="col-sm-1 "> &nbsp;</span>  <span class="col-sm-2 ">
+                       <label>Node Type</label>
+                   </span>
+ <span class="col-sm-2 "> <label capitalize-first>{{nodeTemplateCtrl.nameAttribute}}</label> </span>  <span class="col-sm-4 ">
+                       <label>Additional Attribute List (Space Separated)</label>
+                   </span>
+
+            </div>
+            <div class="row form-group "> <span class="col-sm-1">
+                      <button type="button " class="btn " ng-click="nodeTemplateCtrl.add() "><span class="glyphicon glyphicon-plus-sign"></span>
+
+                </button>
+                </span> <span class="col-sm-2">
+                      <input type="text" ng-model="nodeTemplateCtrl.newItem.name" capitalize-first></input>
+                  </span>
+
+<span class="col-sm-2">
+                      <p>{{nodeTemplateCtrl.nameAttribute}}</p>
+                  </span>
+
+<span class="col-sm-4">
+                      <input type="text" ng-model="nodeTemplateCtrl.newItem.attributeList"></input>
+                  </span>
+
+            </div>
+            <hr/>
+            <div class="row form-group " ng-repeat="(item,values) in nodeTemplateCtrl.nodeTypes()"> <span class="col-sm-1">
+        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteNode(item) "><span class="glyphicon glyphicon-trash "></span>
+
+                </button>
+                </span> <span class="col-sm-2 ">
+                       <p ng-bind="item"></p>
+                   </span>
+ <span class="col-sm-2 ">
+                       <p ng-bind="nodeTemplateCtrl.nameAttribute"></p>
+                   </span>
+ <span class="col-sm-4 ">
+                    <p ng-bind="values.join(' ')"></p>
+                   </span>
+
+            </div>
+        </div>
+        <!-- second tab -->
+        <div ng-show="nodeTemplateCtrl.isSection(2)">
+             <h4>Object Relationship Template</h4>
+
+            <div class="row form-group "> <span class="col-sm-2 ">
+                       &nbsp;
+                   </span>  <span class="col-sm-2 ">
+                       <label>Item Name</label>
+                   </span>
+ <span class="col-sm-2 ">
+                       <label>Relationship</label>
+                   </span>
+ <span class="col-sm-2 ">
+                       <label>Item Name</label>
+                   </span>
+
+            </div>
+            <div class="row form-group "> <span class="col-sm-2 ">
+                                   <button type="button " class="btn " ng-click="nodeTemplateCtrl.addRelationship() "><span class="glyphicon glyphicon-plus-sign"></span>
+
+                </button>
+                </span> <span class="col-sm-2 ">
+            <select class="form-control" name="node-name" id="node-name" ng-model="nodeTemplateCtrl.newRelationship.leftNode" 
+              ng-options="n for n in nodeTemplateCtrl.nodeTypeList()">
+            </select>
+                            
+            <!--                       <input type="text " ng-model="nodeTemplateCtrl.newRelationship.leftNode"></input> -->
+                               </span>
+ <span class="col-sm-2 ">
+                                   <input type="text " ng-model="nodeTemplateCtrl.newRelationship.join"></input>
+                               </span>
+ <span class="col-sm-2 ">
+            <select class="form-control" name="node-name" id="node-name" ng-model="nodeTemplateCtrl.newRelationship.rightNode" 
+              ng-options="n for n in nodeTemplateCtrl.nodeTypeList()">
+            </select>
+                 
+            <!--                       <input type="text " ng-model="nodeTemplateCtrl.newRelationship.rightNode"></input>  -->
+                               </span>
+
+            </div>
+            <hr/>
+            <div class="row form-group " ng-repeat="item in nodeTemplateCtrl.relationships()"> <span class="col-sm-2 ">
+        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteRelationship(item) "><span class="glyphicon glyphicon-trash "></span>
+
+                </button>
+                </span> <span class="col-sm-2 ">
+                       <input type="text " ng-model="item.leftNode "></input>
+                   </span>
+ <span class="col-sm-2 ">
+                       <input type="text " ng-model="item.join"></input>
+                   </span>
+ <span class="col-sm-2 ">
+                       <input type="text " ng-model="item.rightNode"></input>
+                   </span>
+
+            </div>
+        </div>
+        <!-- Third Tab -->
+        <div ng-show="nodeTemplateCtrl.isSection(3)">
+             <h4>Node Instances</h4>
+
+            <div class="row form-group"> <span class="col-md-8">
+           <select class="form-control" ng-model="nodeTemplateCtrl.nodePrototype" 
+             ng-options="n for n in nodeTemplateCtrl.nodeTypeList()">
+           </select> 
+           </span>
+ <span class="col-md-4"></span>
+
+            </div>
+            <div class="row form-group" ng-repeat="keyitem in nodeTemplateCtrl.nodeAttributeList()"> <span class="col-md-4">
+               Value ({{keyitem}}) ==>
+                </span>  <span class="col-md-4">
+                           <input type="text" ng-model="nodeTemplateCtrl.newPrototypeValue[keyitem]"></input>
+               </span>
+
+<span class="col-md-4">
+                           &nbsp;
+               </span>
+
+            </div>
+            <div class="row form-group"> <span class="col-md-12">
+               <button type="button " class="btn " ng-click="nodeTemplateCtrl.addPrototypeValue() ">
+               <span class="glyphicon glyphicon-plus-sign"> Add Node</span>
+
+                </button>
+                </span>
+            </div>
+            <hr/>
+            <!--</span>  <span class="col-sm-6 ">-->
+            <!-- &nbsp;-->
+            <!-- </span>-->
+            <!-- </div>-->
+            <!-- <div class="row form-group">-->
+            <!-- <span class="col-sm-2">&nbsp;</span>-->
+            <!-- <div ng-repeat="item in nodeTemplateCtrl.nodeAttributeList()"> <span class="col-sm-2">-->
+            <!-- <label> {{item}} </label>-->
+            <!-- </span>-->
+            <!-- </div>-->
+            <!-- </div>-->
+            <div class="row form-group" ng-repeat="item in nodeTemplateCtrl.prototypes()"> <span class="col-md-2">
+            <button type="button " class="btn " ng-click="nodeTemplateCtrl.deletePrototypeValue(item) ">
+                <span class="glyphicon glyphicon-trash"></span>
+
+                </button>
+                </span> <span class="col-md-8">
+                    <span class="col-md-8" ng-repeat="(keylist, valuelist) in item">
+                        <p>{{ item[keylist] }} ({{ keylist }})</input>
+                    </span>
+</span> <span class="col-md-2">
+                            &nbsp;
+                </span>
+
+            </div>
+        </div>
+        <div ng-show="nodeTemplateCtrl.isSection(4)">
+             <h4>Node Relationships</h4>
+
+            <!-- Select type and propose the relationship -->
+            <div class="row form-group"> <span class="col-md-4">
+           <select class="form-control" ng-model="nodeTemplateCtrl.leftNode" 
+             ng-options="n for n in nodeTemplateCtrl.nodeTypeList()">
+           </select> 
+           </span>
+ <span class="col-md-4">
+           <select class="form-control" ng-model="nodeTemplateCtrl.rightNode" 
+             ng-options="n for n in nodeTemplateCtrl.nodeTypeList()">
+           </select> 
+           </span>
+ <span class="col-md-4"><p>{{nodeTemplateCtrl.getNodeRelationship()}}</p></span>
+
+            </div>
+            <div class="row form-group "> <span class="col-sm-2 ">
+               <button type="button " class="btn " ng-click="nodeTemplateCtrl.addInstanceRelationship()">
+                   <span class="glyphicon glyphicon-plus-sign"></span>
+
+                </button>
+                </span> <span class="col-sm-2 ">
+               <select class="form-control" ng-model="nodeTemplateCtrl.instanceLeftNode" 
+                 ng-options="n as n.name for n in nodeTemplateCtrl.getPrototypeList(nodeTemplateCtrl.leftNode)">
+               </select>
+               
+           </span>
+
+<span class="col-sm-2 ">
+               <p> {{nodeTemplateCtrl.getNodeRelationship()}} </p>
+           </span>
+
+<span class="col-sm-2 ">
+           <select class="form-control" name="node-name" id="node-name" ng-model="nodeTemplateCtrl.instanceRightNode" 
+               ng-options="n as n.name for n in nodeTemplateCtrl.getPrototypeList(nodeTemplateCtrl.rightNode)">
+           </select>
+           </span>
+
+            </div>
+            <hr/>
+            <div class="row form-group" ng-repeat="item in nodeTemplateCtrl.getInstanceRelationships()"> <span class="col-md-2">
+        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteInstanceRelationship(item) ">
+            <span class="glyphicon glyphicon-trash"></span>
+
+                </button>
+                </span> <span class="col-md-8">
+                <p>{{ item.leftObj.name}} {{item.join}} {{item.rightObj.name}}</p>
+            </span>
+ <span class="col-md-2">
+                        &nbsp;
+            </span>
+
+            </div>
+        </div>
+        <div ng-show="nodeTemplateCtrl.isSection(5)">
+             <h4>Preview</h4>
+
+        </div>
+        </form>
+    </div>
+</div>

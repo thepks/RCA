@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Root Cause Analysis</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../styles/rca.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../scripts/message-log-service.js"></script>
+        <script type="text/javascript" src="../scripts/message-directive.js"></script>
+        <script type="text/javascript" src="../scripts/node-template-directive.js"></script>
+        <script type="text/javascript" src="../scripts/capitalize-directive.js"></script>
+        <script type="text/javascript" src="../scripts/node-template-service.js"></script>
+        <script type="text/javascript" src="../scripts/app.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            google.load('visualization', '1.0', {'packages':['corechart', 'table'], 'callback' : function () {console.log('loaded google charts');}});
+        </script>
+    </head>
+    <body ng-app="rcaAnalyser" ng-controller="rcaController as rca">
+        <main id="rcaPage">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#" id="aboutEvt" ng-click="rca.setOption(0)">Impact Analyser</a>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li ng-class="{active :rca.isOption(1)}">
+                                <a href="#" ng-click="rca.setOption(1)">Home</a>
+                            </li>
+                            <li ng-show="rca.logged_on" ng-class="{active :rca.isOption(2)}">
+                                <a href="#" ng-click="rca.setOption(2)">Analyse Problem</a>
+                            </li>
+                            <li ng-show="rca.logged_on" ng-class="{active :rca.isOption(3)}">
+                                <a href="#" ng-click="rca.setOption(3)">Assess Impact</a>
+                            </li>
+                            <li ng-show="rca.logged_on" ng-class="{active :rca.isOption(4)}">
+                                <a href="#" ng-click="rca.setOption(4)">What If</a>
+                            </li>
+                            <li ng-show="rca.logged_on" ng-class="{active :rca.isOption(5)}">
+                                <a href="#" ng-click="rca.setOption(5)">Solution Overview</a>
+                            </li>
+                            <li ng-show="rca.isAdmin()" ng-class="{active :rca.isOption(10)}">
+                                <a href="# " ng-click="rca.setOption(10)">Describe Solution</a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right ">
+                            <li ng-hide="rca.logged_on ">
+                                <a href="# " ng-click="rca.setOption(7) "><span class="glyphicon glyphicon-log-in "></span> Login</a>
+                            </li>
+                            <li ng-show="rca.logged_on ">
+                                <a href="# " ng-click="rca.logoff() "><span class="glyphicon glyphicon-log-out "></span> Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <message-log></message-log>
+            <section ng-show="rca.isOption(7)">
+                <div id="authentication" class="container">
+                    <form role="form" id="logon" novalidate>
+                        <div class="row form-group"> <span class="col-sm-6">&nbsp;</span>
+ <span class="col-sm-3 ">
+                                 <label for="username">Id</label>
+                               <input type="text" id="username" name="username" class="form-control" ng-model="rca.username" required/>
+                             </span>
+ <span class="col-sm-3 ">
+                                 <label for="password">Password</label>
+                               <input type="password" id="password" name="password" class="form-control" ng-model="rca.password" required ng-keyup="$event.keyCode == 13 && rca.logon()" />
+                             </span>
+
+                        </div>
+                        <div class="row form-group"> <span class="col-sm-9">&nbsp;</span>
+ <span class="col-sm-3">
+                               <button type="button" class="btn btn-primary" id="authButton" ng-click="rca.logon()"><span class="glyphicon glyphicon-log-in"></span> Login</button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <section ng-show="rca.isOption(10)">
+                <node-template></node-template>
+            </section>
+    </body>
+</html>
