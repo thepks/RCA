@@ -1,37 +1,37 @@
 (function() {
 
     var app = angular.module('NodeTemplateService', []);
-    
+
     var username;
     var password;
 
-    app.factory("NodeTemplateService", ["$q", "$http", function($q,$http) {
+    app.factory("NodeTemplateService", ["$q", "$http", function($q, $http) {
 
 
         return {
-            
-            authorize : function(user, pass) {
-                
+
+            authorize: function(user, pass) {
+
                 var userobj = {};
                 userobj.user = {};
                 userobj.user.username = user;
                 userobj.user.password = pass;
-                
+
                 username = user;
                 password = pass;
-                
+
                 return $http.post("/action/logon", userobj);
-                
+
             },
-            
-            logoff : function() {
-                
+
+            logoff: function() {
+
                 return $http.post("/action/logoff");
             },
-            
 
-            load_model_to_template : function() {
-                
+
+            load_model_to_template: function() {
+
                 var deferred = $q.defer();
                 var url = '/db/data/transaction/commit';
 
@@ -41,191 +41,217 @@
                     { \"statement\": \"match (n)-[r]-(m) where labels(n) <> \\\"User\\\" return distinct labels(n),n,type(r),labels(m),m;\"} \
                     ] \
                 }";
-                
+
                 var req = {
-                    method : 'POST',
-                    url : url,
+                    method: 'POST',
+                    url: url,
                     data: cmd,
                 };
-                
+
                 $http(req).
-                    success ( function (data) {
-                        
-                        var model = {};
-                        model.nodes = {};
-                        model.instanceRelationships = [];
-                        model.prototypeValue = {};
-                        
-                        // results is the structure containing the response
-                        // results[0] is the node object;
-                        
-                        for (var i=0; i<data.results[0].data.length;i++) {
-                            model.nodes[data.results[0].data[i].row[0][0]] =[];
-                            model.nodes[data.results[0].data[i].row[0][0]].push(name);
-                        }
-                        
-                        // results [1] are the fundamental relationships, but [2] also describes
-                        model.joins = [];
-                        for (i=0; i<data.results[1].data.length;i++) {
-                            var newRelationship = {};
-                            newRelationship.leftNode = data.results[1].data[i].row[0];
-                            newRelationship.join = data.results[1].data[i].row[1];
-                            newRelationship.rightNode = data.results[1].data[i].row[2];
-                            model.joins.push(newRelationship);
-                        }
-                        
-                        // results [3] gives prototypes and relationships
-                        // First populate out the node descriptions
-                        for (i=0; i<data.results[2].data.length;i++) {
-                            var node1 = data.results[2].data[i].row[0][0];
-                            var properties1 = data.results[2].data[i].row[1];
-                            var currProps = model.nodes[node1];
-                            var keyvals = Object.keys(properties1);
-                            for (var j=0; j<keyvals.length;j++) {
-                                if (currProps.indexOf(keyvals[j]) < 0) {
-                                    model.nodes[node1].push(keyvals[j]);
-                                }    
-                            }
+                success(function(data) {
 
-                            var node2 = data.results[2].data[i].row[3][0];
-                            var properties2 = data.results[2].data[i].row[4];
-                            currProps = model.nodes[node2];
-                            keyvals = Object.keys(properties2);
-                            for (j=0; j<keyvals.length;j++) {
-                                if (currProps.indexOf(keyvals[j]) < 0) {
-                                    model.nodes[node2].push(keyvals[j]);
-                                }    
+                    var model = {};
+                    model.nodes = {};
+                    model.instanceRelationships = [];
+                    model.prototypeValue = {};
+
+                    // results is the structure containing the response
+                    // results[0] is the node object;
+
+                    for (var i = 0; i < data.results[0].data.length; i++) {
+                        model.nodes[data.results[0].data[i].row[0][0]] = [];
+                        model.nodes[data.results[0].data[i].row[0][0]].push(name);
+                    }
+
+                    // results [1] are the fundamental relationships, but [2] also describes
+                    model.joins = [];
+                    for (i = 0; i < data.results[1].data.length; i++) {
+                        var newRelationship = {};
+                        newRelationship.leftNode = data.results[1].data[i].row[0];
+                        newRelationship.join = data.results[1].data[i].row[1];
+                        newRelationship.rightNode = data.results[1].data[i].row[2];
+                        model.joins.push(newRelationship);
+                    }
+
+                    // results [3] gives prototypes and relationships
+                    // First populate out the node descriptions
+                    for (i = 0; i < data.results[2].data.length; i++) {
+                        var node1 = data.results[2].data[i].row[0][0];
+                        var properties1 = data.results[2].data[i].row[1];
+                        var currProps = model.nodes[node1];
+                        var keyvals = Object.keys(properties1);
+                        for (var j = 0; j < keyvals.length; j++) {
+                            if (currProps.indexOf(keyvals[j]) < 0) {
+                                model.nodes[node1].push(keyvals[j]);
                             }
                         }
-                        
-                        // Now populate out the instances
-                        
-                        for (i=0; i<data.results[2].data.length;i++) {
-                            
-                            // The type is the hash, key 0 and key 3
-                            // The properties are in key 1 and key 4
-                            
-                            var leftNode = data.results[2].data[i].row[0][0];
-                            var rightNode = data.results[2].data[i].row[3][0];
-                            var join = data.results[2].data[i].row[2];
-                            var toAdd = {};
-                            var leftObj = data.results[2].data[i].row[1];
-                            var rightObj = data.results[2].data[i].row[4];
-                            var prototypes = [];
-                            var found = false;
 
-                            if( '$$hashkey' in leftObj) {
-                                delete leftObj['$$hashkey'];
+                        var node2 = data.results[2].data[i].row[3][0];
+                        var properties2 = data.results[2].data[i].row[4];
+                        currProps = model.nodes[node2];
+                        keyvals = Object.keys(properties2);
+                        for (j = 0; j < keyvals.length; j++) {
+                            if (currProps.indexOf(keyvals[j]) < 0) {
+                                model.nodes[node2].push(keyvals[j]);
                             }
-                            
-                            if( '$$hashkey' in rightObj) {
-                                delete rightObj['$$hashkey'];
-                            }
+                        }
+                    }
 
-                            
-                            
-                            toAdd.leftObj = leftObj;
-                            toAdd.leftNodeType = leftNode;
-                            toAdd.rightObj = rightObj;
-                            toAdd.rightNodeType = rightNode;
-                            toAdd.join = join;
-                            
-                            
-                            
-                            model.instanceRelationships.push(toAdd);
-                            
-                            if (leftNode in model.prototypeValue ) {
-                                prototypes = model.prototypeValue[leftNode];
-                                for (var k=0; k<prototypes.length; k++) {
-                                    if (prototypes[k].name === leftObj.name) {
-                                        found = true;
-                                        break;
-                                    }
+                    // Now populate out the instances
+
+                    for (i = 0; i < data.results[2].data.length; i++) {
+
+                        // The type is the hash, key 0 and key 3
+                        // The properties are in key 1 and key 4
+
+                        var leftNode = data.results[2].data[i].row[0][0];
+                        var rightNode = data.results[2].data[i].row[3][0];
+                        var join = data.results[2].data[i].row[2];
+                        var toAdd = {};
+                        var leftObj = data.results[2].data[i].row[1];
+                        var rightObj = data.results[2].data[i].row[4];
+                        var prototypes = [];
+                        var found = false;
+
+                        if ('$$hashkey' in leftObj) {
+                            delete leftObj['$$hashkey'];
+                        }
+
+                        if ('$$hashkey' in rightObj) {
+                            delete rightObj['$$hashkey'];
+                        }
+
+
+
+                        toAdd.leftObj = leftObj;
+                        toAdd.leftNodeType = leftNode;
+                        toAdd.rightObj = rightObj;
+                        toAdd.rightNodeType = rightNode;
+                        toAdd.join = join;
+
+
+
+                        model.instanceRelationships.push(toAdd);
+
+                        if (leftNode in model.prototypeValue) {
+                            prototypes = model.prototypeValue[leftNode];
+                            for (var k = 0; k < prototypes.length; k++) {
+                                if (prototypes[k].name === leftObj.name) {
+                                    found = true;
+                                    break;
                                 }
-                            } else {
-                                model.prototypeValue[leftNode] = [];
                             }
-                            
-                            if (!found) {
-                                model.prototypeValue[leftNode].push(leftObj);
-                            }
-                            
-                            found = false;
-                            
-                            if (rightNode in model.prototypeValue ) {
-                                prototypes = model.prototypeValue[rightNode];
-                                for (var l=0; l<prototypes.length; l++) {
-                                    if (prototypes[l].name === rightObj.name) {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                model.prototypeValue[rightNode] = [];
-                            }
-                            
-                            if (!found) {
-                                model.prototypeValue[rightNode].push(rightObj);
-                            }
-                            
-
-                            
+                        } else {
+                            model.prototypeValue[leftNode] = [];
                         }
-                        
-                        console.log(JSON.stringify(model));
-                        deferred.resolve(model);
-                    }).
-                    error ( function() {
-                        console.log('Error in loading model');
-                        deferred.reject();
-                    });
+
+                        if (!found) {
+                            model.prototypeValue[leftNode].push(leftObj);
+                        }
+
+                        found = false;
+
+                        if (rightNode in model.prototypeValue) {
+                            prototypes = model.prototypeValue[rightNode];
+                            for (var l = 0; l < prototypes.length; l++) {
+                                if (prototypes[l].name === rightObj.name) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            model.prototypeValue[rightNode] = [];
+                        }
+
+                        if (!found) {
+                            model.prototypeValue[rightNode].push(rightObj);
+                        }
+
+
+
+                    }
+
+                    console.log(JSON.stringify(model));
+                    deferred.resolve(model);
+                }).
+                error(function() {
+                    console.log('Error in loading model');
+                    deferred.reject();
+                });
 
                 return deferred.promise;
 
             },
-            
-            add_template_to_model : function(model) {
-                
+
+            add_template_to_model: function(model) {
+
                 var deferred = $q.defer();
                 var url = '/db/data/transaction/commit';
-                
+
                 var proto_keys = Object.keys(model.prototypeValue);
                 var join_list = model.instanceRelationships;
                 var obj_keys = {};
                 var obj_keys2;
                 var cmd = '';
+                var cmd2 = '';
+                var cmd3 = '';
                 var nodetype = '';
                 var obj;
                 var cmds = [];
-                
-        
+
+
                 // First create these nodes     
-                for (var i=0; i<proto_keys.length;i++) {
+                for (var i = 0; i < proto_keys.length; i++) {
                     nodetype = proto_keys[i];
-                    for (var j=0; j<model.prototypeValue[proto_keys[i]].length;j++) {
+                    for (var j = 0; j < model.prototypeValue[proto_keys[i]].length; j++) {
                         // add object
                         obj = model.prototypeValue[proto_keys[i]][j];
                         obj_keys = Object.keys(obj);
-                        
-                        cmd = 'CREATE (a:' + nodetype + ' {' ;
-                        for (var k=0; k<obj_keys.length; k++) {
-                            cmd = cmd + obj_keys[k] + ": '" + obj[obj_keys[k]] +"',";   
+
+                        if ('changes' in obj) {
+
+                            if (obj.changes.mod === 'add') {
+
+                                cmd = 'CREATE (a:' + nodetype + ' {';
+                                for (var k = 0; k < obj_keys.length; k++) {
+                                    cmd = cmd + obj_keys[k] + ": '" + obj[obj_keys[k]] + "',";
+                                }
+
+                                if (obj_keys.length > 0) {
+                                    // strip last ,
+                                    cmd = cmd.substring(0, cmd.length - 1);
+                                }
+
+                                cmd = cmd + "});";
+                                cmds.push(cmd);
+
+                            } else if (obj.changes.mod === 'delete') {
+                                cmd = 'MATCH (a:' + nodetype + ' {';
+                                for (var k = 0; k < obj_keys.length; k++) {
+                                    cmd = cmd + obj_keys[k] + ": '" + obj[obj_keys[k]] + "',";
+                                }
+
+                                if (obj_keys.length > 0) {
+                                    // strip last ,
+                                    cmd = cmd.substring(0, cmd.length - 1);
+                                    cmd2 = cmd + "\"}) -[r]- () delete r;";
+                                    cmd3 = cmd + "\"}) delete a;";
+                                }
+
+                                cmds.push(cmd2);
+                                cmds.push(cmd3);
+                            }
+
                         }
-                        
-                        if (obj_keys.length > 0) {
-                            // strip last ,
-                            cmd = cmd.substring(0,cmd.length -1);
-                        }
-                        
-                        cmd = cmd + "});";
-                        cmds.push(cmd);
                     }
                 }
-                
+
+
                 // Now link them based on the relationships
 
-                for (var l=0; l<join_list.length; l++) {
-                    
+                for (var l = 0; l < join_list.length; l++) {
+
                     // Were there any prototypes of these types
                     var obj1 = join_list[l].leftObj;
                     var obj1type = join_list[l].leftNodeType;
@@ -233,46 +259,73 @@
                     var obj2type = join_list[l].rightNodeType;
                     var join = join_list[l].join;
 
-                    // add object
-                    cmd = 'MATCH (a:' + obj1type + '), (b:' +obj2type +')';
-                    var where_clause = 'WHERE ';
+                    if ('changes' in join_list[l]) {
 
-                    obj_keys = Object.keys(obj1);
-                    for (var n=0; n<obj_keys.length; n++) {
-                        where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
-                    }
-                    
-                    obj_keys2 = Object.keys(obj2);
-                    for (var p=0; p<obj_keys2.length; p++) {
-                        where_clause = where_clause + "b." + obj_keys2[p] + "='" + obj2[obj_keys2[p]] + "' AND ";    
-                    }
-                    
-                    // strip last 
-                    where_clause = where_clause.substring(0, where_clause.length -4);
+                        if (join_list[l].changes.mod === 'add') {
 
-                    
-                    cmd = cmd + where_clause + " CREATE (a)-[:" + join.toUpperCase() + "]->(b);";
-                    cmds.push(cmd);
+                            // add object
+                            cmd = 'MATCH (a:' + obj1type + '), (b:' + obj2type + ')';
+                            var where_clause = 'WHERE ';
+
+                            obj_keys = Object.keys(obj1);
+                            for (var n = 0; n < obj_keys.length; n++) {
+                                where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
+                            }
+
+                            obj_keys2 = Object.keys(obj2);
+                            for (var p = 0; p < obj_keys2.length; p++) {
+                                where_clause = where_clause + "b." + obj_keys2[p] + "='" + obj2[obj_keys2[p]] + "' AND ";
+                            }
+
+                            // strip last 
+                            where_clause = where_clause.substring(0, where_clause.length - 4);
+
+                            cmd = cmd + where_clause + " CREATE (a)-[:" + join.toUpperCase() + "]->(b);";
+                            cmds.push(cmd);
+                        } else if (join_list[l].changes.mod === 'delete') {
+                            
+                            cmd = 'MATCH (a:' + obj1type + ') -[r]- (b:' + obj2type + ')';
+                            var where_clause = 'WHERE ';
+                            
+                            obj_keys = Object.keys(obj1);
+                            for (var n = 0; n < obj_keys.length; n++) {
+                                where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
+                            }
+                            
+                            obj_keys2 = Object.keys(obj2);
+                            for (var p = 0; p < obj_keys2.length; p++) {
+                                where_clause = where_clause + "b." + obj_keys2[p] + "='" + obj2[obj_keys2[p]] + "' AND ";
+                            }
+                            
+                            // strip last 
+                            where_clause = where_clause.substring(0, where_clause.length - 4);
+                            
+                            cmd = cmd + where_clause + " DELETE r;";
+                            cmds.push(cmd);
+                            
+                        }
+                    }
                 }
-                
+
                 cmd = "{ \"statements\": [";
-                
-                for (var z=0; z<cmds.length; z++) {
+
+                for (var z = 0; z < cmds.length; z++) {
                     cmd = cmd + "{ \"statement\": \"";
                     cmd = cmd + cmds[z];
                     cmd = cmd + "\"},";
                 }
-                
-                cmd = cmd.substring(0,cmd.length -1);
+
+                cmd = cmd.substring(0, cmd.length - 1);
                 cmd = cmd + "]}";
-                
+
 
                 var req = {
-                    method : 'POST',
-                    url : url,
+                    method: 'POST',
+                    url: url,
                     data: cmd,
                 };
-                
+
+                /*              
                 $http(req).
                     success ( function (data) {
                     deferred.resolve(data);
@@ -281,11 +334,13 @@
                     console.log('Error in loading model');
                     deferred.reject();
                 });
+*/
 
-            return deferred.promise;
+                deferred.resolve();
+                return deferred.promise;
 
             }
-            
+
         };
     }]);
 })();

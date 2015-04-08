@@ -42,7 +42,7 @@
 
             </div>
             <div class="row form-group "> <span class="col-sm-1">
-                      <button type="button " class="btn " ng-click="nodeTemplateCtrl.add() "><span class="glyphicon glyphicon-plus-sign"></span>
+                      <button type="button " class="btn " ng-click="nodeTemplateCtrl.addNoteType() "><span class="glyphicon glyphicon-plus-sign"></span>
 
                 </button>
                 </span> <span class="col-sm-2">
@@ -60,7 +60,7 @@
             </div>
             <hr/>
             <div class="row form-group " ng-repeat="(item,values) in nodeTemplateCtrl.nodeTypes()"> <span class="col-sm-1">
-        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteNode(item) "><span class="glyphicon glyphicon-trash "></span>
+        <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteNodeType(item) "><span class="glyphicon glyphicon-trash "></span>
 
                 </button>
                 </span> <span class="col-sm-2 ">
@@ -189,6 +189,10 @@
 
             </div>
         </div>
+        
+<!-- section 4 --> 
+        
+        
         <div ng-show="nodeTemplateCtrl.isSection(4)">
              <h4>Node Relationships</h4>
 

@@ -94,11 +94,6 @@
 
                 };
 
-
-                this.delete = function() {
-                    // delete is actually more processing, it needs to find all of the connected nodes and delete these  
-                };
-
                 this.nodeTypes = function() {
                     return this.nodes;
                 };
@@ -107,12 +102,29 @@
                     return Object.keys(this.nodes);
                 };
                 
+                this.deleteNodeType = function(item) {
+                    var changes = {};
+                    var j=0;
+                     
+                    if(item.indexOf('changes') <0) {
+                        changes.mod = 'delete';
+                        item.push(changes);
+                    } else {
+                        j = item.indexOf('changes');
+                        changes.mod = 'delete';
+                        item[j] = changes;
+                    }
+                    
+                };
+                
                 this.nodeAttributeList = function() {
                     return (this.nodes[this.nodePrototype]); //[0].split(' ');
                 };
                 
-                this.add = function() {
+                this.addNodeType = function() {
                     var attrlist = [];
+                    var changes = {};
+                    changes.mod='add';
                     if (this.newItem.name) {
                         this.nodes[this.newItem.name] = [];
                         this.nodes[this.newItem.name].push(this.nameAttribute);
@@ -121,6 +133,7 @@
                             for (var i=0; i<attrlist.length;i++) {
                                 this.nodes[this.newItem.name].push(attrlist[i]);
                             }
+                            this.nodes[this.newItem.name].push(changes);
                         } catch (exception) {}
                         this.prototypeValue[this.newItem.name] = [];
                     }
@@ -132,8 +145,15 @@
                 };
 
                 this.addRelationship = function() {
+                    var changes = {};
+                    changes.mod='add';
+
                     if ('leftNode' in this.newRelationship && 'rightNode' in this.newRelationship) {
+                        this.newRelationship.changes = {};
+                        this.newRelationship.changes.mod = 'add';
                         this.joins.push(this.newRelationship);
+                        
+                        
                         this.newRelationship = {};
                     }
                 };
@@ -145,6 +165,18 @@
                         }
                     }
                 };
+                
+                this.deleteRelationship =function(item) {
+                    item.changes = {};
+                    item.changes.mod = 'delete';
+                };
+                
+                
+                this.deletePrototypeValue = function(item) {
+                    item.changes = {};
+                    item.changes.mod = 'delete';
+                };
+
                 
                 this.prototypes = function() {
                     return (this.prototypeValue[this.nodePrototype]);
@@ -161,13 +193,12 @@
                     for (var i=0; i<keyvals.length; i++) {
                         obj[keyvals[i]] = this.newPrototypeValue[keyvals[i]];
                     }
+                    obj.changes = {}
+                    obj.changes.mod = 'add';
                     this.prototypeValue[this.nodePrototype].push(obj);    
                     this.newPrototypeValue = {};
                 };
 
-                this.deletePrototypeValue = function(item) {
-
-                };
 
 
                 this.addInstanceRelationship = function() {
@@ -184,6 +215,8 @@
                     toAdd.rightObj = this.instanceRightNode;
                     toAdd.rightNodeType = this.rightNode;
                     toAdd.join = join;
+                    toadd.changes = {};
+                    toadd.changes.mod = 'add';
                     
                     this.instanceRelationships.push(toAdd);
                 };
@@ -191,13 +224,22 @@
                 this.getInstanceRelationships = function () {
                     return this.instanceRelationships;  
                 };
+                
+                this.deleteInstanceRelationship = function(item) {
+                     item.changes = {};
+                     item.changes.mod = 'delete';
+                };
+                
+                this.deleteRelationship =function(item) {
+                    
+                }
 
                 this.nodeObjects = function() {
                     return this.nodeObjs;
                 };
                 
 
-                this.addNodeObj = function() {
+/*                this.addNodeObj = function() {
                     if (this.newObject.name) {
                         for (var i = 0; i < this.nodes.length; i++) {
                             if (this.newObject.name === this.nodes[i].name) {
@@ -208,7 +250,7 @@
                         }
 
                     }
-                };
+                };*/
 
             }],
             controllerAs: 'nodeTemplateCtrl'
