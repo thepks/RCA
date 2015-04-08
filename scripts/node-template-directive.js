@@ -105,14 +105,15 @@
                 this.deleteNodeType = function(item) {
                     var changes = {};
                     var j=0;
+                    var node = this.nodes[item];
                      
-                    if(item.indexOf('changes') <0) {
+                    if(node.indexOf('changes') <0) {
                         changes.mod = 'delete';
-                        item.push(changes);
+                        node.push(changes);
                     } else {
-                        j = item.indexOf('changes');
+                        j = node.indexOf('changes');
                         changes.mod = 'delete';
-                        item[j] = changes;
+                        node[j] = changes;
                     }
                     
                 };
