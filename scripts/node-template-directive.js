@@ -230,11 +230,11 @@
                      item.changes.mod = 'delete';
                 };
                 
-                this.restoreInstanceRelationship = function(item) {
+                this.restoreItem = function(item) {
                     delete (item.changes);
                 };
                 
-                this.isInstanceRelationshipDeleted = function(item) {
+                this.isItemDeleted = function(item) {
                     if ('changes' in item) {
                     return item.changes.mod === 'delete';
                     } else {
