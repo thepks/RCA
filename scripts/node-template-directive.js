@@ -62,9 +62,13 @@
 
 
                 this.download = function() {
-                    var newModel = NodeTemplateService.load_model_to_template();
-                    this.nodes = newModel.nodes;
-                    this.relationships = newModel.joins;
+                    NodeTemplateService.load_model_to_template().
+                    success(function(model) {
+                        this.nodes = model.nodes;
+                        this.relationships = model.joins;
+                        
+                    });
+                    
                 };
 
 

@@ -99,12 +99,14 @@
                         // Now populate out the instances
                         
                         console.log(JSON.stringify(model));
-                        return model;
+                        deferred.resolve(model);
                     }).
                     error ( function() {
                         console.log('Error in loading model');
+                        deferred.reject();
                     });
 
+                return deferred.promise;
 
             },
             
