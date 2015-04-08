@@ -123,34 +123,36 @@
                             
                             model.instanceRelationships.push(toAdd);
                             
-                            if (!leftNode in model.prototypeValue ) {
+                            if (leftNode in model.prototypeValue ) {
+                                prototypes = model.prototypeValue[leftNode];
+                                for (var k=0; k<prototypes.length; k++) {
+                                    if (prototypes[k].name === leftObj.name) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            } else {
                                 model.prototypeValue[leftNode] = [];
                             }
                             
-                            prototypes = model.prototypeValue[leftNode];
-                            for (var k=0; k<prototypes.length; k++) {
-                                if (prototypes[k].name === leftObj.name) {
-                                    found = true;
-                                    break;
-                                }
-                            }
                             if (!found) {
                                 model.prototypeValue[leftNode].push(leftObj);
                             }
                             
                             found = false;
                             
-                            if (!rightNode in model.prototypeValue ) {
+                            if (rightNode in model.prototypeValue ) {
+                                prototypes = model.prototypeValue[rightNode];
+                                for (var l=0; l<prototypes.length; l++) {
+                                    if (prototypes[l].name === rightObj.name) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            } else {
                                 model.prototypeValue[rightNode] = [];
                             }
                             
-                            prototypes = model.prototypeValue[rightNode];
-                            for (k=0; k<prototypes.length; k++) {
-                                if (prototypes[k].name === rightObj.name) {
-                                    found = true;
-                                    break;
-                                }
-                            }
                             if (!found) {
                                 model.prototypeValue[rightNode].push(rightObj);
                             }
