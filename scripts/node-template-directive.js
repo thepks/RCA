@@ -96,6 +96,10 @@
                 this.nodeAttributeList = function() {
                     return NodeTemplateService.get_node_type_attributes(this.nodePrototype);
                 };
+                
+                this.nodeAttributeListByItem = function(itemname) {
+                    return NodeTemplateService.get_node_type_attributes(itemname);
+                };
                     
 
                 this.addNodeType = function() {

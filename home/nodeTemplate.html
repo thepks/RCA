@@ -30,6 +30,9 @@
                 <a href="#" ng-click="nodeTemplateCtrl.setSection(5)">Visualise Preview</a>
             </li>
         </ul>
+        
+<!-- Section 1 -->        
+        
         <div ng-show="nodeTemplateCtrl.isSection(1)">
              <h4>Object Types &amp; Characteristics</h4>
 
@@ -73,8 +76,7 @@
  <span class="col-sm-2 ">
                        <p ng-bind="nodeTemplateCtrl.nameAttribute"></p>
                    </span>
- <span class="col-sm-4 ">
-                    <p ng-bind="values.join(' ')"></p>
+ <span class="col-sm-4 "><span ng-repeat="n in nodeTemplateCtrl.nodeAttributeListByItem(item)">{{n}}&nbsp;</span>
                    </span>
 
             </div>
