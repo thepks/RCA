@@ -153,7 +153,7 @@
 
                 if ('leftNode' in obj && 'rightNode' in obj) {
                     obj.deltaRecord = {};
-                    obj.delteRecord.mod = 'add';
+                    obj.deltaRecord.mod = 'add';
                     model.joins.push(obj);
                 }
             },
@@ -192,7 +192,7 @@
                 }
                 
                 toadd.deltaRecord = {};
-                toadd.delteRecord.mod = 'add';
+                toadd.deltaRecord.mod = 'add';
     
                 model.prototypeValue[nodetype].push(toadd);    
             },
