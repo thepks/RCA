@@ -50,6 +50,7 @@
                         then(function() {
                             MessageLogService.add_message('Uploaded to model!');
                             that.transfer_in_progress = false; 
+                            that.download();
                         },function() {
                             MessageLogService.add_message('Uploaded to model failed!');
                             that.transfer_in_progress = false;
