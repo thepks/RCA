@@ -515,7 +515,9 @@
 
                             cmd = 'CREATE (a:' + nodetype + ' {';
                             for (k = 0; k < obj_keys.length; k++) {
-                                cmd = cmd + obj_keys[k] + ": '" + obj[obj_keys[k]] + "',";
+                                if (obj_keys[k] !== '$$hashKey') {
+                                    cmd = cmd + obj_keys[k] + ": '" + obj[obj_keys[k]] + "',";
+                                }
                             }
 
                             if (obj_keys.length > 0) {
@@ -533,7 +535,9 @@
 
                             cmd = 'MATCH (a:' + nodetype + ' {';
                             for (k = 0; k < obj_keys.length; k++) {
-                                cmd = cmd + obj_keys[k] + ": '" + obj[obj_keys[k]] + "',";
+                                if (obj_keys[k] !== '$$hashKey') {
+                                    cmd = cmd + obj_keys[k] + ": '" + obj[obj_keys[k]] + "',";
+                                }
                             }
 
                             if (obj_keys.length > 0) {
@@ -580,13 +584,17 @@
 
                         obj_keys = Object.keys(obj1);
                         for (var n = 0; n < obj_keys.length; n++) {
-                            where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
+                            if (obj_keys[n] !== '$$hashKey') {
+                                where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
+                            }
                         }
 
 
                         obj_keys2 = Object.keys(obj2);
                         for (var p = 0; p < obj_keys2.length; p++) {
-                            where_clause = where_clause + "b." + obj_keys2[p] + "='" + obj2[obj_keys2[p]] + "' AND ";
+                            if (obj_keys2[p] !== '$$hashKey') {
+                                where_clause = where_clause + "b." + obj_keys2[p] + "='" + obj2[obj_keys2[p]] + "' AND ";
+                            }
                         }
 
                         // strip last 
@@ -612,7 +620,9 @@
 
                         obj_keys = Object.keys(obj1);
                         for (var n = 0; n < obj_keys.length; n++) {
-                            where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
+                            if (obj_keys[n] !== '$$hashKey') {
+                                where_clause = where_clause + "a." + obj_keys[n] + "='" + obj1[obj_keys[n]] + "' AND ";
+                            }
                         }
 
                         if ('changes' in obj2) {
@@ -622,7 +632,9 @@
 
                         obj_keys2 = Object.keys(obj2);
                         for (var p = 0; p < obj_keys2.length; p++) {
-                            where_clause = where_clause + "b." + obj_keys2[p] + "='" + obj2[obj_keys2[p]] + "' AND ";
+                            if (obj_keys2[p] !== '$$hashKey') {
+                                where_clause = where_clause + "b." + obj_keys2[p] + "='" + obj2[obj_keys2[p]] + "' AND ";
+                            }
                         }
 
                         // strip last 
