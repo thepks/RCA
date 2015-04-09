@@ -289,6 +289,16 @@
             is_item_deleted: function(obj) {
                 return (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord  && obj.deltaRecord.mod === 'delete');
             },
+            
+            clean_attribute_object_for_prototype: function(item) {
+                
+                if (model in 'item' && item.model.constructor === Object) {
+                    delete item.model;
+                }
+                
+                return item;
+                
+            },
 
             load_model_to_template: function() {
 
@@ -468,8 +478,6 @@
 
             },
 
-
-// Need to mod still this fm
             add_template_to_model: function() {
 
                 var deferred = $q.defer();

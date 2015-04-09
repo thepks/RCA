@@ -194,7 +194,8 @@
                 </button>
 
                 </span> <span class="col-md-8">
-                    <span class="col-md-8" ng-repeat="(keylist, valuelist) in item">
+<!--                    <span class="col-md-8" ng-repeat="(keylist, valuelist) in item"> -->
+                        <span class="col-md-8" ng-repeat="(keylist, valuelist) in nodeTemplateCtrl.clean_attribute_object_for_prototype(item)">
                         <p>{{ item[keylist] }} ({{ keylist }})</input>
                     </span>
 </span> <span class="col-md-2">

@@ -161,6 +161,10 @@
                 this.isItemDeleted = function(item) {
                     return NodeTemplateService.is_item_deleted(item);
                 };
+                
+                this.clean_attribute_object_for_prototype = function(item) {
+                    return NodeTemplateService.clean_attribute_object_for_prototype(item); 
+                };
 
 // Is this used               
                 this.nodeObjects = function() {
