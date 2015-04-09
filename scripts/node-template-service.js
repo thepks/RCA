@@ -298,7 +298,7 @@
                 var cmd = "{ \"statements\": [ \
                     { \"statement\": \"match(n) return distinct labels(n);\"}, \
                     { \"statement\": \"MATCH (a)-[r]->(b) WHERE labels(a) <> [] AND labels(b) <> [] RETURN DISTINCT head(labels(a)) AS This, type(r) as To, head(labels(b)) AS That;\"}, \
-                    { \"statement\": \"match (n)-[r]-(m) where labels(n) <> \\\"User\\\" return distinct labels(n),n,type(r),labels(m),m;\"} \
+                    { \"statement\": \"match (n)-[r]->(m) where labels(n) <> \\\"User\\\" return distinct labels(n),n,type(r),labels(m),m;\"} \
                     ] \
                 }";
 
