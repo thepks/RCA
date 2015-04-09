@@ -125,12 +125,11 @@
                 
                 var node = model.nodes[name];
                 var togo = [];
-                
-                togo = node.filter(function(item) {
-                    
-                    return item.constructor !== Object;
-                    
-                });
+                if (node) {
+                    togo = node.filter(function(item) {
+                        return item.constructor !== Object;
+                    });
+                }
                 
                 return togo;
 
