@@ -282,7 +282,7 @@
             
             undo_delete_item: function(obj) {
                 if(obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord  && obj.deltaRecord.mod === 'delete') {
-                    delete(obj.deltaRecord);
+                    delete(obj.deltaRecord.mod);
                 }
             },
             
@@ -324,6 +324,8 @@
 
                     for (var i = 0; i < data.results[0].data.length; i++) {
                         model.nodes[data.results[0].data[i].row[0][0]] = [];
+                        deltaRecord = {};
+                        deltaRecord.model = 'existing';
                         model.nodes[data.results[0].data[i].row[0][0]].push(deltaRecord);
                         model.nodes[data.results[0].data[i].row[0][0]].push(name);
                     }
