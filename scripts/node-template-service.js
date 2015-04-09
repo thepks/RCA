@@ -232,7 +232,7 @@
                 toAdd.join = join;
                 
                 toAdd.deltaRecord = {};
-                toAdd.delteRecord.mod = 'add';
+                toAdd.deltaRecord.mod = 'add';
 
                 model.instanceRelationships.push(toAdd);
 

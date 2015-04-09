@@ -158,11 +158,7 @@
                     return NodeTemplateService.is_item_deleted(item);
                 };
 
-// Is this used                
-                this.deleteRelationship =function(item) {
-                    
-                };
-
+// Is this used               
                 this.nodeObjects = function() {
                     return this.nodeObjs;
                 };
