@@ -610,6 +610,9 @@
                         
                     }
                 }
+                
+                // delete free nodes
+                cmds.push('MATCH (n) WHERE NOT n--() DELETE n;');
 
                 cmd = "{ \"statements\": [";
 
