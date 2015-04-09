@@ -327,7 +327,7 @@
                         deltaRecord = {};
                         deltaRecord.model = 'existing';
                         model.nodes[data.results[0].data[i].row[0][0]].push(deltaRecord);
-                        model.nodes[data.results[0].data[i].row[0][0]].push(name);
+                        model.nodes[data.results[0].data[i].row[0][0]].push('name');
                     }
 
                     // results [1] are the fundamental relationships, but [2] also describes
@@ -347,6 +347,11 @@
                     for (i = 0; i < data.results[2].data.length; i++) {
                         var node1 = data.results[2].data[i].row[0][0];
                         var properties1 = data.results[2].data[i].row[1];
+                        
+                        if ('$$hashKey' in properties1) {
+                            delete properties1['$$hashKey'];
+                        }
+
                         var currProps = model.nodes[node1];
                         var keyvals = Object.keys(properties1);
                         for (var j = 0; j < keyvals.length; j++) {
@@ -357,6 +362,11 @@
 
                         var node2 = data.results[2].data[i].row[3][0];
                         var properties2 = data.results[2].data[i].row[4];
+                        
+                        if ('$$hashKey' in properties2) {
+                            delete properties2['$$hashKey'];
+                        }
+
                         currProps = model.nodes[node2];
                         keyvals = Object.keys(properties2);
                         for (j = 0; j < keyvals.length; j++) {
