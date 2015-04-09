@@ -6,7 +6,22 @@
     var password;
     var model = {};
 
+    var array_prune = function(a) {
+        
+        var tmp = [];
+        tmp = a.filter(function(f) {
+           if (f) {
+               return true;
+           } else {
+               return false;
+           }
+        });
+        return tmp;
+
+    };
+
     app.factory("NodeTemplateService", ["$q", "$http", function($q, $http) {
+
 
 
         return {
@@ -177,6 +192,8 @@
                         delete(model.joins[i]);
                     }
                 }
+                
+                model.joins = array_prune(model.joins);
             },
             
             get_prototype_object_list: function(nodetype) {
@@ -200,6 +217,7 @@
             delete_prototype_object: function(obj) {
                 var keys = Object.keys(model.prototypeValue);
                 var obj2 = {};
+                var tmp = [];
                 
                 if(obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord) {
                     obj.deltaRecord.mod = 'delete';
@@ -212,6 +230,9 @@
                             delete (model.prototypeValue[keys[i]][j]);
                         }
                     }
+                    
+                    model.prototypeValue[keys[i]] = array_prune(model.prototypeValue[keys[i]]);
+
                 }
             },
 
@@ -255,6 +276,9 @@
                         delete (model.instanceRelationships[i]);
                     }
                 }
+                
+                model.instanceRelationships = array_prune(model.instanceRelationships);
+                
             },
             
             undo_delete_item: function(obj) {
