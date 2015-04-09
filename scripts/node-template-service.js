@@ -127,7 +127,7 @@
                 var togo = [];
                 if (node) {
                     togo = node.filter(function(item) {
-                        return item.constructor !== Object;
+                        return item && item.constructor !== Object;
                     });
                 }
                 
