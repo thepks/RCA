@@ -7,14 +7,14 @@
     var model = {};
 
     var array_prune = function(a) {
-        
+
         var tmp = [];
         tmp = a.filter(function(f) {
-           if (f) {
-               return true;
-           } else {
-               return false;
-           }
+            if (f) {
+                return true;
+            } else {
+                return false;
+            }
         });
         return tmp;
 
@@ -35,13 +35,13 @@
 
                 username = user;
                 password = pass;
-                
+
                 model = {};
                 model.nodes = {};
                 model.instanceRelationships = [];
                 model.prototypeValue = {};
                 model.joins = [];
-                
+
                 return $http.post("/action/logon", userobj);
 
             },
@@ -50,7 +50,7 @@
 
                 return $http.post("/action/logoff");
             },
-            
+
             new_model: function() {
                 model = {};
                 model.nodes = {};
@@ -62,17 +62,17 @@
             get_node_types: function() {
                 return model.nodes;
             },
-            
+
             get_node_type_list: function() {
                 return Object.keys(model.nodes);
             },
-            
+
             delete_node_type: function(name) {
                 var deltaRecord = {};
                 var found = false;
                 var node = model.nodes[name];
 
-                for (var i=0; i<node.length; i++) {
+                for (var i = 0; i < node.length; i++) {
                     if (node[i] && node[i].constructor === Object) {
                         deltaRecord = node[i];
                         if ('model' in deltaRecord && deltaRecord.model === 'existing') {
@@ -82,34 +82,34 @@
                         }
                     }
                 }
-                if(!found) {
+                if (!found) {
                     delete(model.nodes[name]);
                 }
             },
-            
+
             undo_delete_existing_node_type: function(name) {
 
                 var deltaRecord = {};
                 var node = model.nodes[name];
 
-                for (var i=0; i<node.length; i++) {
+                for (var i = 0; i < node.length; i++) {
                     if (node[i] && node[i].constructor === Object) {
                         deltaRecord = node[i];
                         if ('model' in deltaRecord && deltaRecord.model === 'existing' && 'mod' in deltaRecord && deltaRecord.mod === 'delete') {
-                            delete (deltaRecord.mod);
+                            delete(deltaRecord.mod);
                             break;
                         }
                     }
                 }
 
             },
-            
+
             is_node_flagged_for_deletion: function(name) {
 
                 var deltaRecord = {};
                 var node = model.nodes[name];
-                
-                for (var i=0; i<node.length; i++) {
+
+                for (var i = 0; i < node.length; i++) {
                     if (node[i] && node[i].constructor === Object) {
                         deltaRecord = node[i];
                         if ('model' in deltaRecord && deltaRecord.model === 'existing' && 'mod' in deltaRecord && deltaRecord.mod === 'delete') {
@@ -117,12 +117,12 @@
                         }
                     }
                 }
-                
+
                 return false;
             },
-            
+
             get_node_type_attributes: function(name) {
-                
+
                 var node = model.nodes[name];
                 var togo = [];
                 if (node) {
@@ -130,39 +130,39 @@
                         return item && item.constructor !== Object;
                     });
                 }
-                
+
                 return togo;
 
             },
-            
+
             add_node_type: function(obj) {
 
-            var attr_provided = [];
+                var attr_provided = [];
 
-            var deltaRecord = {};
-            deltaRecord.mod='add';
-            
-            if(obj.name) {
-                model.nodes[obj.name] = [];
-                model.nodes[obj.name].push(deltaRecord);
-                model.nodes[obj.name].push('name');
-                
-                try {
-                    attr_provided = obj.attributeList.split(' ');
-                    for (var i=0; i<attr_provided.length;i++) {
-                        model.nodes[obj.name].push(attr_provided[i]);
-                    }
-                } catch (e) {}
-            
-                model.prototypeValue[obj.name] = [];
+                var deltaRecord = {};
+                deltaRecord.mod = 'add';
 
-                }                
+                if (obj.name) {
+                    model.nodes[obj.name] = [];
+                    model.nodes[obj.name].push(deltaRecord);
+                    model.nodes[obj.name].push('name');
+
+                    try {
+                        attr_provided = obj.attributeList.split(' ');
+                        for (var i = 0; i < attr_provided.length; i++) {
+                            model.nodes[obj.name].push(attr_provided[i]);
+                        }
+                    } catch (e) {}
+
+                    model.prototypeValue[obj.name] = [];
+
+                }
             },
-            
+
             get_prototype_joins: function() {
                 return model.joins;
             },
-            
+
             add_prototype_join: function(obj) {
 
                 if ('leftNode' in obj && 'rightNode' in obj) {
@@ -171,65 +171,65 @@
                     model.joins.push(obj);
                 }
             },
-            
+
             get_prototype_join_value: function(leftObj, rightObj) {
-                for (var i=0; i<model.joins.length; i++) {
+                for (var i = 0; i < model.joins.length; i++) {
                     if (model.joins[i].leftNode === leftObj && model.joins[i].rightNode === rightObj) {
                         return model.joins[i].join;
                     }
                 }
             },
-            
+
             delete_prototype_join_value: function(obj) {
-                if(obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord  && obj.deltaRecord.model === 'existing') {
+                if (obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord && obj.deltaRecord.model === 'existing') {
                     obj.deltaRecord.mod = 'delete';
                     return;
                 }
-                
-                for(var i=0; i<model.joins.length; i++) {
-                    if(model.joins[i] && model.joins[i].leftNode === obj.leftNode && model.joins[i].rightNode === obj.rightNode) {
+
+                for (var i = 0; i < model.joins.length; i++) {
+                    if (model.joins[i] && model.joins[i].leftNode === obj.leftNode && model.joins[i].rightNode === obj.rightNode) {
                         delete(model.joins[i]);
                     }
                 }
-                
+
                 model.joins = array_prune(model.joins);
             },
-            
+
             get_prototype_object_list: function(nodetype) {
-              return model.prototypeValue[nodetype];  
+                return model.prototypeValue[nodetype];
             },
 
             add_prototype_object: function(nodetype, obj) {
                 var toadd = {};
                 var keyvals = Object.keys(obj);
-    
-                for (var i=0; i<keyvals.length; i++) {
+
+                for (var i = 0; i < keyvals.length; i++) {
                     toadd[keyvals[i]] = obj[keyvals[i]];
                 }
-                
+
                 toadd.deltaRecord = {};
                 toadd.deltaRecord.mod = 'add';
-    
-                model.prototypeValue[nodetype].push(toadd);    
+
+                model.prototypeValue[nodetype].push(toadd);
             },
-            
+
             delete_prototype_object: function(obj) {
                 var keys = Object.keys(model.prototypeValue);
                 var obj2 = {};
                 var tmp = [];
-                
-                if(obj && 'deltaRecord' in obj) {
+
+                if (obj && 'deltaRecord' in obj) {
                     obj.deltaRecord.mod = 'delete';
                 }
-                
-                for(var i=0; i<keys.length;i++) {
-                    for (var j=0; j< model.prototypeValue[keys[i]].length; j++) {
+
+                for (var i = 0; i < keys.length; i++) {
+                    for (var j = 0; j < model.prototypeValue[keys[i]].length; j++) {
                         obj2 = model.prototypeValue[keys[i]][j];
-                        if(obj2 && 'deltaRecord' in obj2 && 'mod' in obj2.deltaRecord && obj2.deltaRecord.mod === 'delete' && !('model' in obj2.deltaRecord)) {
-                            delete (model.prototypeValue[keys[i]][j]);
+                        if (obj2 && 'deltaRecord' in obj2 && 'mod' in obj2.deltaRecord && obj2.deltaRecord.mod === 'delete' && !('model' in obj2.deltaRecord)) {
+                            delete(model.prototypeValue[keys[i]][j]);
                         }
                     }
-                    
+
                     model.prototypeValue[keys[i]] = array_prune(model.prototypeValue[keys[i]]);
 
                 }
@@ -238,71 +238,71 @@
             add_instance_relationship: function(leftNode, leftObj, rightNode, rightObj) {
                 var join;
                 var toAdd = {};
-                
-                for (var i=0; i<model.joins.length; i++) {
+
+                for (var i = 0; i < model.joins.length; i++) {
                     if (model.joins[i].leftNode === leftNode && model.joins[i].rightNode === rightNode) {
-                        join =  model.joins[i].join;
+                        join = model.joins[i].join;
                     }
-                }    
-                
+                }
+
                 toAdd.leftObj = leftObj;
                 toAdd.leftNodeType = leftNode;
                 toAdd.rightObj = rightObj;
                 toAdd.rightNodeType = rightNode;
                 toAdd.join = join;
-                
+
                 toAdd.deltaRecord = {};
                 toAdd.deltaRecord.mod = 'add';
 
                 model.instanceRelationships.push(toAdd);
 
-            },          
-            
+            },
+
             get_instance_relationship_list: function() {
                 return model.instanceRelationships;
             },
-            
+
             delete_instance_relationship: function(obj) {
                 var obj2;
 
-                if(obj && 'deltaRecord' in obj) {
+                if (obj && 'deltaRecord' in obj) {
                     obj.deltaRecord.mod = 'delete';
                 }
-                
-                for(var i=0; i<model.instanceRelationships.length;i++) {
+
+                for (var i = 0; i < model.instanceRelationships.length; i++) {
                     obj2 = model.instanceRelationships[i];
-                    if(obj2 && 'deltaRecord' in obj2 && 'mod' in obj2.deltaRecord && obj2.deltaRecord.mod === 'delete' && !('model' in obj2.deltaRecord)) {
-                        delete (model.instanceRelationships[i]);
+                    if (obj2 && 'deltaRecord' in obj2 && 'mod' in obj2.deltaRecord && obj2.deltaRecord.mod === 'delete' && !('model' in obj2.deltaRecord)) {
+                        delete(model.instanceRelationships[i]);
                     }
                 }
-                
+
                 model.instanceRelationships = array_prune(model.instanceRelationships);
-                
+
             },
-            
+
             undo_delete_item: function(obj) {
-                if(obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord  && obj.deltaRecord.mod === 'delete') {
+                if (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord && obj.deltaRecord.mod === 'delete') {
                     delete(obj.deltaRecord.mod);
                 }
             },
-            
+
             is_item_deleted: function(obj) {
-                return (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord  && obj.deltaRecord.mod === 'delete');
+                return (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord && obj.deltaRecord.mod === 'delete');
             },
-            
+
             clean_attribute_object_for_prototype: function(item) {
-                
+
                 var keys = Object.keys(item);
                 var togo = {};
-                
-                for (var i=0; i<keys.length; i++) {
+
+                for (var i = 0; i < keys.length; i++) {
                     if (item[keys[i]] && item[keys[i]].constructor !== Object) {
                         togo[keys[i]] = item[keys[i]];
                     }
                 }
 
                 return togo;
-                
+
             },
 
             load_model_to_template: function() {
@@ -362,7 +362,7 @@
                     for (i = 0; i < data.results[2].data.length; i++) {
                         var node1 = data.results[2].data[i].row[0][0];
                         var properties1 = data.results[2].data[i].row[1];
-                        
+
                         if ('$$hashKey' in properties1) {
                             delete properties1['$$hashKey'];
                         }
@@ -377,7 +377,7 @@
 
                         var node2 = data.results[2].data[i].row[3][0];
                         var properties2 = data.results[2].data[i].row[4];
-                        
+
                         if ('$$hashKey' in properties2) {
                             delete properties2['$$hashKey'];
                         }
@@ -440,10 +440,10 @@
                         }
 
                         if (!found) {
-                            
+
                             leftObj.deltaRecord = {};
                             leftObj.deltaRecord.model = 'existing';
-    
+
                             model.prototypeValue[leftNode].push(leftObj);
                         }
 
@@ -462,10 +462,10 @@
                         }
 
                         if (!found) {
-                            
+
                             rightObj.deltaRecord = {};
                             rightObj.deltaRecord.model = 'existing';
-                            
+
                             model.prototypeValue[rightNode].push(rightObj);
                         }
 
@@ -574,11 +574,11 @@
                         try {
                             delete(obj1.deltaRecord);
                         } catch (e) {}
-                        
+
                         try {
                             delete(obj2.deltaRecord);
                         } catch (e) {}
-                        
+
                         // add object
                         cmd = 'MATCH (a:' + obj1type + '), (b:' + obj2type + ')';
                         var where_clause = 'WHERE ';
@@ -610,7 +610,7 @@
                         try {
                             delete(obj1.deltaRecord);
                         } catch (e) {}
-                        
+
                         try {
                             delete(obj2.deltaRecord);
                         } catch (e) {}
@@ -643,10 +643,10 @@
 
                         cmd = cmd + where_clause + " DELETE r;";
                         cmds.push(cmd);
-                        
+
                     }
                 }
-                
+
                 // delete free nodes
                 cmds.push('MATCH (n) WHERE NOT n--() DELETE n;');
 
@@ -660,7 +660,7 @@
 
                 cmd = cmd.substring(0, cmd.length - 1);
                 cmd = cmd + "]}";
-                
+
                 console.log(cmd);
 
 
@@ -671,10 +671,10 @@
                 };
 
                 $http(req).
-                    success ( function (data) {
+                success(function(data) {
                     deferred.resolve(data);
                 }).
-                error ( function() {
+                error(function() {
                     console.log('Error in loading model');
                     model = backout_model;
                     deferred.reject();

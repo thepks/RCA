@@ -1,15 +1,16 @@
 <div id="templateAdmin" class="container">
     <form role="form" id="templateAdmin"></form>
-    <div class="row form-group"> 
+    <div class="row form-group">
 <span class="col-sm-3">
            <button type="button" class="btn" ng-click="nodeTemplateCtrl.new()"><span class="glyphicon glyphicon-icon-plus-sign"></span> New Elements</button>
-</span>
+        </span>
 <span class="col-sm-3">
                    <button type="button" class="btn" ng-click="nodeTemplateCtrl.download()" ngDisabled="nodeTemplateCtrl.isTransferInProgress()"><span class="glyphicon glyphicon-download"></span> Download Model</button>
         </span> <span class="col-sm-3">
             <button type="button" class="btn" ng-click="nodeTemplateCtrl.upload()" ngDisabled="nodeTemplateCtrl.isTransferInProgress()"><span class="glyphicon glyphicon-upload"></span> Upload Model</button>
         </span>
         </span> <span class="col-sm-3">&nbsp;</span>
+
     </div>
     <div>
         <hr/>
@@ -26,13 +27,8 @@
             <li ng-class="{active : nodeTemplateCtrl.isSection(4)}">
                 <a href="#" ng-click="nodeTemplateCtrl.setSection(4)">Node Relationships</a>
             </li>
-            <li ng-class="{active : nodeTemplateCtrl.isSection(5)}">
-                <a href="#" ng-click="nodeTemplateCtrl.setSection(5)">Visualise Preview</a>
-            </li>
         </ul>
-        
-<!-- Section 1 -->        
-        
+        <!-- Section 1 -->
         <div ng-show="nodeTemplateCtrl.isSection(1)">
              <h4>Object Types &amp; Characteristics</h4>
 
@@ -66,10 +62,9 @@
         <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteNodeType(item)" ng-hide="nodeTemplateCtrl.isNodeTypeDeleted(item)"><span class="glyphicon glyphicon-trash "></span>
 
                 </button>
-                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreNodeTypeItem(item)" ng-show="nodeTemplateCtrl.isNodeTypeDeleted(item)">
-                <span class="glyphicon glyphicon-repeat"></span>
+                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreNodeTypeItem(item)" ng-show="nodeTemplateCtrl.isNodeTypeDeleted(item)"> <span class="glyphicon glyphicon-repeat"></span>
+
                 </button>
-                
                 </span> <span class="col-sm-2 ">
                        <p ng-bind="item"></p>
                    </span>
@@ -77,8 +72,7 @@
                        <p ng-bind="nodeTemplateCtrl.nameAttribute"></p>
                    </span>
  <span class="col-sm-4 "><span ng-repeat="n in nodeTemplateCtrl.nodeAttributeListByItem(item)">{{n}}&nbsp;</span>
-                   </span>
-
+</span>
             </div>
         </div>
         <!-- second tab -->
@@ -124,12 +118,11 @@
             <hr/>
             <div class="row form-group " ng-repeat="item in nodeTemplateCtrl.relationships()"> <span class="col-sm-2 ">
         <button type="button " class="btn " ng-click="nodeTemplateCtrl.deleteRelationship(item)" ng-hide="nodeTemplateCtrl.isItemDeleted(item)"><span class="glyphicon glyphicon-trash "></span>
+
                 </button>
-                
-                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreItem(item)" ng-show="nodeTemplateCtrl.isItemDeleted(item)">
-                <span class="glyphicon glyphicon-repeat"></span>
+                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreItem(item)" ng-show="nodeTemplateCtrl.isItemDeleted(item)"> <span class="glyphicon glyphicon-repeat"></span>
+
                 </button>
-                
                 </span> <span class="col-sm-2 ">
                        <input type="text " ng-model="item.leftNode "></input>
                    </span>
@@ -189,10 +182,9 @@
                 <span class="glyphicon glyphicon-trash"></span>
 
                 </button>
-                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreItem(item)" ng-show="nodeTemplateCtrl.isItemDeleted(item)">
-                <span class="glyphicon glyphicon-repeat"></span>
-                </button>
+                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreItem(item)" ng-show="nodeTemplateCtrl.isItemDeleted(item)"> <span class="glyphicon glyphicon-repeat"></span>
 
+                </button>
                 </span> <span class="col-md-8">
 <!--                    <span class="col-md-8" ng-repeat="(keylist, valuelist) in item"> -->
                         <span class="col-md-8" ng-repeat="(keylist, valuelist) in nodeTemplateCtrl.clean_attribute_object_for_prototype(item)">
@@ -204,10 +196,7 @@
 
             </div>
         </div>
-        
-<!-- section 4 --> 
-        
-        
+        <!-- section 4 -->
         <div ng-show="nodeTemplateCtrl.isSection(4)">
              <h4>Node Relationships</h4>
 
@@ -254,9 +243,8 @@
             <span class="glyphicon glyphicon-trash"></span>
 
                 </button>
-                
-                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreItem(item)" ng-show="nodeTemplateCtrl.isItemDeleted(item)">
-                <span class="glyphicon glyphicon-repeat"></span>
+                <button type="button " class="btn " ng-click="nodeTemplateCtrl.restoreItem(item)" ng-show="nodeTemplateCtrl.isItemDeleted(item)"> <span class="glyphicon glyphicon-repeat"></span>
+
                 </button>
                 </span> <span class="col-md-8">
                 <p>{{ item.leftObj.name}} {{item.join}} {{item.rightObj.name}}</p>
@@ -266,10 +254,6 @@
             </span>
 
             </div>
-        </div>
-        <div ng-show="nodeTemplateCtrl.isSection(5)">
-             <h4>Preview</h4>
-
         </div>
         </form>
     </div>
