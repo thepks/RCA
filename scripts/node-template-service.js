@@ -203,7 +203,6 @@
                 
                 if(obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord) {
                     obj.deltaRecord.mod = 'delete';
-                    return;
                 }
                 
                 for(var i=0; i<keys.length;i++) {
@@ -215,7 +214,58 @@
                     }
                 }
             },
-                        
+
+            add_instance_relationship: function(leftNode, leftObj, rightNode, rightObj) {
+                var join;
+                var toAdd = {};
+                
+                for (var i=0; i<model.joins.length; i++) {
+                    if (model.joins[i].leftNode === leftNode && model.joins[i].rightNode === rightNode) {
+                        join =  model.joins[i].join;
+                    }
+                }    
+                
+                toAdd.leftObj = leftObj;
+                toAdd.leftNodeType = leftNode;
+                toAdd.rightObj = rightObj;
+                toAdd.rightNodeType = rightNode;
+                toAdd.join = join;
+                
+                toAdd.deltaRecord = {};
+                toAdd.delteRecord.mod = 'add';
+
+                model.instanceRelationships.push(toAdd);
+
+            },          
+            
+            get_instance_relationship_list: function() {
+                return model.instanceRelationships;
+            },
+            
+            delete_instance_relationship: function(obj) {
+                var obj2;
+
+                if(obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord) {
+                    obj.deltaRecord.mod = 'delete';
+                }
+                
+                for(var i=0; i<model.instanceRelationships.length;i++) {
+                    obj2 = model.instanceRelationships[i];
+                    if(obj2 && 'deltaRecord' in obj2 && 'mod' in obj2.deltaRecord && obj2.deltaRecord.mod === 'delete' && !('model' in obj2.deltaRecord)) {
+                        delete (model.instanceRelationships[i]);
+                    }
+                }
+            },
+            
+            undo_delete_item: function(obj) {
+                if(obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord  && obj.deltaRecord.mod === 'delete') {
+                    delete(obj.deltaRecord);
+                }
+            },
+            
+            is_item_deleted: function(obj) {
+                return (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord  && obj.deltaRecord.mod === 'delete');
+            },
 
             load_model_to_template: function() {
 
@@ -383,6 +433,8 @@
 
             },
 
+
+// Need to mod still this fm
             add_template_to_model: function() {
 
                 var deferred = $q.defer();

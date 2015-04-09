@@ -18,8 +18,8 @@
                 this.newPrototypeValue = {};
                 this.leftNode = '';             // Used to find join prototype, left val
                 this.rightNode = '';            // Used to find join prototype, right val
-                this.instanceLeftNode = '';
-                this.instanceRightNode = '';
+                this.instanceLeftNode = '';     // Used to define instance relationships
+                this.instanceRightNode = '';    // Used to define instance relationships
                 this.nameAttribute = 'name';
                 this.transfer_in_progress = false;
 
@@ -138,51 +138,27 @@
                     NodeTemplateService.delete_prototype_object(item);
                 };
 
-
-// GOT THIS FAR  //
-
-
                 this.addInstanceRelationship = function() {
-                    var join;
-                    var toAdd = {};
-                    
-                    for (var i=0; i<this.joins.length; i++) {
-                        if (this.joins[i].leftNode === this.leftNode && this.joins[i].rightNode === this.rightNode) {
-                            join =  this.joins[i].join;
-                        }
-                    }    
-                    toAdd.leftObj = this.instanceLeftNode;
-                    toAdd.leftNodeType = this.leftNode;
-                    toAdd.rightObj = this.instanceRightNode;
-                    toAdd.rightNodeType = this.rightNode;
-                    toAdd.join = join;
-                    toAdd.changes = {};
-                    toAdd.changes.mod = 'add';
-                    
-                    this.instanceRelationships.push(toAdd);
+                    NodeTemplateService.add_instance_relationship(this.leftNode, this.instanceLeftNode, this.rightNode, this.instanceRightNode);
                 };
                 
                 this.getInstanceRelationships = function () {
-                    return this.instanceRelationships;  
+                    return NodeTemplateService.get_instance_relationship_list();  
                 };
                 
                 this.deleteInstanceRelationship = function(item) {
-                     item.changes = {};
-                     item.changes.mod = 'delete';
+                    NodeTemplateService.delete_instance_relationship(item);
                 };
                 
                 this.restoreItem = function(item) {
-                    delete (item.changes);
+                    NodeTemplateService.undo_delete_item(item);
                 };
                 
                 this.isItemDeleted = function(item) {
-                    if ('changes' in item) {
-                    return item.changes.mod === 'delete';
-                    } else {
-                        return false;
-                    }
+                    return NodeTemplateService.is_item_deleted(item);
                 };
-                
+
+// Is this used                
                 this.deleteRelationship =function(item) {
                     
                 };
