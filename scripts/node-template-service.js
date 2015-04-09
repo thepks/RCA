@@ -4,6 +4,7 @@
 
     var username;
     var password;
+    var model = {};
 
     app.factory("NodeTemplateService", ["$q", "$http", function($q, $http) {
 
@@ -19,7 +20,13 @@
 
                 username = user;
                 password = pass;
-
+                
+                model = {};
+                model.nodes = {};
+                model.instanceRelationships = [];
+                model.prototypeValue = {};
+                model.joins = [];
+                
                 return $http.post("/action/logon", userobj);
 
             },
@@ -28,7 +35,187 @@
 
                 return $http.post("/action/logoff");
             },
+            
+            new_model: function() {
+                model = {};
+                model.nodes = {};
+                model.instanceRelationships = [];
+                model.prototypeValue = {};
+                model.joins = [];
+            },
 
+            get_node_types: function() {
+                return model.nodes;
+            },
+            
+            get_node_type_list: function() {
+                return Object.keys(model.nodes);
+            },
+            
+            delete_node_type: function(name) {
+                var deltaRecord = {};
+                var found = false;
+                var node = model.nodes[name];
+
+                for (var i=0; i<node.length; i++) {
+                    if (node[i] && node[i].constructor === Object) {
+                        deltaRecord = node[i];
+                        if ('model' in deltaRecord && deltaRecord.model === 'existing') {
+                            deltaRecord.mod = 'delete';
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if(!found) {
+                    delete(model.nodes[name]);
+                }
+            },
+            
+            undo_delete_existing_node_type: function(name) {
+
+                var deltaRecord = {};
+                var node = model.nodes[name];
+
+                for (var i=0; i<node.length; i++) {
+                    if (node[i] && node[i].constructor === Object) {
+                        deltaRecord = node[i];
+                        if ('model' in deltaRecord && deltaRecord.model === 'existing' && 'mod' in deltaRecord && deltaRecord.mod === 'delete') {
+                            delete (deltaRecord.mod);
+                            break;
+                        }
+                    }
+                }
+
+            },
+            
+            is_node_flagged_for_deletion: function(name) {
+
+                var deltaRecord = {};
+                var node = model.nodes[name];
+                
+                for (var i=0; i<node.length; i++) {
+                    if (node[i] && node[i].constructor === Object) {
+                        deltaRecord = node[i];
+                        if ('model' in deltaRecord && deltaRecord.model === 'existing' && 'mod' in deltaRecord && deltaRecord.mod === 'delete') {
+                            return true;
+                        }
+                    }
+                }
+                
+                return false;
+            },
+            
+            get_node_type_attributes: function(name) {
+                
+                var node = model.nodes[name];
+                var togo = [];
+                
+                togo = node.filter(function(item) {
+                    
+                    return item.constructor !== Object;
+                    
+                });
+                
+                return togo;
+
+            },
+            
+            add_node_type: function(obj) {
+
+            var attr_provided = [];
+
+            var deltaRecord = {};
+            deltaRecord.mod='add';
+            
+            if(obj.name) {
+                model.nodes[obj.name] = [];
+                model.nodes[obj.name].push(deltaRecord);
+                model.nodes[obj.name].push('name');
+                
+                try {
+                    attr_provided = obj.attributeList.split(' ');
+                    for (var i=0; i<attr_provided.length;i++) {
+                        model.nodes[obj.name].push(attr_provided[i]);
+                    }
+                } catch (e) {}
+            
+                model.prototypeValue[obj.name] = [];
+
+                }                
+            },
+            
+            get_prototype_joins: function() {
+                return model.joins;
+            },
+            
+            add_prototype_join: function(obj) {
+
+                if ('leftNode' in obj && 'rightNode' in obj) {
+                    obj.deltaRecord = {};
+                    obj.delteRecord.mod = 'add';
+                    model.joins.push(obj);
+                }
+            },
+            
+            get_prototype_join_value: function(leftObj, rightObj) {
+                for (var i=0; i<model.joins.length; i++) {
+                    if (model.joins[i].leftNode === leftObj && model.joins[i].rightNode === rightObj) {
+                        return model.joins[i].join;
+                    }
+                }
+            },
+            
+            delete_prototype_join_value: function(obj) {
+                if(obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord  && obj.deltaRecord.model === 'existing') {
+                    obj.deltaRecord.mod = 'delete';
+                    return;
+                }
+                
+                for(var i=0; i<model.joins.length; i++) {
+                    if(model.joins[i] && model.joins[i].leftNode === obj.leftNode && model.joins[i].rightNode === obj.rightNode) {
+                        delete(model.joins[i]);
+                    }
+                }
+            },
+            
+            get_prototype_object_list: function(nodetype) {
+              return model.prototypeValue[nodetype];  
+            },
+
+            add_prototype_object: function(nodetype, obj) {
+                var toadd = {};
+                var keyvals = Object.keys(obj);
+    
+                for (var i=0; i<keyvals.length; i++) {
+                    toadd[keyvals[i]] = obj[keyvals[i]];
+                }
+                
+                toadd.deltaRecord = {};
+                toadd.delteRecord.mod = 'add';
+    
+                model.prototypeValue[nodetype].push(toadd);    
+            },
+            
+            delete_prototype_object: function(obj) {
+                var keys = Object.keys(model.prototypeValue);
+                var obj2 = {};
+                
+                if(obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord) {
+                    obj.deltaRecord.mod = 'delete';
+                    return;
+                }
+                
+                for(var i=0; i<keys.length;i++) {
+                    for (var j=0; j< model.prototypeValue[keys[i]].length; j++) {
+                        obj2 = model.prototypeValue[keys[i]][j];
+                        if(obj2 && 'deltaRecord' in obj2 && 'mod' in obj2.deltaRecord && obj2.deltaRecord.mod === 'delete' && !('model' in obj2.deltaRecord)) {
+                            delete (model.prototypeValue[keys[i]][j]);
+                        }
+                    }
+                }
+            },
+                        
 
             load_model_to_template: function() {
 
@@ -51,26 +238,32 @@
                 $http(req).
                 success(function(data) {
 
-                    var model = {};
+                    model = {};
                     model.nodes = {};
                     model.instanceRelationships = [];
                     model.prototypeValue = {};
+                    model.joins = [];
+                    var deltaRecord = {};
+                    deltaRecord.model = 'existing';
 
                     // results is the structure containing the response
                     // results[0] is the node object;
 
                     for (var i = 0; i < data.results[0].data.length; i++) {
                         model.nodes[data.results[0].data[i].row[0][0]] = [];
+                        model.nodes[data.results[0].data[i].row[0][0]].push(deltaRecord);
                         model.nodes[data.results[0].data[i].row[0][0]].push(name);
                     }
 
                     // results [1] are the fundamental relationships, but [2] also describes
-                    model.joins = [];
+
                     for (i = 0; i < data.results[1].data.length; i++) {
                         var newRelationship = {};
                         newRelationship.leftNode = data.results[1].data[i].row[0];
                         newRelationship.join = data.results[1].data[i].row[1];
                         newRelationship.rightNode = data.results[1].data[i].row[2];
+                        newRelationship.deltaRecord = {};
+                        newRelationship.deltaRecord.model = 'existing';
                         model.joins.push(newRelationship);
                     }
 
@@ -129,8 +322,8 @@
                         toAdd.rightObj = rightObj;
                         toAdd.rightNodeType = rightNode;
                         toAdd.join = join;
-
-
+                        toAdd.deltaRecord = {};
+                        toAdd.deltaRecord.model = 'existing';
 
                         model.instanceRelationships.push(toAdd);
 
@@ -147,6 +340,10 @@
                         }
 
                         if (!found) {
+                            
+                            leftObj.deltaRecord = {};
+                            leftObj.deltaRecord.model = 'existing';
+    
                             model.prototypeValue[leftNode].push(leftObj);
                         }
 
@@ -165,10 +362,12 @@
                         }
 
                         if (!found) {
+                            
+                            rightObj.deltaRecord = {};
+                            rightObj.deltaRecord.model = 'existing';
+                            
                             model.prototypeValue[rightNode].push(rightObj);
                         }
-
-
 
                     }
 
@@ -184,7 +383,7 @@
 
             },
 
-            add_template_to_model: function(model) {
+            add_template_to_model: function() {
 
                 var deferred = $q.defer();
                 var url = '/db/data/transaction/commit';

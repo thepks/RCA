@@ -10,19 +10,14 @@
             templateUrl: 'nodeTemplate.html',
             controller: ["NodeTemplateService", "MessageLogService",function(NodeTemplateService, MessageLogService) {
 
-                this.isnew = false;
-                this.nodes = {};
-                this.joins = [];
                 this.nodeObjs = [];
-                this.newItem = {};
-                this.newRelationship = {};
+                this.newItem = {};              //New Node Type Structure
+                this.newRelationship = {};      // New Prototype Join Relationship Structure
                 this.newObject = {};
-                this.nodePrototype = '';
-                this.prototypeValue = {};
+                this.nodePrototype = '';        // Used to get prototype value list
                 this.newPrototypeValue = {};
-                this.leftNode = '';
-                this.rightNode = '';
-                this.instanceRelationships = [];
+                this.leftNode = '';             // Used to find join prototype, left val
+                this.rightNode = '';            // Used to find join prototype, right val
                 this.instanceLeftNode = '';
                 this.instanceRightNode = '';
                 this.nameAttribute = 'name';
@@ -43,28 +38,15 @@
                 }
 
                 this.new = function() {
-                    this.isnew = true;
-                    
-                    this.nodes = {};
-                    this.joins = [];
-                    this.prototypeValue = {};
-                    this.instanceRelationships = [];
+                    NodeTemplateService.new_model();
                 };
 
-                this.isNew = function() {
-                    return this.isnew;
-                };
 
                 this.upload = function() {
-                    var model = {};
                     var that = this;
-                    model.nodes = this.nodes;
-                    model.joins = this.joins;
-                    model.prototypeValue = this.prototypeValue;
-                    model.instanceRelationships = this.instanceRelationships;
                     this.transfer_in_progress = true;
                     
-                    NodeTemplateService.add_template_to_model(model).
+                    NodeTemplateService.add_template_to_model().
                         then(function() {
                             MessageLogService.add_message('Uploaded to model!');
                             that.transfer_in_progress = false; 
@@ -81,10 +63,6 @@
                     this.transfer_in_progress = true;
                     NodeTemplateService.load_model_to_template().
                         then(function(data) {
-                        that.nodes = data.nodes;
-                        that.joins = data.joins;
-                        that.instanceRelationships = data.instanceRelationships;
-                        that.prototypeValue = data.prototypeValue;
                             MessageLogService.add_message('Loaded !');
                             that.transfer_in_progress = false;
                         },function() {
@@ -95,163 +73,73 @@
                 };
 
                 this.nodeTypes = function() {
-                    return this.nodes;
+                    return NodeTemplateService.get_node_types();
                 };
 
                 this.nodeTypeList = function() {
-                    return Object.keys(this.nodes);
+                    return NodeTemplateService.get_node_type_list();
                 };
                 
                 this.deleteNodeType = function(item) {
-                    var changes = {};
-                    var found = false;
-                    var node = this.nodes[item];
-                    
-                    for (var i=0; i<node.length; i++) {
-                        if (node[i] && node[i].constructor === Object) {
-                            changes = node[i];
-                            changes.mod = 'delete';
-                            found = true;
-                            break;
-                        }
-                    }
-                    
-                    if (!found) {
-                        changes.mod = 'delete';
-                        node.push(changes);
-                    }
-
+                    NodeTemplateService.delete_node_type(item);
                 };
                                 
                 this.restoreNodeTypeItem = function(item) {
-                    
-                    var changes = {};
-                    var found = false;
-                    var node = this.nodes[item];
-                    
-                    for (var i=0; i<node.length; i++) {
-                        if (node[i] && node[i].constructor === Object) {
-                            changes = node[i];
-                            if('mod' in changes && changes.mod === 'delete') {
-                                delete(node[i]);
-                                break;
-                            }
-                        }
-                    }
-
+                    NodeTemplateService.undo_delete_existing_node_type(item);
                 };
                 
                 this.isNodeTypeDeleted = function(item) {
-                    var changes = {};
-                    var found = false;
-                    var node = this.nodes[item];
-                    
-                    for (var i=0; i<node.length; i++) {
-                        if (node[i] && node[i].constructor === Object) {
-                            changes = node[i];
-                            if('mod' in changes && changes.mod === 'delete') {
-                                return true;
-                            }
-                        }
-                    }
-                    
-                    return false;
+                    return NodeTemplateService.is_node_flagged_for_deletion(item);
                 };
 
                 
                 this.nodeAttributeList = function() {
-                    var togo = [];
-                    var node= [];
-                    node = this.nodes[this.nodePrototype];
-                    
-                    for (var i=0; i<node.length; i++) {
-                        if (node[i] && node[i].constructor !== Object) {
-                            togo.push(node[i]);
-                        }
-                    }
-
-                    return togo;
-                    
+                    return NodeTemplateService.get_node_type_attributes(this.nodePrototype);
                 };
-                
+                    
+
                 this.addNodeType = function() {
-                    var attrlist = [];
-                    var changes = {};
-                    changes.mod='add';
-                    if (this.newItem.name) {
-                        this.nodes[this.newItem.name] = [];
-                        this.nodes[this.newItem.name].push(this.nameAttribute);
-                        try {
-                            attrlist = this.newItem.attributeList.split(' ');
-                            for (var i=0; i<attrlist.length;i++) {
-                                this.nodes[this.newItem.name].push(attrlist[i]);
-                            }
-                            this.nodes[this.newItem.name].push(changes);
-                        } catch (exception) {}
-                        this.prototypeValue[this.newItem.name] = [];
-                    }
+                    NodeTemplateService.add_node_type(this.newItem);
                     this.newItem = {};
                 };
+                
 
                 this.relationships = function() {
-                    return this.joins;
+                    return NodeTemplateService.get_prototype_joins();
                 };
 
                 this.addRelationship = function() {
-                    var changes = {};
-                    changes.mod='add';
-
-                    if ('leftNode' in this.newRelationship && 'rightNode' in this.newRelationship) {
-                        this.newRelationship.changes = {};
-                        this.newRelationship.changes.mod = 'add';
-                        this.joins.push(this.newRelationship);
-                        
-                        
-                        this.newRelationship = {};
-                    }
+                    NodeTemplateService.add_prototype_join(this.newRelationship);
+                    this.newRelationship = {};
                 };
 
                 this.getNodeRelationship = function() {
-                    for (var i=0; i<this.joins.length; i++) {
-                        if (this.joins[i].leftNode === this.leftNode && this.joins[i].rightNode === this.rightNode) {
-                            return this.joins[i].join;
-                        }
-                    }
+                    return NodeTemplateService.get_prototype_join_value(this.leftNode, this.rightNode);
                 };
                 
                 this.deleteRelationship =function(item) {
-                    item.changes = {};
-                    item.changes.mod = 'delete';
+                    NodeTemplateService.delete_prototype_join_value(item);
                 };
-                
-                
-                this.deletePrototypeValue = function(item) {
-                    item.changes = {};
-                    item.changes.mod = 'delete';
-                };
-
                 
                 this.prototypes = function() {
-                    return (this.prototypeValue[this.nodePrototype]);
+                    return NodeTemplateService.get_prototype_object_list(this.nodePrototype);
                 };
                 
                 this.getPrototypeList = function(nodetype){
-                    return (this.prototypeValue[nodetype]);
+                    return NodeTemplateService.get_prototype_object_list(nodetype);
                 };
                 
                 this.addPrototypeValue = function() {
-                    var obj = {};
-                    var keyvals = Object.keys(this.newPrototypeValue);
-                    
-                    for (var i=0; i<keyvals.length; i++) {
-                        obj[keyvals[i]] = this.newPrototypeValue[keyvals[i]];
-                    }
-                    obj.changes = {}
-                    obj.changes.mod = 'add';
-                    this.prototypeValue[this.nodePrototype].push(obj);    
+                    NodeTemplateService.add_prototype_object(this.nodePrototype, this.newPrototypeValue);
                     this.newPrototypeValue = {};
                 };
 
+                this.deletePrototypeValue = function(item) {
+                    NodeTemplateService.delete_prototype_object(item);
+                };
+
+
+// GOT THIS FAR  //
 
 
                 this.addInstanceRelationship = function() {
