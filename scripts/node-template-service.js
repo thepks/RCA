@@ -499,6 +499,7 @@
                 var obj;
                 var cmds = [];
                 var k;
+                var backout_model = model;
 
 
                 // First create/delete nodes     
@@ -675,6 +676,7 @@
                 }).
                 error ( function() {
                     console.log('Error in loading model');
+                    model = backout_model;
                     deferred.reject();
                 });
 
