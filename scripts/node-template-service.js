@@ -292,11 +292,16 @@
             
             clean_attribute_object_for_prototype: function(item) {
                 
-                if (model in 'item' && item.model.constructor === Object) {
-                    delete item.model;
-                }
+                var keys = Object.keys(item);
+                var togo = {};
                 
-                return item;
+                for (var i=0; i<keys.length; i++) {
+                    if (item[keys[i]] && item[keys[i]].constructor !== Object) {
+                        togo[keys[i]] = item[keys[i]];
+                    }
+                }
+
+                return togo;
                 
             },
 
