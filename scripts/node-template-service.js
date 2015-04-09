@@ -218,7 +218,7 @@
                 var obj2 = {};
                 var tmp = [];
                 
-                if(obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord) {
+                if(obj && 'deltaRecord' in obj) {
                     obj.deltaRecord.mod = 'delete';
                 }
                 
@@ -265,7 +265,7 @@
             delete_instance_relationship: function(obj) {
                 var obj2;
 
-                if(obj && 'deltaRecord' in obj && 'model' in obj.deltaRecord) {
+                if(obj && 'deltaRecord' in obj) {
                     obj.deltaRecord.mod = 'delete';
                 }
                 
