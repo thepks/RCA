@@ -1,14 +1,17 @@
-{
-  "name": "RCAServer",
-  "version": "1.0.0",
-  "description": "Server module for RCA",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Graham Parkes",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.12.3"
-  }
-}
+{                                                                                                        
+  "name": "RCAServer",                                                                                   
+  "version": "1.0.0",                                                                                    
+  "description": "Server module for RCA",                                                                
+  "main": "index.js",                                                                                    
+  "scripts": {                                                                                           
+    "test": "echo \"Error: no test specified\" && exit 1"                                                
+  },                                                                                                     
+  "author": "Graham Parkes",                                                                             
+  "license": "ISC",                                                                                      
+  "dependencies": {                                                                                      
+    "body-parser": "^1.12.2",                                                                            
+    "cookie-session": "^1.1.0",                                                                          
+    "express": "^4.12.3",                                                                                
+    "node-forge": "^0.6.23"                                                                              
+  }                                                                                                      
+} 

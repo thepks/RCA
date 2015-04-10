@@ -1,0 +1,3 @@
+match (u:Process)-[*1..2]-(n) where u.name='sales' and (n:Server or n:Application or n:Database or n:Service)  return u,n;
+
+match (u:Userbase)-[*1..3]-(n) where u.name='finance' and (n:Server or n:Application or n:Database)  return u,n;
