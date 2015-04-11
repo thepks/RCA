@@ -42,7 +42,29 @@
                         graphHeight: function(){ return 500; },
                         graphWidth: function(){ return 1000; },
                         nodeTypes: ntjson,
-                        forceLocked: false
+                        "nodeStyle": {
+                            "Server": {
+                                color: "#00ff0e",
+                            },
+                            "Application":{
+                                color: "#aaff0e",
+                                borderColor: "#00ffda"
+                            },
+                            "Process": {
+                                color: "#ff7921",
+                                borderColor: "#4f07ff"
+                            },
+                            "Location": {
+                                color: '#00aaff',
+                                borderColor: '#00aaaa'
+                            },
+                            "Userbase": {
+                                color: '#0000ff',
+                                borderColor: '#0000aa'
+                            }
+                        },
+                        forceLocked: false,
+                        zoomControls: true
                     };
                     var alchemy = new Alchemy();
                     alchemy.begin(config);
