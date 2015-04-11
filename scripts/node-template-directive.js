@@ -36,7 +36,10 @@
                 this.setSection5AndCalc = function() {
                     var gjson = NodeTemplateService.get_graph_json();
                     console.log(JSON.stringify(gjson));
-//                    alchemy.begin({"dataSource": gjson});
+                    var config = {
+                        dataSource : gjson
+                    };
+                    var alchemy = new Alchemy(config);
                     tab = 5;
                 }
 
