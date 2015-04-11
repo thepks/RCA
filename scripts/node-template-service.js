@@ -485,6 +485,15 @@
 
             },
             
+            get_graph_node_types : function() {
+                
+                var nodeTypeKeys = Object.keys(model.nodes);
+                var obj = {};
+                obj.type = nodeTypeKeys;
+                
+                return obj;
+            },
+            
             get_graph_json: function() {
                 
                 var togo = {};

@@ -35,11 +35,14 @@
                 
                 this.setSection5AndCalc = function() {
                     var gjson = NodeTemplateService.get_graph_json();
+                    var ntjson = NodeTemplateService.get_graph_node_types();
                     console.log(JSON.stringify(gjson));
                     var config = {
                         dataSource : gjson,
-                        graphHeight: function(){ return 600; },
-                        graphWidth: function(){ return 800; }
+                        graphHeight: function(){ return 500; },
+                        graphWidth: function(){ return 1000; },
+                        nodeTypes: ntjson,
+                        forceLocked: false
                     };
                     var alchemy = new Alchemy();
                     alchemy.begin(config);
