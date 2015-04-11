@@ -37,7 +37,9 @@
                     var gjson = NodeTemplateService.get_graph_json();
                     console.log(JSON.stringify(gjson));
                     var config = {
-                        dataSource : gjson
+                        dataSource : gjson,
+                        graphHeight: function(){ return 600; },
+                        graphWidth: function(){ return 800; }
                     };
                     var alchemy = new Alchemy();
                     alchemy.begin(config);
