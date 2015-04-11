@@ -39,14 +39,14 @@
                     var config = {
                         dataSource : gjson
                     };
-                    alchemy = new Alchemy();
+                    var alchemy = new Alchemy();
                     alchemy.begin(config);
                     tab = 5;
-                }
+                };
 
                 this.isTransferInProgress = function() {
                     return this.transfer_in_progress;
-                }
+                };
 
                 this.new = function() {
                     NodeTemplateService.new_model();
