@@ -107,10 +107,10 @@
                     },
                     forceLocked: false,
                     nodeFilters: true,
-                    nodesToggle: true,
                     search: true,
                     showControlDash: true,
                     showFilters: true,
+                    scaleExtent: [0.1, 10],
                     zoomControls: true
                 };
                 var alchemy = new Alchemy();
