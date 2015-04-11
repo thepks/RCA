@@ -362,7 +362,7 @@
                     for (i = 0; i < data.results[2].data.length; i++) {
                         var node1 = data.results[2].data[i].row[0][0];
                         var properties1 = data.results[2].data[i].row[1];
-                        properties1.ID = data.results[2].data[i].row[5][0];
+                        properties1.ID = data.results[2].data[i].row[5];
 
                         if ('$$hashKey' in properties1) {
                             delete properties1['$$hashKey'];
@@ -378,7 +378,7 @@
 
                         var node2 = data.results[2].data[i].row[3][0];
                         var properties2 = data.results[2].data[i].row[4];
-                        properties2.ID = data.results[2].data[i].row[6][0];
+                        properties2.ID = data.results[2].data[i].row[6];
 
                         if ('$$hashKey' in properties2) {
                             delete properties2['$$hashKey'];
