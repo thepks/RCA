@@ -44,7 +44,7 @@
                                 <a href="#" ng-click="rca.setOption(4)">What If</a>
                             </li>
                             <li ng-show="rca.logged_on" ng-class="{active :rca.isOption(5)}">
-                                <a href="#" ng-click="rca.setOption(5)">Solution Overview</a>
+                                <a href="#" ng-click="rca.visualise_overview()">Solution Overview</a>
                             </li>
                             <li ng-show="rca.isAdmin()" ng-class="{active :rca.isOption(10)}">
                                 <a href="# " ng-click="rca.setOption(10)">Describe Solution</a>
@@ -62,6 +62,10 @@
                 </div>
             </nav>
             <message-log></message-log>
+            <section ng-show="rca.isOption(5)">
+                <h4>Stored Model Visualisation</h4>
+                <div id="overview" class="alchemy"></div>
+            </section>
             <section ng-show="rca.isOption(7)">
                 <div id="authentication" class="container">
                     <form role="form" id="logon" novalidate>
