@@ -507,7 +507,7 @@
                         obj.caption = node.name;
                         if( 'ID' in node) {
                             obj.id = node.ID;
-                            togo.push(obj);
+                            togo.nodes.push(obj);
                         }
                     }
                 }
