@@ -39,7 +39,8 @@
                     var config = {
                         dataSource : gjson
                     };
-                    alchemy = new Alchemy(config);
+                    alchemy = new Alchemy();
+                    alchemy.begin(config);
                     tab = 5;
                 }
 
