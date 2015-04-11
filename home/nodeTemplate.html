@@ -27,6 +27,9 @@
             <li ng-class="{active : nodeTemplateCtrl.isSection(4)}">
                 <a href="#" ng-click="nodeTemplateCtrl.setSection(4)">Node Relationships</a>
             </li>
+            <li ng-class="{active : nodeTemplateCtrl.isSection(5)}">
+                <a href="#" ng-click="nodeTemplateCtrl.setSection5AndCalc">Stored Model Visualisation</a>
+            </li>
         </ul>
         <!-- Section 1 -->
         <div ng-show="nodeTemplateCtrl.isSection(1)">
@@ -254,6 +257,12 @@
             </span>
 
             </div>
+        </div>
+        <!-- section 4 -->
+        <div ng-show="nodeTemplateCtrl.isSection(5)">
+             <h4>Stored Model Visualisation</h4>
+             <div id="alchemy" class="alchemy"></div>
+
         </div>
         </form>
     </div>

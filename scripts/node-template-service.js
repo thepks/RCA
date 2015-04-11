@@ -313,7 +313,7 @@
                 var cmd = "{ \"statements\": [ \
                     { \"statement\": \"match(n) return distinct labels(n);\"}, \
                     { \"statement\": \"MATCH (a)-[r]->(b) WHERE labels(a) <> [] AND labels(b) <> [] RETURN DISTINCT head(labels(a)) AS This, type(r) as To, head(labels(b)) AS That;\"}, \
-                    { \"statement\": \"match (n)-[r]->(m) where labels(n) <> \\\"User\\\" return distinct labels(n),n,type(r),labels(m),m;\"} \
+                    { \"statement\": \"match (n)-[r]->(m) where labels(n) <> \\\"User\\\" return distinct labels(n),n,type(r),labels(m),m, ID(n), ID(m);\"} \
                     ] \
                 }";
 
@@ -362,6 +362,7 @@
                     for (i = 0; i < data.results[2].data.length; i++) {
                         var node1 = data.results[2].data[i].row[0][0];
                         var properties1 = data.results[2].data[i].row[1];
+                        properties1.ID = data.results[2].data[i].row[5][0];
 
                         if ('$$hashKey' in properties1) {
                             delete properties1['$$hashKey'];
@@ -377,6 +378,7 @@
 
                         var node2 = data.results[2].data[i].row[3][0];
                         var properties2 = data.results[2].data[i].row[4];
+                        properties2.ID = data.results[2].data[i].row[6][0];
 
                         if ('$$hashKey' in properties2) {
                             delete properties2['$$hashKey'];
@@ -481,6 +483,58 @@
 
                 return deferred.promise;
 
+            },
+            
+            get_graph_json: function() {
+                
+                var togo = {};
+                var node = {};
+                var obj = {};
+
+                var proto_keys = Object.keys(model.prototypeValue);
+                var join_list = model.instanceRelationships;
+                
+                togo.nodes = [];
+                togo.edges = [];
+
+
+                // First create nodes     
+                for (var i = 0; i < proto_keys.length; i++) {
+                    for (var j = 0; j < model.prototypeValue[proto_keys[i]].length; j++) {
+                        obj = {};
+                        node = model.prototypeValue[proto_keys[i]][j];
+                        obj.type = proto_keys[i];
+                        obj.caption = node.name;
+                        if( 'ID' in node) {
+                            obj.id = node.ID;
+                            togo.push(obj);
+                        }
+                    }
+                }
+                
+                // Now the edges
+                
+                for (var l = 0; l < join_list.length; l++) {
+                
+                    // Were there any prototypes of these types
+                    
+                    if ('ID' in join_list[l].leftObj && 'ID' in join_list[l].rightObj ){
+                        
+                        var obj1id = join_list[l].leftObj.ID;
+                        var obj2id = join_list[l].rightObj.ID;
+                        var join = join_list[l].join;
+                        obj= {};
+                        obj.source = obj1id;
+                        obj.target = obj2id;
+                        obj.caption = join;
+                        togo.edges.push(obj);
+                    }
+                }
+                
+                console.log(togo);
+                return togo;    
+
+                
             },
 
             add_template_to_model: function() {

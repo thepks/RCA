@@ -32,6 +32,12 @@
                 this.setSection = function(id) {
                     tab = id;
                 };
+                
+                this.setSection5AndCalc = function() {
+                    var gjson = NodeTemplateService.get_graph_json();
+                    alchemy.begin({"dataSource": gjson});
+                    tab = 5;
+                }
 
                 this.isTransferInProgress = function() {
                     return this.transfer_in_progress;
