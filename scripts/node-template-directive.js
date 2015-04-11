@@ -64,6 +64,9 @@
                             }
                         },
                         forceLocked: false,
+                        nodeFilters: true,
+                        nodesToggle: true,
+                        search: true,
                         showControlDash: true,
                         showFilters: true,
                         nodeFilters: true,
