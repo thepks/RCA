@@ -64,6 +64,9 @@
                             }
                         },
                         forceLocked: false,
+                        showControlDash: true,
+                        showFilters: true,
+                        nodeFilters: true,
                         zoomControls: true
                     };
                     var alchemy = new Alchemy();
