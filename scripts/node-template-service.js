@@ -544,7 +544,7 @@
                     }
                 }
                 
-                console.log(togo);
+                console.log(JSON.stringify(togo));
                 return togo;    
 
                 
