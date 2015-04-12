@@ -538,7 +538,9 @@
                         obj.caption = join;
                         obj.type = join;
                         obj.weight = 1;
-                        togo.edges.push(obj);
+                        if(obj.source && obj.target) {
+                            togo.edges.push(obj);
+                        }
                     }
                 }
                 
