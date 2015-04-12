@@ -521,9 +521,10 @@
                         obj.label = obj.type;
                         obj.graphid = node.ID;
                         if( 'ID' in node) {
-                            obj.id = objid ++;
+                            obj.id = objid;
                             togo.nodes.push(obj);
-                            crossref[obj.id] = obj.graphid;
+                            crossref[obj.graphid] = obj.id;
+                            objid++;
                         }
                     }
                 }
