@@ -493,6 +493,7 @@
                 
                 return obj;
             },
+    
             
             get_graph_json: function() {
                 
@@ -502,6 +503,13 @@
 
                 var proto_keys = Object.keys(model.prototypeValue);
                 var join_list = model.instanceRelationships;
+                var nodeTypeKeys = Object.keys(model.nodes);
+                
+                var nodeTypeRef = {};
+                
+                for (var h=0; h<nodeTypeKeys.length; h++) {
+                    nodeTypeRef[nodeTypeKeys[h]] = h;
+                }
                 
                 togo.nodes = [];
                 togo.edges = [];
@@ -516,6 +524,7 @@
                         obj = {};
                         node = model.prototypeValue[proto_keys[i]][j];
                         obj.type = proto_keys[i];
+                        obj.type_id = nodeTypeRef[obj.type];
                         obj.caption = node.name.replace(/ /g,"_");
                         obj.name = node.name.replace(/ /g,"_");
                         obj.label = obj.type;

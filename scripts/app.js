@@ -142,7 +142,7 @@
                 var node = svg.selectAll(".node")
                         .data(gjson.nodes).enter()
                         .append("circle")
-                        .attr("class", function (d) { return "node "+d.caption })
+                        .attr("class", function (d) { return "node node-type-"+d.type_id })
                         .attr("r", 15)
                         .call(force.drag);
             
