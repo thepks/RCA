@@ -130,6 +130,7 @@
                         .attr("width", "100%").attr("height", "100%")
                         .attr("pointer-events", "all");
 
+                d3.behavior.zoom();
 
                 force.nodes(gjson.nodes);
                 force.links(gjson.edges);
@@ -154,7 +155,7 @@
             
                 // html title attribute for title node-attribute
                 node.append("title")
-                        .text(function (d) { return d.caption; });
+                        .text(function (d) { return d.type + '-' + d.caption; });
             
                 // force feed algo ticks for coordinate computation
                 force.on("tick", function() {
