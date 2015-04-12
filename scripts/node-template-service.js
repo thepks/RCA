@@ -506,6 +506,9 @@
                 togo.nodes = [];
                 togo.edges = [];
 
+                // Now thats great but for d3 we need zero offset ids
+                var objid = 0;
+                var crossref = {};
 
                 // First create nodes     
                 for (var i = 0; i < proto_keys.length; i++) {
@@ -516,9 +519,11 @@
                         obj.caption = node.name.replace(/ /g,"_");
                         obj.name = node.name.replace(/ /g,"_");
                         obj.label = obj.type;
+                        obj.graphid = node.ID;
                         if( 'ID' in node) {
-                            obj.id = node.ID;
+                            obj.id = objid ++;
                             togo.nodes.push(obj);
+                            crossref[obj.id] = obj.graphid;
                         }
                     }
                 }
@@ -531,8 +536,8 @@
                     
                     if ('ID' in join_list[l].leftObj && 'ID' in join_list[l].rightObj ){
                         
-                        var obj1id = join_list[l].leftObj.ID;
-                        var obj2id = join_list[l].rightObj.ID;
+                        var obj1id = crossref[join_list[l].leftObj.ID];
+                        var obj2id = crossref[join_list[l].rightObj.ID];
                         var join = join_list[l].join;
                         obj= {};
                         obj.source = obj1id;
@@ -546,6 +551,10 @@
                     }
                 }
                 
+                
+                for (var m=0; n<togo.nodes.length; m++) {
+                    
+                }
                 console.log(JSON.stringify(togo));
                 return togo;    
 
