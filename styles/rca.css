@@ -46,4 +46,22 @@ section {
     height: 800;
     width: 1200;
 }
+
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
 }
+
+lines_labels
+ {
+  font: 16px sans-serif;
+  pointer-events: none;
+}
+
+text.shadow {
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-opacity: .8;
+}
+

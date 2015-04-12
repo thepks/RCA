@@ -120,8 +120,18 @@
                 
                 node.append("text")
                 .attr("text-anchor", "middle") 
-                .attr("fill","blue")
+                .attr("x",0)
+                .attr("y",0)
+                .attr("class","shadow")
                 .text(function(d) {return d.caption;});
+            
+                node.append("text")
+                .attr("text-anchor", "middle") 
+                .attr("fill","blue")
+                .attr("x",0)
+                .attr("y",0)
+                .text(function(d) {return d.caption;});
+            
             
                 // html title attribute for title node-attribute
                 node.append("title")
