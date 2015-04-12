@@ -119,23 +119,19 @@
                 link.append("title").text(function (d) { return d.caption;});
                 
                 node.append("text")
-                .attr("dx",12)
-                .attr("dy",".35em")
-                .attr("text-anchor", "middle") 
+                .attr("x",-8)
+                .attr("y",-8)
                 .attr("class","shadow")
                 .text(function(d) {return d.caption;});
             
                 node.append("text")
-                .attr("dx",12)
-                .attr("dy",".35em")
-                .attr("text-anchor", "middle") 
                 .attr("fill","black")
                 .text(function(d) {return d.caption;});
             
             
                 // html title attribute for title node-attribute
                 node.append("title")
-                        .text(function (d) { return d.caption+'('+d.type + ')'; });
+                        .text(function (d) { return d.caption+' ('+d.type + ')'; });
             
                 // force feed algo ticks for coordinate computation
                 force.on("tick", function() {
@@ -144,9 +140,9 @@
                             .attr("x2", function(d) { return d.target.x; })
                             .attr("y2", function(d) { return d.target.y; });
             
-                    node.attr("cx", function(d) { return d.x; })
-                            .attr("cy", function(d) { return d.y; })
-                            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+                    // node.attr("cx", function(d) { return d.x; })
+                    //         .attr("cy", function(d) { return d.y; })
+                            node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
                 });
 
 
