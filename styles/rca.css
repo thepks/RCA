@@ -41,3 +41,9 @@ section {
   stroke: #999;
   stroke-opacity: .6;
 }
+
+.model-overview {
+    height: 800;
+    width: 1200;
+}
+}

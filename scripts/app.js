@@ -122,7 +122,7 @@
                 
                 // force layout setup
                 var force = d3.layout.force()
-                        .charge(-200).linkDistance(50).size([width, height]);
+                        .charge(-200).linkDistance(75).size([width, height]);
                 
                 var svgold = d3.select("overview").remove("svg");
                 // setup svg div
