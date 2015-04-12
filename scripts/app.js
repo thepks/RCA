@@ -127,7 +127,7 @@
                         .attr("width", "100%").attr("height", "100%")
                         .attr("pointer-events", "all");
 
-                force.nodes(gjson.nodes).links(gjson.edges).start();
+                force.nodes(gjson.nodes)./*links(gjson.edges).*/start();
             
                 // render relationships as lines
                 var link = svg.selectAll(".link")
