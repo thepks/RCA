@@ -120,16 +120,16 @@
                 
                 node.append("text")
                 .attr("text-anchor", "middle") 
-                .attr("x",0)
-                .attr("y",0)
+.attr("x", function(d) {return d.x;})
+.attr("y", function(d) {return d.y;})
                 .attr("class","shadow")
                 .text(function(d) {return d.caption;});
             
                 node.append("text")
                 .attr("text-anchor", "middle") 
                 .attr("fill","blue")
-                .attr("x",0)
-                .attr("y",0)
+.attr("x", function(d) {return d.x;})
+.attr("y", function(d) {return d.y;})
                 .text(function(d) {return d.caption;});
             
             
