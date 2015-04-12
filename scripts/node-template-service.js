@@ -513,8 +513,8 @@
                         obj = {};
                         node = model.prototypeValue[proto_keys[i]][j];
                         obj.type = proto_keys[i];
-                        obj.caption = node.name;
-                        obj.name = node.name;
+                        obj.caption = node.name.replace(/ /g,"_");
+                        obj.name = node.name.replace(/ /g,"_");
                         obj.label = obj.type;
                         if( 'ID' in node) {
                             obj.id = node.ID;
