@@ -112,7 +112,7 @@
                         .append("circle")
                         .attr("class", function (d) { return "node node-type-"+d.type_id })
                         .style("fill", function(d) { return color(d.type_id); })
-                        .attr("r", 15)
+                        .attr("r", 25)
                         .call(force.drag);
                         
                 link.append("title").text(function (d) { return d.caption;});
