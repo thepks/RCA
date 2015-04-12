@@ -33,7 +33,7 @@ section {
 }
 
 .node {
-  stroke: #fff;
+  stroke: black;
   stroke-width: 1.5px;
 }
 
@@ -50,6 +50,10 @@ section {
 .node text {
   font: 10px sans-serif;
   pointer-events: none;
+  stroke: black;
+  stroke-width: 1.5px;
+
+    
 }
 
 lines_labels
@@ -58,7 +62,7 @@ lines_labels
   pointer-events: none;
 }
 
-.node shadow {
+.shadow {
   stroke: #fff;
   stroke-width: 3px;
   stroke-opacity: .8;

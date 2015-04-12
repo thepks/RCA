@@ -114,7 +114,7 @@
 
                 node.append("circle")
                         .style("fill", function(d) { return color(d.type_id); })
-                        .attr("r", 25);
+                        .attr("r", 20);
 //                        .call(force.drag);
                         
                 link.append("title").text(function (d) { return d.caption;});
