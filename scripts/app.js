@@ -109,6 +109,7 @@
                 // render nodes as circles, css-class from label
                 var node = svg.selectAll(".node")
                         .data(gjson.nodes).enter()
+                        .append("g")
                         .append("circle")
                         .attr("class", function (d) { return "node node-type-"+d.type_id })
                         .style("fill", function(d) { return color(d.type_id); })
@@ -119,17 +120,13 @@
                 
                 
                 node.append("text")
-//                .attr("text-anchor", "middle") 
-.attr("x", function(d) {return d.x;})
-.attr("y", function(d) {return d.y;})
+                .attr("text-anchor", "middle") 
                 .attr("class","shadow")
                 .text(function(d) {return d.caption;});
             
                 node.append("text")
-//                .attr("text-anchor", "middle") 
+                .attr("text-anchor", "middle") 
                 .attr("fill","black")
-.attr("x", function(d) {return d.x;})
-.attr("y", function(d) {return d.y;})
                 .text(function(d) {return d.caption;});
             
             
