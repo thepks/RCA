@@ -157,13 +157,9 @@
                 link.append("title").text(function (d) { return d.caption;});
                 
                 
-                node.append("svg:text")
+                node.append("text")
                 .attr("text-anchor", "middle") 
-                .attr("fill","white")
-                .style("pointer-events", "none")
-                .attr("font-size", function(d) { if (d.color == '#b94431') { return 10+(d.size*2) + 'px'; } else { return "9px"; } } )
-                .attr("font-weight", function(d) { if (d.color == '#b94431') { return "bold"; } else { return "100"; } } )
-                .text( function(d) { if (d.color == '#b94431') { return d.caption + ' (' + d.size + ')';} else { return d.caption;} } ) ;
+                .attr("fill","blue")
             
                 // html title attribute for title node-attribute
                 node.append("title")
