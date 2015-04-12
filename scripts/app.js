@@ -127,15 +127,6 @@
                         .attr("width", "100%").attr("height", "100%")
                         .attr("pointer-events", "all");
 
-var nodeMap = {};
-gjson.nodes.forEach(function(x) { nodeMap[x.name] = x; });
-graph.links = graph.links.map(function(x) {
-  return {
-    source: nodeMap[x.source],
-    target: nodeMap[x.target],
-    value: x.value
-  };
-});
 
                 force.nodes(gjson.nodes);
                 force.links(gjson.edges);

@@ -552,9 +552,6 @@
                 }
                 
                 
-                for (var m=0; n<togo.nodes.length; m++) {
-                    
-                }
                 console.log(JSON.stringify(togo));
                 return togo;    
 
