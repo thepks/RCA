@@ -138,7 +138,7 @@
                 // render relationships as lines
                 var link = svg.selectAll(".link")
                         .data(gjson.edges).enter()
-                        .append("line").attr("class", function(d) { return "line " + d.caption})
+                        .append("line").attr("class", function(d) { return "link " + d.caption})
                         .style("stroke-width",3);
             
                 // render nodes as circles, css-class from label
@@ -149,6 +149,8 @@
                         .style("fill", function(d) { return color(d.type_id); })
                         .attr("r", 15)
                         .call(force.drag);
+                        
+                link.append("title").text(function (d) { return d.caption;});
             
                 // html title attribute for title node-attribute
                 node.append("title")
