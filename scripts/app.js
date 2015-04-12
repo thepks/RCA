@@ -90,7 +90,7 @@
 
                 // force layout setup
                 var force = d3.layout.force()
-                        .charge(-200).linkDistance(75).size([width, height]);
+                        .charge(-200).linkDistance(125).size([width, height]);
 
 
                 force.nodes(gjson.nodes);
@@ -121,6 +121,7 @@
                 node.append("text")
                 .attr("text-anchor", "middle") 
                 .attr("fill","blue")
+                .text(function(d) {return d.caption;});
             
                 // html title attribute for title node-attribute
                 node.append("title")
