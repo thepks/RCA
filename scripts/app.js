@@ -135,7 +135,7 @@
             
                 // html title attribute for title node-attribute
                 node.append("title")
-                        .text(function (d) { return d.type + '-' + d.caption; });
+                        .text(function (d) { return d.caption+'('+d.type + ')'; });
             
                 // force feed algo ticks for coordinate computation
                 force.on("tick", function() {
@@ -145,7 +145,8 @@
                             .attr("y2", function(d) { return d.target.y; });
             
                     node.attr("cx", function(d) { return d.x; })
-                            .attr("cy", function(d) { return d.y; });
+                            .attr("cy", function(d) { return d.y; })
+                            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
                 });
 
 
