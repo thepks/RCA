@@ -117,7 +117,9 @@
                 // alchemy.begin(config);
 
 
-                var width = 1000, height = 600;
+                var width = 1200, height = 1000;
+                var color = d3.scale.category10();
+                
                 // force layout setup
                 var force = d3.layout.force()
                         .charge(-200).linkDistance(30).size([width, height]);
@@ -143,6 +145,7 @@
                         .data(gjson.nodes).enter()
                         .append("circle")
                         .attr("class", function (d) { return "node node-type-"+d.type_id })
+                        .style("fill", function(d) { return color(d.type_id); })
                         .attr("r", 15)
                         .call(force.drag);
             
