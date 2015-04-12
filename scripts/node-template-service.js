@@ -557,7 +557,7 @@
                             obj.caption = join;
                             obj.type = join;
                             obj.weight = 1;
-                            if (obj.source && obj.target) {
+                            if (typeof obj.source !== 'undefined' && typeof obj.target !== 'undefined') {
                                 togo.edges.push(obj);
                             }
                         }
