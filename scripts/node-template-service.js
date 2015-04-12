@@ -536,6 +536,7 @@
                         obj.source = obj1id;
                         obj.target = obj2id;
                         obj.caption = join;
+                        obj.weight = 1;
                         togo.edges.push(obj);
                     }
                 }
