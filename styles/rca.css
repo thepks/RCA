@@ -47,11 +47,11 @@ section {
     width: 1200;
 }
 
-.node text {
+text {
   font: 10px sans-serif;
   pointer-events: none;
   stroke: black;
-  stroke-width: 1.5px;
+  stroke-width: 1px;
 
     
 }
@@ -62,9 +62,9 @@ lines_labels
   pointer-events: none;
 }
 
-.shadow {
-  stroke: #fff;
-  stroke-width: 3px;
+text.shadow {
+  stroke: white;
+  stroke-width: 5px;
   stroke-opacity: .8;
 }
 
