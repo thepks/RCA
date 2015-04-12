@@ -47,8 +47,7 @@ section {
     width: 1200;
 }
 
-
-text {
+.node text {
   font: 10px sans-serif;
   pointer-events: none;
 }
@@ -59,7 +58,7 @@ lines_labels
   pointer-events: none;
 }
 
-text.shadow {
+.node shadow {
   stroke: #fff;
   stroke-width: 3px;
   stroke-opacity: .8;

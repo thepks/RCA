@@ -118,13 +118,16 @@
                         
                 link.append("title").text(function (d) { return d.caption;});
                 
-                
                 node.append("text")
+                .attr("dx",12)
+                .attr("dy",".35em")
                 .attr("text-anchor", "middle") 
                 .attr("class","shadow")
                 .text(function(d) {return d.caption;});
             
                 node.append("text")
+                .attr("dx",12)
+                .attr("dy",".35em")
                 .attr("text-anchor", "middle") 
                 .attr("fill","black")
                 .text(function(d) {return d.caption;});
