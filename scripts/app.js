@@ -126,6 +126,8 @@
                 .text(function(d) {return d.caption;});
             
                 node.append("text")
+                .attr("x",3.5)
+                .attr("y",3.5)
                 .attr("fill","black")
                 .text(function(d) {return d.caption;});
             
