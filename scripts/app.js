@@ -122,6 +122,7 @@
                 var force = d3.layout.force()
                         .charge(-200).linkDistance(30).size([width, height]);
                 
+                var svgold = d3.select("overview").remove("svg");
                 // setup svg div
                 var svg = d3.select("#overview").append("svg")
                         .attr("width", "100%").attr("height", "100%")
