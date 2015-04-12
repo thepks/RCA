@@ -32,38 +32,3 @@ section {
     text-transform:capitalize;
 }
 
-.node-type-1 {
-    color:blue;
-}
-
-.node-type-2 {
-    color:green;
-}
-
-.node-type-3 {
-    color: red;
-}
-
-.node-type-3 {
-    color: maroon;
-}
-
-.node-type-4 {
-    color: aqua;
-}
-
-.node-type-5 {
-    color: lime;
-}
-
-.node-type-6 {
-    color: olive;
-}
-
-.node-type-7 {
-    color: purple;
-}
-
-.line {
-    color: blue;
-}

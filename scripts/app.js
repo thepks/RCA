@@ -122,7 +122,7 @@
                 
                 // force layout setup
                 var force = d3.layout.force()
-                        .charge(-200).linkDistance(30).size([width, height]);
+                        .charge(-200).linkDistance(50).size([width, height]);
                 
                 var svgold = d3.select("overview").remove("svg");
                 // setup svg div
@@ -138,7 +138,8 @@
                 // render relationships as lines
                 var link = svg.selectAll(".link")
                         .data(gjson.edges).enter()
-                        .append("line").attr("class", function(d) { return "line " + d.caption});
+                        .append("line").attr("class", function(d) { return "line " + d.caption})
+                        .style("stroke-width",3);
             
                 // render nodes as circles, css-class from label
                 var node = svg.selectAll(".node")
