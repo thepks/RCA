@@ -22,6 +22,7 @@
                 this.instanceRightNode = ''; // Used to define instance relationships
                 this.nameAttribute = 'name';
                 this.transfer_in_progress = false;
+                this.is_up_to_date = false;
 
                 var tab = 1;
 
@@ -33,48 +34,6 @@
                     tab = id;
                 };
                 
-                this.setSection5AndCalc = function() {
-                    var gjson = NodeTemplateService.get_graph_json();
-                    var ntjson = NodeTemplateService.get_graph_node_types();
-                    console.log(JSON.stringify(gjson));
-                    var config = {
-                        dataSource : gjson,
-                        graphHeight: function(){ return 500; },
-                        graphWidth: function(){ return 1000; },
-                        nodeTypes: ntjson,
-                        "nodeStyle": {
-                            "Server": {
-                                color: "#00ff0e",
-                            },
-                            "Application":{
-                                color: "#aaff0e",
-                                borderColor: "#00ffda"
-                            },
-                            "Process": {
-                                color: "#ff7921",
-                                borderColor: "#4f07ff"
-                            },
-                            "Location": {
-                                color: '#00aaff',
-                                borderColor: '#00aaaa'
-                            },
-                            "Userbase": {
-                                color: '#0000ff',
-                                borderColor: '#0000aa'
-                            }
-                        },
-                        forceLocked: false,
-                        nodeFilters: true,
-                        search: true,
-                        showControlDash: true,
-                        showFilters: true,
-                        scaleExtent: [0.1, 10],
-                        zoomControls: true
-                    };
-                    var alchemy = new Alchemy();
-                    alchemy.begin(config);
-                    tab = 5;
-                };
 
                 this.isTransferInProgress = function() {
                     return this.transfer_in_progress;
@@ -88,6 +47,7 @@
                 this.upload = function() {
                     var that = this;
                     this.transfer_in_progress = true;
+                    this.is_up_to_date = false;
 
                     NodeTemplateService.add_template_to_model().
                     then(function() {
@@ -101,6 +61,10 @@
                 };
 
 
+                this.is_model_up_todate = function() {
+                    return this.is_up_to_date;
+                }
+
 
                 this.download = function() {
                     var that = this;
@@ -109,9 +73,11 @@
                     then(function(data) {
                         MessageLogService.add_message('Loaded !');
                         that.transfer_in_progress = false;
+                        that.is_up_to_date = true;
                     }, function() {
                         MessageLogService.add_message('Download failed!');
                         that.transfer_in_progress = false;
+                        that.is_up_to_date = false;
                     });
 
                 };
@@ -187,6 +153,7 @@
                 };
 
                 this.addInstanceRelationship = function() {
+                    this.is_up_to_date = false;
                     NodeTemplateService.add_instance_relationship(this.leftNode, this.instanceLeftNode, this.rightNode, this.instanceRightNode);
                 };
 
@@ -195,6 +162,7 @@
                 };
 
                 this.deleteInstanceRelationship = function(item) {
+                    this.is_up_to_date = false;
                     NodeTemplateService.delete_instance_relationship(item);
                 };
 
