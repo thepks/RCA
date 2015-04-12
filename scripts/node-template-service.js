@@ -616,6 +616,12 @@
 
                         } else if (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord && obj.deltaRecord.mod === 'delete') {
 
+                            try {
+                                delete(obj.ID);
+                            } catch (e) {}
+
+
+
                             delete(obj.deltaRecord);
                             obj_keys = Object.keys(obj);
 
@@ -654,7 +660,15 @@
                     var obj = join_list[l];
 
                     if (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord && obj.deltaRecord.mod === 'add') {
-
+                        
+                        try {
+                            delete(obj1.ID);
+                        } catch (e) {}
+                        
+                        try {
+                            delete(obj2.ID);
+                        } catch (e) {}
+                        
                         delete(obj.deltaRecord);
                         try {
                             delete(obj1.deltaRecord);
@@ -690,6 +704,14 @@
                         cmds.push(cmd);
 
                     } else if (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord && obj.deltaRecord.mod === 'delete') {
+
+                        try {
+                            delete(obj1.ID);
+                        } catch (e) {}
+                        
+                        try {
+                            delete(obj2.ID);
+                        } catch (e) {}
 
                         delete(obj.deltaRecord);
                         try {
