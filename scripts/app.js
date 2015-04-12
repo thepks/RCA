@@ -117,20 +117,20 @@
                 // alchemy.begin(config);
 
 
-                var width = 1200, height = 1000;
+                var width = 1200, height = 800;
                 var color = d3.scale.category10();
                 
-                // force layout setup
-                var force = d3.layout.force()
-                        .charge(-200).linkDistance(75).size([width, height]);
                 
                 var svgold = d3.select("overview").remove("svg");
                 // setup svg div
                 var svg = d3.select("#overview").append("svg")
-                        .attr("width", "100%").attr("height", "100%")
+                        .attr("width", width).attr("height", height)
                         .attr("pointer-events", "all");
 
-                d3.behavior.zoom();
+                // force layout setup
+                var force = d3.layout.force()
+                        .charge(-200).linkDistance(75).size([width, height]);
+
 
                 force.nodes(gjson.nodes);
                 force.links(gjson.edges);
@@ -140,7 +140,10 @@
                 var link = svg.selectAll(".link")
                         .data(gjson.edges).enter()
                         .append("line").attr("class", function(d) { return "link " + d.caption})
-                        .style("stroke-width",3);
+                        .style("stroke-width",6)
+                        .on("mouseover", function(){d3.select(this).style("stroke", "#999999").attr("stroke-opacity", "1.0");})
+                        .on("mouseout", function(){d3.select(this).style("stroke", function(d) { if(d.color !== null) { return d.color;}; })
+                        .attr("stroke-opacity", 0.5)} );
             
                 // render nodes as circles, css-class from label
                 var node = svg.selectAll(".node")
@@ -152,6 +155,15 @@
                         .call(force.drag);
                         
                 link.append("title").text(function (d) { return d.caption;});
+                
+                
+                node.append("svg:text")
+                .attr("text-anchor", "middle") 
+                .attr("fill","white")
+                .style("pointer-events", "none")
+                .attr("font-size", function(d) { if (d.color == '#b94431') { return 10+(d.size*2) + 'px'; } else { return "9px"; } } )
+                .attr("font-weight", function(d) { if (d.color == '#b94431') { return "bold"; } else { return "100"; } } )
+                .text( function(d) { if (d.color == '#b94431') { return d.caption + ' (' + d.size + ')';} else { return d.caption;} } ) ;
             
                 // html title attribute for title node-attribute
                 node.append("title")
