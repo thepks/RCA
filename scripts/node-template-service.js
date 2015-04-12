@@ -484,19 +484,19 @@
                 return deferred.promise;
 
             },
-            
-            get_graph_node_types : function() {
-                
+
+            get_graph_node_types: function() {
+
                 var nodeTypeKeys = Object.keys(model.nodes);
                 var obj = {};
                 obj.type = nodeTypeKeys;
-                
+
                 return obj;
             },
-    
-            
+
+
             get_graph_json: function() {
-                
+
                 var togo = {};
                 var node = {};
                 var obj = {};
@@ -504,13 +504,13 @@
                 var proto_keys = Object.keys(model.prototypeValue);
                 var join_list = model.instanceRelationships;
                 var nodeTypeKeys = Object.keys(model.nodes);
-                
+
                 var nodeTypeRef = {};
-                
-                for (var h=0; h<nodeTypeKeys.length; h++) {
+
+                for (var h = 0; h < nodeTypeKeys.length; h++) {
                     nodeTypeRef[nodeTypeKeys[h]] = h;
                 }
-                
+
                 togo.nodes = [];
                 togo.edges = [];
 
@@ -525,11 +525,11 @@
                         node = model.prototypeValue[proto_keys[i]][j];
                         obj.type = proto_keys[i];
                         obj.type_id = nodeTypeRef[obj.type];
-                        obj.caption = node.name.replace(/ /g,"_");
-                        obj.name = node.name.replace(/ /g,"_");
+                        obj.caption = node.name.replace(/ /g, "_");
+                        obj.name = node.name.replace(/ /g, "_");
                         obj.label = obj.type;
                         obj.graphid = node.ID;
-                        if( 'ID' in node) {
+                        if ('ID' in node && obj.type !== 'User' && obj.type !== 'Role') {
                             obj.id = objid;
                             togo.nodes.push(obj);
                             crossref[obj.graphid] = obj.id;
@@ -537,35 +537,38 @@
                         }
                     }
                 }
-                
+
                 // Now the edges
-                
+
                 for (var l = 0; l < join_list.length; l++) {
-                
+
                     // Were there any prototypes of these types
-                    
-                    if ('ID' in join_list[l].leftObj && 'ID' in join_list[l].rightObj ){
-                        
-                        var obj1id = crossref[join_list[l].leftObj.ID];
-                        var obj2id = crossref[join_list[l].rightObj.ID];
-                        var join = join_list[l].join;
-                        obj= {};
-                        obj.source = obj1id;
-                        obj.target = obj2id;
-                        obj.caption = join;
-                        obj.type = join;
-                        obj.weight = 1;
-                        if(obj.source && obj.target) {
-                            togo.edges.push(obj);
+
+                    if ('ID' in join_list[l].leftObj && 'ID' in join_list[l].rightObj) {
+
+                        if (join_list[l].leftNodeType !== 'User' && join_list[l].leftNodeType !== 'Role' && join_list[l].rightNodeType !== 'User' && join_list[l].rightNodeType !== 'Role') {
+
+                            var obj1id = crossref[join_list[l].leftObj.ID];
+                            var obj2id = crossref[join_list[l].rightObj.ID];
+                            var join = join_list[l].join;
+                            obj = {};
+                            obj.source = obj1id;
+                            obj.target = obj2id;
+                            obj.caption = join;
+                            obj.type = join;
+                            obj.weight = 1;
+                            if (obj.source && obj.target) {
+                                togo.edges.push(obj);
+                            }
                         }
                     }
                 }
-                
-                
-                console.log(JSON.stringify(togo));
-                return togo;    
 
-                
+
+                console.log(JSON.stringify(togo));
+                return togo;
+
+
             },
 
             add_template_to_model: function() {
@@ -660,15 +663,15 @@
                     var obj = join_list[l];
 
                     if (obj && 'deltaRecord' in obj && 'mod' in obj.deltaRecord && obj.deltaRecord.mod === 'add') {
-                        
+
                         try {
                             delete(obj1.ID);
                         } catch (e) {}
-                        
+
                         try {
                             delete(obj2.ID);
                         } catch (e) {}
-                        
+
                         delete(obj.deltaRecord);
                         try {
                             delete(obj1.deltaRecord);
@@ -708,7 +711,7 @@
                         try {
                             delete(obj1.ID);
                         } catch (e) {}
-                        
+
                         try {
                             delete(obj2.ID);
                         } catch (e) {}
