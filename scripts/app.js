@@ -136,7 +136,7 @@
                 // render relationships as lines
                 var link = svg.selectAll(".link")
                         .data(gjson.edges).enter()
-                        .append("line").attr("class", "caption");
+                        .append("line").attr("class", function(d) { return "line " + d.caption});
             
                 // render nodes as circles, css-class from label
                 var node = svg.selectAll(".node")
