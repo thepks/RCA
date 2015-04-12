@@ -110,17 +110,18 @@
                 var node = svg.selectAll(".node")
                         .data(gjson.nodes).enter()
                         .append("g")
-                        .append("circle")
-                        .attr("class", function (d) { return "node node-type-"+d.type_id })
+                        .attr("class", function (d) { return "node node-type-"+d.type_id });
+
+                node.append("circle")
                         .style("fill", function(d) { return color(d.type_id); })
-                        .attr("r", 25)
-                        .call(force.drag);
+                        .attr("r", 25);
+//                        .call(force.drag);
                         
                 link.append("title").text(function (d) { return d.caption;});
                 
                 node.append("text")
-                .attr("x",-8)
-                .attr("y",-8)
+                .attr("x",3.5)
+                .attr("y",3.5)
                 .attr("class","shadow")
                 .text(function(d) {return d.caption;});
             
@@ -132,6 +133,8 @@
                 // html title attribute for title node-attribute
                 node.append("title")
                         .text(function (d) { return d.caption+' ('+d.type + ')'; });
+                        
+                node.call(force.drag);
             
                 // force feed algo ticks for coordinate computation
                 force.on("tick", function() {
@@ -145,7 +148,7 @@
                             node.attr("transform", function(d) { return "translate(" + [d.x,d.y] + ")"; });
                 });
 
-
+                
                 
             }, function() {
                 MessageLogService.add_message('Download failed!');
