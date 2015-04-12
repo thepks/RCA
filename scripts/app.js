@@ -117,7 +117,7 @@
                 // alchemy.begin(config);
 
 
-                var width = 800, height = 800;
+                var width = 1000, height = 600;
                 // force layout setup
                 var force = d3.layout.force()
                         .charge(-200).linkDistance(30).size([width, height]);
@@ -138,13 +138,13 @@
                 var node = svg.selectAll(".node")
                         .data(gjson.nodes).enter()
                         .append("circle")
-                        .attr("class", function (d) { return "node "+d.name })
-                        .attr("r", 10)
+                        .attr("class", function (d) { return "node "+d.caption })
+                        .attr("r", 15)
                         .call(force.drag);
             
                 // html title attribute for title node-attribute
                 node.append("title")
-                        .text(function (d) { return d.name; });
+                        .text(function (d) { return d.caption; });
             
                 // force feed algo ticks for coordinate computation
                 force.on("tick", function() {
