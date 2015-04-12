@@ -92,6 +92,7 @@
                 var force = d3.layout.force()
                         .charge(-200).linkDistance(125).size([width, height]);
 
+                force.gravity(0.25);
 
                 force.nodes(gjson.nodes);
                 force.links(gjson.edges);
