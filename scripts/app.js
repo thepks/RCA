@@ -119,15 +119,15 @@
                 
                 
                 node.append("text")
-                .attr("text-anchor", "middle") 
+//                .attr("text-anchor", "middle") 
 .attr("x", function(d) {return d.x;})
 .attr("y", function(d) {return d.y;})
                 .attr("class","shadow")
                 .text(function(d) {return d.caption;});
             
                 node.append("text")
-                .attr("text-anchor", "middle") 
-                .attr("fill","blue")
+//                .attr("text-anchor", "middle") 
+                .attr("fill","black")
 .attr("x", function(d) {return d.x;})
 .attr("y", function(d) {return d.y;})
                 .text(function(d) {return d.caption;});
