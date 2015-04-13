@@ -1,5 +1,5 @@
 (function() {
-    var app = angular.module('rcaAnalyser', ["MessageLogService", "messageLog", "nodeTemplate", "capitalizeFirst","NodeAnalysisDirective"]);
+    var app = angular.module('rcaAnalyser', ["MessageLogService", "messageLog", "nodeTemplate", "capitalizeFirst","NodeAnalysisDirective","BroadcastService"]);
 
     var option = 0;
     var logged_on = false;
@@ -9,7 +9,7 @@
     var password;
 
 
-    app.controller('rcaController', ["MessageLogService", "NodeTemplateService", function(MessageLogService, NodeTemplateService) {
+    app.controller('rcaController', ["MessageLogService", "NodeTemplateService", "BroadcastService",function(MessageLogService, NodeTemplateService, BroadcastService) {
         
         this.username = '';
         this.password = '';
@@ -73,7 +73,7 @@
             var that = this;
             NodeTemplateService.load_full_model_to_template().
             then(function(data) {
-                $broadcast('gp-display-nodes');
+                BroadcastService.broadcast('gp-display-nodes',{value:1});
             }, function() {
                 MessageLogService.add_message('Download failed!');
             });

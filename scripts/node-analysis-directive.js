@@ -1,8 +1,8 @@
 (function() {
 
-    var app = angular.module("NodeAnalysisDirective", []);
+    var app = angular.module("NodeAnalysisDirective", ["BroadcastService"]);
 
-    app.directive('nodeAnalysis', ["NodeTemplateService" , function(NodeTemplateService) {
+    app.directive('nodeAnalysis', ["NodeTemplateService" ,"BroadcastService", function(NodeTemplateService, BroadcastService) {
 
         return {
 
@@ -24,7 +24,7 @@
                 scope.evaluate = function() {
                     NodeTemplateService.load_analysis_results_to_template(scope.enquiryType, scope.enquiryObject, scope.depth).
                     then(function(data) {
-                        $broadcast('gp-display-nodes');
+                        BroadcastService.broadcast('gp-display-nodes',{value:2});
                     }, function() {
                         console.log('Download failed!');
                     });
