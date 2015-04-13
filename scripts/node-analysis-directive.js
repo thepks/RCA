@@ -7,7 +7,7 @@
         return {
 
             restrict: 'E',
-            templateUrl: 'analysis.html',
+            templateUrl: 'nodeAnalysis.html',
             link: function(scope, element) {
 
                 scope.enquiryTypes = ['Process', 'Organisation', 'Location'];
