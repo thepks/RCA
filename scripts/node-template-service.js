@@ -264,7 +264,7 @@
             get_prototype_object_list: function(nodetype) {
 
                 var cmd = "{ \"statements\": [ { \"statement\": \"match (u:" + nodetype + ") return u.name;\"} ] }";
-                var url = '/db/data/transaction/commit';
+                var url = '/rubbish/db/data/transaction/commit';
 
                 var req = {
                     method: 'POST',
@@ -272,7 +272,7 @@
                     data: cmd,
                 };
 
-//                return $http(req);
+               return $http(req);
 
             },
 
