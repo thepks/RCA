@@ -349,7 +349,7 @@
                 var cmd = "{ \"statements\": [ \
                     { \"statement\": \"match(n) return distinct labels(n);\"}, \
                     { \"statement\": \"MATCH (a)-[r]->(b) WHERE labels(a) <> [] AND labels(b) <> [] RETURN DISTINCT head(labels(a)) AS This, type(r) as To, head(labels(b)) AS That;\"}, \
-                    { \"statement\": \"match (u:"+objectType+")-[r*1.."+depth+"]-(n) where u.name=\\\""+objectValue.name+"\\\" and (n:Server or n:Application or n:Database or n:Service) return distinct labels(u),u,extract (p in r | type(p)) as rels,labels(n),n, ID(u), ID(n);\"} \
+                    { \"statement\": \"match (u:"+objectType+")-[r*1.."+depth+"]-(n) where u.name=\\\""+objectValue+"\\\" and (n:Server or n:Application or n:Database or n:Service) return distinct labels(u),u,extract (p in r | type(p)) as rels,labels(n),n, ID(u), ID(n);\"} \
                     ] \
                 }";
 
