@@ -15,6 +15,8 @@
         <script type="text/javascript" src="../scripts/node-template-directive.js"></script>
         <script type="text/javascript" src="../scripts/capitalize-directive.js"></script>
         <script type="text/javascript" src="../scripts/node-template-service.js"></script>
+        <script type="text/javascript" src="../scripts/node-analysis-directive.js"></script>
+        <script type="text/javascript" src="../scripts/node-visualisation-directive.js"></script>
         <script type="text/javascript" src="../scripts/app.js"></script>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script type="text/javascript">
@@ -61,6 +63,10 @@
                 </div>
             </nav>
             <message-log></message-log>
+            <section ng-show="rca.isOption(2)">
+                <node-analysis></node-analysis>
+            </section>
+
             <section ng-show="rca.isOption(5)">
                 <h4>Stored Model Visualisation</h4>
                 <div id="overview" class="model-overview"></div>

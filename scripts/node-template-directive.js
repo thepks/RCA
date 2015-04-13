@@ -69,7 +69,7 @@
                 this.download = function() {
                     var that = this;
                     this.transfer_in_progress = true;
-                    NodeTemplateService.load_model_to_template().
+                    NodeTemplateService.load_full_model_to_template().
                     then(function(data) {
                         MessageLogService.add_message('Loaded !');
                         that.transfer_in_progress = false;
