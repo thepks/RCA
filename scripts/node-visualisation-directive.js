@@ -15,11 +15,11 @@
 
 
                     var contentAt = attrs.instance;
+                    var height = attrs.height;
+                    var width = attrs.width;
                     var gjson = NodeTemplateService.get_graph_json();
                     var ntjson = NodeTemplateService.get_graph_node_types();
 
-                    var width = 1200,
-                        height = 800;
                     var color = d3.scale.category10();
 
 
