@@ -21,9 +21,9 @@
                     var color = d3.scale.category10();
 
 
-                    var svgold = d3.select("#gpOverview>svg").remove();
+                    var svgold = d3.select(element.childNodes).remove();
                     // setup svg div
-                    var svg = d3.select("#gpOverview").append("svg")
+                    var svg = d3.select(element).append("svg")
                         .attr("width", width).attr("height", height)
                         .attr("pointer-events", "all");
 
