@@ -27,7 +27,7 @@
                     element.append("<div id=\"gpOverview"+contentAt+"\" class=\"model-overview\"></div>");
 
                     // setup svg div
-                    var svg = d3.select("gpOverview"+contentAt).append("svg")
+                    var svg = d3.select("#gpOverview"+contentAt).append("svg")
                         .attr("width", width).attr("height", height)
                         .attr("pointer-events", "all");
 
