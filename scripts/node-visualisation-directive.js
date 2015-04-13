@@ -24,7 +24,7 @@
 
 
                     element.children().remove();
-                    element.append("<div id=\"gpOverview"+contentAt+"\" class=\"model-overview\"><div>");
+                    element.append("<div id=\"gpOverview"+contentAt+"\" class=\"model-overview\"></div>");
 
                     // setup svg div
                     var svg = d3.select("gpOverview"+contentAt).append("svg")
