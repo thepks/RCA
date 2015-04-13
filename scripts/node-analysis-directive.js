@@ -14,10 +14,6 @@
                 scope.enquiryType = scope.enquiryTypes[0];
                 scope.depth = 2;
                 
-                scope.processes = [];
-                scope.locations = [];
-                scope.organisations = [];
-                
                 scope.enquiryObject = '';
 
                 scope.isEnquiryType = function(p) {
@@ -34,65 +30,20 @@
                     });
                 };
 
+                scope.load_lists = function() {
+                    NodeTemplateService.load_model_data();
+                },
+                
                 scope.getProcesses = function() {
-                    if (scope.processes.length > 0) {
-                        return scope.processes;
-                    }
-                    NodeTemplateService.get_prototype_object_list('Process')
-                    .success(function(data) {
-                        var o = []
-                        for (var i = 0; i < data.results[0].data.length; i++) {
-                            o.push(data.results[0].data[i].row[0]);
-                        }
-                        
-                        scope.processes = o;
-    
-                        return o;
-                    }).
-                    error(function() {
-                        console.log('Error in loading data');
-                    });
-    
+                    NodeTemplateService.get_process_list();
                 };
                 
                 scope.getOrganisations = function() {
-                    if (scope.organisations.length > 0) {
-                        return scope.organisations;
-                    }
-                    NodeTemplateService.get_prototype_object_list('Userbase')
-                    .success(function(data) {
-                        var o = []
-                        for (var i = 0; i < data.results[0].data.length; i++) {
-                            o.push(data.results[0].data[i].row[0]);
-                        }
-    
-                        scope.organisations = o;
-                        return o;
-                    }).
-                    error(function() {
-                        console.log('Error in loading data');
-                    });
+                    NodeTemplateService.get_userbase_list();
                 };
                 
                 scope.getLocations = function() {
-                    if (scope.locations.length > 0) {
-                        return scope.locations;
-                    }
-                    NodeTemplateService.get_prototype_object_list('Location').
-                    success(function(data) {
-                        var o = []
-                        for (var i = 0; i < data.results[0].data.length; i++) {
-                            o.push(data.results[0].data[i].row[0]);
-                        }
-                        
-                        scope.locations = o;
-    
-                        return o;
-                    }).
-                    error(function() {
-                        console.log('Error in loading data');
-                    });
-    
+                    NodeTemplateService.get_location_list();
                 };
 
 
