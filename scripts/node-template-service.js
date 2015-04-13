@@ -305,50 +305,50 @@
 
             },
 
-            load_full_model_to_template : function () {
-                
+            load_full_model_to_template: function() {
+
                 var deferred = $q.defer();
-                
+
                 var cmd = "{ \"statements\": [ \
                     { \"statement\": \"match(n) return distinct labels(n);\"}, \
                     { \"statement\": \"MATCH (a)-[r]->(b) WHERE labels(a) <> [] AND labels(b) <> [] RETURN DISTINCT head(labels(a)) AS This, type(r) as To, head(labels(b)) AS That;\"}, \
                     { \"statement\": \"match (n)-[r]->(m) where labels(n) <> \\\"User\\\" return distinct labels(n),n,type(r),labels(m),m, ID(n), ID(m);\"} \
                     ] \
                 }";
-                
+
+
                 this.load_model_to_template(cmd)
-                .success(function(data) {
+                    .then(function(data) {
                     deferred.resolve(data);
-                })
-                .error(function(data) {
-                     deferred.reject(data);
-                 });
- 
-                 return deferred.promise;
+                }, function(data) {
+                    deferred.reject(data);
+                });
+
+
+                return deferred.promise;
             },
-            
+
             load_analysis_results_to_template: function(objectType, objectValus, depth) {
-                
+
                 var deferred = $q.defer();
-                
-// match (u:Process)-[*1..2]-(n) where u.name='sales' and (n:Server or n:Application or n:Database or n:Service)  return u,n;                
-                
+
+                // match (u:Process)-[*1..2]-(n) where u.name='sales' and (n:Server or n:Application or n:Database or n:Service)  return u,n;                
+
                 var cmd = "{ \"statements\": [ \
                     { \"statement\": \"match(n) return distinct labels(n);\"}, \
                     { \"statement\": \"MATCH (a)-[r]->(b) WHERE labels(a) <> [] AND labels(b) <> [] RETURN DISTINCT head(labels(a)) AS This, type(r) as To, head(labels(b)) AS That;\"}, \
                     { \"statement\": \"match (n)-[r]->(m) where labels(n) <> \\\"User\\\" return distinct labels(n),n,type(r),labels(m),m, ID(n), ID(m);\"} \
                     ] \
                 }";
-                
+
                 this.load_model_to_template(cmd)
-                .success(function(data) {
+                    .then(function(data) {
                     deferred.resolve(data);
-                })
-                .error(function(data) {
-                     deferred.reject(data);
-                 });
- 
-                 return deferred.promise;
+                }, function(data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
             },
 
 
