@@ -281,7 +281,7 @@
                     data: cmd,
                 };
 
-                return $http(req);
+//                return $http(req);
 
             },
 
