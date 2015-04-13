@@ -12,19 +12,19 @@
             <span ng-show="isEnquiryType('Process')">
                 <label>Process</label>
                 <select class="form-control" ng-model="enquiryObject" 
-                  ng-options="n for n in getProcesses()">
+                  ng-options="n.name for n in getProcesses()">
                 </select>
             </span>
             <span ng-show="isEnquiryType('Organisation')">
                 <label>Organisation</label>
                 <select class="form-control" ng-model="enquiryObject" 
-                  ng-options="n for n in getOrganisations()">
+                  ng-options="n.name for n in getOrganisations()">
                 </select>
             </span>
             <span ng-show="isEnquiryType('Location')">
                 <label>Location</label>
                 <select class="form-control" ng-model="enquiryObject" 
-                  ng-options="n for n in getLocations()">
+                  ng-options="n.name for n in getLocations()">
                 </select>
             </span>            
         </span>

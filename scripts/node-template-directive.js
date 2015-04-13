@@ -63,7 +63,7 @@
 
                 this.is_model_up_todate = function() {
                     return this.is_up_to_date;
-                }
+                };
 
 
                 this.download = function() {
