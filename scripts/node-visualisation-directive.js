@@ -21,7 +21,8 @@
                     var color = d3.scale.category10();
 
 
-                    var svgold = d3.select(element.childNodes).remove();
+                    element.children().remove();
+
                     // setup svg div
                     var svg = d3.select(element).append("svg")
                         .attr("width", width).attr("height", height)
