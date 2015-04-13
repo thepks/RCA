@@ -7,7 +7,7 @@
         return {
 
             restrict: 'E',
-            template: '<div id="gp-overview" class="model-overview"></div>',
+            template: '<div id="gpOverview" class="model-overview"></div>',
             link: function(scope, element) {
 
                 scope.$on('gp-display-nodes', function() {
@@ -21,9 +21,9 @@
                     var color = d3.scale.category10();
 
 
-                    var svgold = d3.select("#gp-overview>svg").remove();
+                    var svgold = d3.select("#gpOverview>svg").remove();
                     // setup svg div
-                    var svg = d3.select("#gp-overview").append("svg")
+                    var svg = d3.select("#gpOverview").append("svg")
                         .attr("width", width).attr("height", height)
                         .attr("pointer-events", "all");
 
