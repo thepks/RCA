@@ -207,6 +207,8 @@
             },
 
             load_model_data: function() {
+                
+                var that = this;
 
                 var deferred = $q.defer();
 
@@ -219,7 +221,7 @@
 
                     prototypes.processes = o;
 
-                    this.get_prototype_object_list('Location')
+                    that.get_prototype_object_list('Location')
                         .success(function(data) {
                         var o = []
                         for (var i = 0; i < data.results[0].data.length; i++) {
@@ -227,7 +229,7 @@
                         }
                         prototypes.locations = o;
 
-                        this.get_prototype_object_list('Userbase')
+                        that.get_prototype_object_list('Userbase')
                             .success(function(data) {
                             var o = []
                             for (var i = 0; i < data.results[0].data.length; i++) {
