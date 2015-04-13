@@ -21,7 +21,7 @@
                     var color = d3.scale.category10();
 
 
-                    element.children().remove();
+                    element.children().children().remove();
 
                     // setup svg div
                     var svg = d3.select(element).append("svg")
