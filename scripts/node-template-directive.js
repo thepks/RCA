@@ -136,7 +136,7 @@
                 };
 
                 this.prototypes = function() {
-                    return NodeTemplateService.get_prototype_object_list(this.nodePrototype);
+                    return NodeTemplateService.get_prototype_list(this.nodePrototype);
                 };
 
                 this.getPrototypeList = function(nodetype) {

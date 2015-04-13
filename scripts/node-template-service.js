@@ -278,7 +278,7 @@
             
             get_prototype_list: function(nodetype) {
                 
-                return model.prototypes[nodetype];
+                return model.prototypeValue[nodetype];
                 
             },
 
