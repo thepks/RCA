@@ -7,12 +7,14 @@
         return {
 
             restrict: 'E',
-            template: '<div id="gpOverview" class="model-overview"></div>',
-            link: function(scope, element) {
+            template: '<div id="gpOverview"></div>',
+            templateNamespace: 'svg',
+            link: function(scope, element, attrs) {
 
                 scope.$on('gp-display-nodes', function() {
 
 
+                    var contentAt = attrs.instance;
                     var gjson = NodeTemplateService.get_graph_json();
                     var ntjson = NodeTemplateService.get_graph_node_types();
 
@@ -22,9 +24,10 @@
 
 
                     element.children().children().remove();
+                    element.append("<div id=\"gpOverview"+contentAt+"\" class=\"model-overview\"><div>");
 
                     // setup svg div
-                    var svg = d3.select(element).append("svg")
+                    var svg = d3.select("gpOverview"+contentAt).append("svg")
                         .attr("width", width).attr("height", height)
                         .attr("pointer-events", "all");
 
