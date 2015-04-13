@@ -1,6 +1,6 @@
 (function() {
 
-    var app = angular.module("nodeTemplate", ["NodeTemplateService", "MessageLogService"]);
+    var app = angular.module("nodeVisualisation", ["NodeTemplateService", "MessageLogService"]);
 
     app.directive('nodeVisualisation', ["NodeTemplateService", "MessageLogService", function(NodeTemplateService, MessageLogService) {
 
