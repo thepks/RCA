@@ -13,6 +13,9 @@
                 scope.enquiryTypes = ['Process', 'Userbase', 'Location'];
                 scope.enquiryType = scope.enquiryTypes[0];
                 scope.depth = 2;
+                scope.processes = [];
+                scope.locations = [];
+                scope.userbases= [];
                 
                 scope.enquiryObject = '';
 
@@ -31,20 +34,17 @@
                 };
 
                 scope.load_lists = function() {
-                    NodeTemplateService.load_model_data();
+                    NodeTemplateService.load_model_data().
+                    then(function() {
+                       var data = NodeTemplateService.get_model_data();
+                       scope.processes = data.processes;
+                       scope.locations = data.processes;
+                       scope.userbases = data.processes;
+                    }, function() {
+                        console.log("Failed to load")
+                    });
                 };
                 
-                scope.getProcesses = function() {
-                    NodeTemplateService.get_process_list();
-                };
-                
-                scope.getOrganisations = function() {
-                    NodeTemplateService.get_userbase_list();
-                };
-                
-                scope.getLocations = function() {
-                    NodeTemplateService.get_location_list();
-                };
 
 
             }

@@ -42,12 +42,12 @@
                 model.instanceRelationships = [];
                 model.prototypeValue = {};
                 model.joins = [];
-                
+
                 prototypes.processes = [];
                 prototypes.locations = [];
                 prototypes.userbases = [];
-                
-                
+
+
 
                 return $http.post("/action/logon", userobj);
 
@@ -201,78 +201,69 @@
 
                 model.joins = array_prune(model.joins);
             },
-            
+
+            get_model_data: function() {
+                return prototypes;
+            },
+
             load_model_data: function() {
-                this.load_process_list();
-                this.load_location_list();
-                this.load_userbase_list();
-            },
-            
-            load_process_list: function() {
-              this.get_prototype_object_list('Process')
-              .success(function(data) {
-                  var o = []
-                  for (var i = 0; i < data.results[0].data.length; i++) {
-                      o.push(data.results[0].data[i].row[0]);
-                  }
-                  
-                  prototypes.processes = o;
 
-              }).
-              error(function() {
-                  console.log('Error in loading data');
-              });  
-            },
+                var deferred = $q.defer();
 
-            load_location_list: function() {
-              this.get_prototype_object_list('Location')
-              .success(function(data) {
-                  var o = []
-                  for (var i = 0; i < data.results[0].data.length; i++) {
-                      o.push(data.results[0].data[i].row[0]);
-                  }
-                  
-                  prototypes.locations = o;
-            
-              }).
-              error(function() {
-                  console.log('Error in loading data');
-              });  
-            },
+                this.get_prototype_object_list('Process')
+                    .success(function(data) {
+                    var o = []
+                    for (var i = 0; i < data.results[0].data.length; i++) {
+                        o.push(data.results[0].data[i].row[0]);
+                    }
 
-            load_userbase_list: function() {
-              this.get_prototype_object_list('Userbase')
-              .success(function(data) {
-                  var o = []
-                  for (var i = 0; i < data.results[0].data.length; i++) {
-                      o.push(data.results[0].data[i].row[0]);
-                  }
-                  
-                  prototypes.userbases = o;
-            
-              }).
-              error(function() {
-                  console.log('Error in loading data');
-              });  
-            },
-            
-            get_process_list: function() {
-                return prototypes.processes;
-            },
-            
-            get_location_list: function() {
-                return prototypes.locations;
-            },
-            
-            get_userbase_list: function() {
-                return prototypes.userbases;
+                    prototypes.processes = o;
+
+                    this.get_prototype_object_list('Location')
+                        .success(function(data) {
+                        var o = []
+                        for (var i = 0; i < data.results[0].data.length; i++) {
+                            o.push(data.results[0].data[i].row[0]);
+                        }
+                        prototypes.locations = o;
+
+                        this.get_prototype_object_list('Userbase')
+                            .success(function(data) {
+                            var o = []
+                            for (var i = 0; i < data.results[0].data.length; i++) {
+                                o.push(data.results[0].data[i].row[0]);
+                            }
+
+                            prototypes.userbases = o;
+                            deferred.resolve(data);
+                        })
+                            .
+                        error(function() {
+                            console.log('Error in loading model');
+                            deferred.reject();
+                        });
+                    })
+                        .
+                    error(function() {
+                        console.log('Error in loading model');
+                        deferred.reject();
+                    });
+                }).
+                error(function() {
+                    console.log('Error in loading model');
+                    deferred.reject();
+                });
+
+
+                return deferred.promise;
+
+
             },
 
 
             get_prototype_object_list: function(nodetype) {
-                
-                var cmd = "{ \"statements\": [ { \"statement\": \"match (u:"+nodetype+") return u.name;\"} ] }";
-                
+
+                var cmd = "{ \"statements\": [ { \"statement\": \"match (u:" + nodetype + ") return u.name;\"} ] }";
                 var url = '/db/data/transaction/commit';
 
                 var req = {
@@ -281,7 +272,7 @@
                     data: cmd,
                 };
 
-//                return $http(req);
+                return $http(req);
 
             },
 
@@ -423,7 +414,7 @@
                 var cmd = "{ \"statements\": [ \
                     { \"statement\": \"match(n) return distinct labels(n);\"}, \
                     { \"statement\": \"MATCH (a)-[r]->(b) WHERE labels(a) <> [] AND labels(b) <> [] RETURN DISTINCT head(labels(a)) AS This, type(r) as To, head(labels(b)) AS That;\"}, \
-                    { \"statement\": \"match (u:"+objectType+")-[r*1.."+depth+"]-(n) where u.name=\\\""+objectValue+"\\\" and (n:Server or n:Application or n:Database or n:Service) return distinct labels(u),u,extract (p in r | type(p)) as rels,labels(n),n, ID(u), ID(n);\"} \
+                    { \"statement\": \"match (u:" + objectType + ")-[r*1.." + depth + "]-(n) where u.name=\\\"" + objectValue + "\\\" and (n:Server or n:Application or n:Database or n:Service) return distinct labels(u),u,extract (p in r | type(p)) as rels,labels(n),n, ID(u), ID(n);\"} \
                     ] \
                 }";
 
