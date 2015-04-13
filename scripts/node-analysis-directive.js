@@ -38,8 +38,8 @@
                     then(function() {
                        var data = NodeTemplateService.get_model_data();
                        scope.processes = data.processes;
-                       scope.locations = data.processes;
-                       scope.userbases = data.processes;
+                       scope.locations = data.locations;
+                       scope.userbases = data.userbases;
                     }, function() {
                         console.log("Failed to load")
                     });
