@@ -32,7 +32,7 @@
 
                 scope.load_lists = function() {
                     NodeTemplateService.load_model_data();
-                },
+                };
                 
                 scope.getProcesses = function() {
                     NodeTemplateService.get_process_list();
