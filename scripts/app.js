@@ -1,5 +1,5 @@
 (function() {
-    var app = angular.module('rcaAnalyser', ["MessageLogService", "messageLog", "nodeTemplate", "capitalizeFirst","NodeAnalysisDirective","BroadcastService"]);
+    var app = angular.module('rcaAnalyser', ["MessageLogService", "messageLog", "nodeTemplate", "capitalizeFirst","NodeAnalysisDirective","BroadcastService","nodeVisualisation"]);
 
     var option = 0;
     var logged_on = false;
