@@ -196,7 +196,19 @@
             },
 
             get_prototype_object_list: function(nodetype) {
-                return model.prototypeValue[nodetype];
+                
+                var cmd = "{ \"statements\": [ { \"statement\": \"match (u:"+nodetype+") return u.name;\"} ] }";
+                
+                var url = '/db/data/transaction/commit';
+
+                var req = {
+                    method: 'POST',
+                    url: url,
+                    data: cmd,
+                };
+
+                return $http(req);
+
             },
 
             add_prototype_object: function(nodetype, obj) {
