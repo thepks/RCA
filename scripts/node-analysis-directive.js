@@ -10,9 +10,13 @@
             templateUrl: 'nodeAnalysis.html',
             link: function(scope, element) {
 
-                scope.enquiryTypes = ['Process', 'Organisation', 'Location'];
+                scope.enquiryTypes = ['Process', 'Userbase', 'Location'];
                 scope.enquiryType = scope.enquiryTypes[0];
                 scope.depth = 2;
+                
+                scope.processes = [];
+                scope.locations = [];
+                scope.organisations = [];
                 
                 scope.enquiryObject = '';
 
@@ -31,12 +35,17 @@
                 };
 
                 scope.getProcesses = function() {
+                    if (scope.processes.length > 0) {
+                        return scope.processes;
+                    }
                     NodeTemplateService.get_prototype_object_list('Process')
                     .success(function(data) {
                         var o = []
                         for (var i = 0; i < data.results[0].data.length; i++) {
                             o.push(data.results[0].data[i].row[0]);
                         }
+                        
+                        scope.processes = o;
     
                         return o;
                     }).
@@ -47,13 +56,17 @@
                 };
                 
                 scope.getOrganisations = function() {
-                    NodeTemplateService.get_prototype_object_list('Organisation')
+                    if (scope.organisations.length > 0) {
+                        return scope.organisations;
+                    }
+                    NodeTemplateService.get_prototype_object_list('Userbase')
                     .success(function(data) {
                         var o = []
                         for (var i = 0; i < data.results[0].data.length; i++) {
                             o.push(data.results[0].data[i].row[0]);
                         }
     
+                        scope.organisations = o;
                         return o;
                     }).
                     error(function() {
@@ -62,12 +75,17 @@
                 };
                 
                 scope.getLocations = function() {
+                    if (scope.locations.length > 0) {
+                        return scope.locations;
+                    }
                     NodeTemplateService.get_prototype_object_list('Location').
                     success(function(data) {
                         var o = []
                         for (var i = 0; i < data.results[0].data.length; i++) {
                             o.push(data.results[0].data[i].row[0]);
                         }
+                        
+                        scope.locations = o;
     
                         return o;
                     }).
