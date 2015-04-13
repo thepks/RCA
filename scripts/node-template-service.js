@@ -264,7 +264,7 @@
             get_prototype_object_list: function(nodetype) {
 
                 var cmd = "{ \"statements\": [ { \"statement\": \"match (u:" + nodetype + ") return u.name;\"} ] }";
-                var url = '/rubbish/db/data/transaction/commit';
+                var url = '/db/data/transaction/commit';
 
                 var req = {
                     method: 'POST',
@@ -274,6 +274,12 @@
 
                return $http(req);
 
+            },
+            
+            get_prototype_list: function(nodetype) {
+                
+                return model.prototypes[nodetype];
+                
             },
 
             add_prototype_object: function(nodetype, obj) {

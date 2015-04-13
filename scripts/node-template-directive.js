@@ -140,7 +140,7 @@
                 };
 
                 this.getPrototypeList = function(nodetype) {
-                    return NodeTemplateService.get_prototype_object_list(nodetype);
+                    return NodeTemplateService.get_prototype_list(nodetype);
                 };
 
                 this.addPrototypeValue = function() {
