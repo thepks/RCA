@@ -23,7 +23,7 @@
                     var color = d3.scale.category10();
 
 
-                    element.children().children().remove();
+                    element.children().remove();
                     element.append("<div id=\"gpOverview"+contentAt+"\" class=\"model-overview\"><div>");
 
                     // setup svg div
