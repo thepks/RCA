@@ -448,7 +448,7 @@
                 };
 
                 $http(req)
-                    .then(function(data) {
+                    .then(function(a) {
                     model = {};
                     model.nodes = {};
                     model.instanceRelationships = [];
@@ -456,6 +456,7 @@
                     model.joins = [];
                     var deltaRecord = {};
                     deltaRecord.model = 'existing';
+                    var data = a.data;
 
                     // results is the structure containing the response
                     // results[0] is the node object;
