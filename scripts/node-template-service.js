@@ -222,7 +222,7 @@
     
                         
                     for (var i = 0; i < data.results[1].data.length; i++) {
-                        var t = data.results[1].data[i].row[0];
+                        var t = data.results[1].data[i].row[0][0];
                         prototypes[t].push(data.results[1].data[i].row[1]);
                     }
                     
