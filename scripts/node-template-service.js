@@ -482,7 +482,7 @@
                     }
 
                     for (i = 0; i < data.results[2].data.length; i++) {
-                        var row = data.results[2].data[i].row[0];
+                        var row = data.results[2].data[i].row;
                         var nodeTypes = row[0];
                         var nodeNames = row[1];
                         var nodeJoins = row[2];
