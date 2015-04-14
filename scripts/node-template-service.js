@@ -491,12 +491,12 @@
 
                         var path_objects = nodeTypes.length - 1;
                         for (var j = 0; j < path_objects; j++) {
-                            var node = nodeTypes[j];
+                            var node = nodeTypes[j][0];
                             var node_value = nodeValues[j];
                             var node_label = nodeNames[j];
                             var nodeID = nodeIDs[j];
                             var node_join = nodeJoins[j];
-                            var partner_node = nodeTypes[j + 1];
+                            var partner_node = nodeTypes[j + 1][0];
                             var partner_node_label = nodeNames[j + 1];
                             var partner_node_value = nodeValues[j + 1];
                             var partnerID = nodeIDs[j + 1];
