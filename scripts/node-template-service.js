@@ -546,7 +546,7 @@
                             if (node in model.prototypeValue) {
                                 prototypes = model.prototypeValue[node];
                                 for (k = 0; k < prototypes.length; k++) {
-                                    if (prototypes[k].name === node.name) {
+                                    if (prototypes[k].name === node_label) {
                                         found = true;
                                         break;
                                     }
@@ -568,7 +568,7 @@
                             if (partner_node in model.prototypeValue) {
                                 prototypes = model.prototypeValue[partner_node];
                                 for (k = 0; k < prototypes.length; k++) {
-                                    if (prototypes[k].name === partner_node.name) {
+                                    if (prototypes[k].name === partner_node_label) {
                                         found = true;
                                         break;
                                     }
