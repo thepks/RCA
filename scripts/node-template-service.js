@@ -43,9 +43,6 @@
                 model.prototypeValue = {};
                 model.joins = [];
 
-                prototypes.processes = [];
-                prototypes.locations = [];
-                prototypes.userbases = [];
                 prototypes.types = [];
 
 
@@ -226,6 +223,8 @@
                         var t = data.results[1].data[i].row[0][0];
                         prototypes[t].push(data.results[1].data[i].row[1]);
                     }
+                    
+                    deferred.resolve();
                     
                 }).
                 error(function() {
