@@ -205,27 +205,27 @@
             },
 
             load_model_data: function() {
-                
+
                 var that = this;
 
                 var deferred = $q.defer();
 
                 this.get_prototype_object_list('Process')
                     .success(function(data) {
-                        
+
                     for (var i = 0; i < data.results[0].data.length; i++) {
                         prototypes.types.push(data.results[0].data[i].row[0][0]);
                         prototypes[data.results[0].data[i].row[0][0]] = [];
                     }
-    
-                        
+
+
                     for (var i = 0; i < data.results[1].data.length; i++) {
                         var t = data.results[1].data[i].row[0][0];
                         prototypes[t].push(data.results[1].data[i].row[1]);
                     }
-                    
+
                     deferred.resolve();
-                    
+
                 }).
                 error(function() {
                     console.log('Error in loading model');
@@ -252,14 +252,14 @@
                     data: cmd,
                 };
 
-               return $http(req);
+                return $http(req);
 
             },
-            
+
             get_prototype_list: function(nodetype) {
-                
+
                 return model.prototypeValue[nodetype];
-                
+
             },
 
             add_prototype_object: function(nodetype, obj) {
@@ -391,10 +391,10 @@
                 return deferred.promise;
             },
 
-            load_analysis_results_to_template: function(objectType, objectValue, depth) {
+            load_old_analysis_results_to_template: function(objectType, objectValue, depth) {
 
                 var deferred = $q.defer();
-                
+
                 var objs = "n:Server or n:Application or n:Database or n:Service";
                 if (objectType !== 'Process') {
                     objs += " or n:Process";
@@ -405,12 +405,190 @@
                 var cmd = "{ \"statements\": [ \
                     { \"statement\": \"match(n) return distinct labels(n);\"}, \
                     { \"statement\": \"MATCH (a)-[r]->(b) WHERE labels(a) <> [] AND labels(b) <> [] RETURN DISTINCT head(labels(a)) AS This, type(r) as To, head(labels(b)) AS That;\"}, \
-                    { \"statement\": \"match (u:" + objectType + ")-[r*1.." + depth + "]-(n) where u.name=\\\"" + objectValue + "\\\" and ("+objs+") return distinct labels(u),u,extract (p in r | type(p)) as rels,labels(n),n, ID(u), ID(n);\"} \
+                    { \"statement\": \"match (u:" + objectType + ")-[r*1.." + depth + "]-(n) where u.name=\\\"" + objectValue + "\\\" and (" + objs + ") return distinct labels(u),u,extract (p in r | type(p)) as rels,labels(n),n, ID(u), ID(n);\"} \
                     ] \
                 }";
 
+
                 this.load_model_to_template(cmd)
                     .then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+            },
+
+
+            load_analysis_results_to_template: function(objectType, objectValue, depth) {
+
+                var deferred = $q.defer();
+
+                var objs = "n:Server or n:Application or n:Database or n:Service";
+                if (objectType !== 'Process') {
+                    objs += " or n:Process";
+                }
+
+                // match (u:Process)-[*1..2]-(n) where u.name='sales' and (n:Server or n:Application or n:Database or n:Service)  return u,n;                
+
+                var cmd = "{ \"statements\": [ \
+                    { \"statement\": \"match(n) return distinct labels(n);\"}, \
+                    { \"statement\": \"MATCH (a)-[r]->(b) WHERE labels(a) <> [] AND labels(b) <> [] RETURN DISTINCT head(labels(a)) AS This, type(r) as To, head(labels(b)) AS That;\"}, \
+                    { \"statement\": \"match p=(u:" + objectType + ")-[r*1.." + depth + "]-(n) where u.name=\\\"" + objectValue + "\\\" and (" + objs + ") return extract(a in nodes(p) | labels(a)) as nodeType, extract (b in nodes(p) | b.name) as nodeName, extract (c in relationships(p) | type(c)) as Joins, extract (d in nodes(p) | d) as nodeValues, extract (e in nodes(p) | ID(e)) as nodeID;\"} \
+                    ] \
+                }";
+
+                var url = '/db/data/transaction/commit';
+
+                var req = {
+                    method: 'POST',
+                    url: url,
+                    data: cmd,
+                };
+
+                $http(req)
+                    .then(function(data) {
+                    model = {};
+                    model.nodes = {};
+                    model.instanceRelationships = [];
+                    model.prototypeValue = {};
+                    model.joins = [];
+                    var deltaRecord = {};
+                    deltaRecord.model = 'existing';
+
+                    // results is the structure containing the response
+                    // results[0] is the node object;
+
+                    for (var i = 0; i < data.results[0].data.length; i++) {
+                        model.nodes[data.results[0].data[i].row[0][0]] = [];
+                        deltaRecord = {};
+                        deltaRecord.model = 'existing';
+                        model.nodes[data.results[0].data[i].row[0][0]].push(deltaRecord);
+                        model.nodes[data.results[0].data[i].row[0][0]].push('name');
+                    }
+
+                    // results [1] are the fundamental relationships, but [2] also describes
+
+                    for (i = 0; i < data.results[1].data.length; i++) {
+                        var newRelationship = {};
+                        newRelationship.leftNode = data.results[1].data[i].row[0];
+                        newRelationship.join = data.results[1].data[i].row[1];
+                        newRelationship.rightNode = data.results[1].data[i].row[2];
+                        newRelationship.deltaRecord = {};
+                        newRelationship.deltaRecord.model = 'existing';
+                        model.joins.push(newRelationship);
+                    }
+
+                    for (i = 0; i < data.results[2].data.length; i++) {
+                        var row = data.results[2].data[i].row[0];
+                        var nodeTypes = row[0];
+                        var nodeNames = row[1];
+                        var nodeJoins = row[2];
+                        var nodeValues = row[3];
+                        var nodeIDs = row[4];
+
+                        var path_objects = nodeTypes.length - 1;
+                        for (var j = 0; j < path_objects; j++) {
+                            var node = nodeTypes[j];
+                            var node_value = nodeValues[j];
+                            var node_label = nodeNames[j];
+                            var nodeID = nodeIDs[j];
+                            var node_join = nodeJoins[j];
+                            var partner_node = nodeTypes[j + 1];
+                            var partner_node_label = nodeNames[j + 1];
+                            var partner_node_value = nodeValues[j + 1];
+                            var partnerID = nodeIDs[j + 1];
+
+                            if ('$$hashKey' in node_value) {
+                                delete node_value['$$hashKey'];
+                            }
+
+                            if ('$$hashKey' in partner_node_value) {
+                                delete partner_node_value['$$hashKey'];
+                            }
+
+                            node_value.ID = nodeID;
+                            partner_node_value.ID = partnerID;
+
+                            var currProps = model.nodes[node_label];
+                            var keyvals = Object.keys(node_value);
+                            for (var k = 0; k < keyvals.length; k++) {
+                                if (currProps.indexOf(keyvals[k]) < 0) {
+                                    model.nodes[node_label].push(keyvals[k]);
+                                }
+                            }
+
+                            currProps = model.nodes[partner_node_label];
+                            keyvals = Object.keys(partner_node_value);
+                            for (k = 0; k < keyvals.length; k++) {
+                                if (currProps.indexOf(keyvals[k]) < 0) {
+                                    model.nodes[partner_node_label].push(keyvals[k]);
+                                }
+                            }
+
+
+                            var toAdd = {};
+                            var prototypes = [];
+                            var found = false;
+
+                            toAdd.leftObj = node_value;
+                            toAdd.leftNodeType = node;
+                            toAdd.rightObj = partner_node_value;
+                            toAdd.rightNodeType = partner_node;
+                            toAdd.join = node_join;
+                            toAdd.deltaRecord = {};
+                            toAdd.deltaRecord.model = 'existing';
+
+                            model.instanceRelationships.push(toAdd);
+
+                            if (node in model.prototypeValue) {
+                                prototypes = model.prototypeValue[node];
+                                for (k = 0; k < prototypes.length; k++) {
+                                    if (prototypes[k].name === node.name) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                model.prototypeValue[node] = [];
+                            }
+
+                            if (!found) {
+
+                                node_value.deltaRecord = {};
+                                node_value.deltaRecord.model = 'existing';
+
+                                model.prototypeValue[node].push(node_value);
+                            }
+
+                            found = false;
+
+                            if (partner_node in model.prototypeValue) {
+                                prototypes = model.prototypeValue[partner_node];
+                                for (k = 0; k < prototypes.length; k++) {
+                                    if (prototypes[k].name === partner_node.name) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                model.prototypeValue[partner_node] = [];
+                            }
+
+                            if (!found) {
+
+                                partner_node_value.deltaRecord = {};
+                                partner_node_value.deltaRecord.model = 'existing';
+
+                                model.prototypeValue[partner_node].push(partner_node_value);
+                            }
+
+                        }
+
+
+                    }
+
                     deferred.resolve(data);
                 }, function(data) {
                     deferred.reject(data);
