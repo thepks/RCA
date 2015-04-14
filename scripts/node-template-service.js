@@ -46,6 +46,7 @@
                 prototypes.processes = [];
                 prototypes.locations = [];
                 prototypes.userbases = [];
+                prototypes.types = [];
 
 
 
@@ -214,42 +215,17 @@
 
                 this.get_prototype_object_list('Process')
                     .success(function(data) {
-                    var o = []
+                        
                     for (var i = 0; i < data.results[0].data.length; i++) {
-                        o.push(data.results[0].data[i].row[0]);
+                        prototypes.types.push(data.results[0].data[i].row[0][0])
                     }
-
-                    prototypes.processes = o;
-
-                    that.get_prototype_object_list('Location')
-                        .success(function(data) {
-                        var o = []
-                        for (var i = 0; i < data.results[0].data.length; i++) {
-                            o.push(data.results[0].data[i].row[0]);
-                        }
-                        prototypes.locations = o;
-
-                        that.get_prototype_object_list('Userbase')
-                            .success(function(data) {
-                            var o = []
-                            for (var i = 0; i < data.results[0].data.length; i++) {
-                                o.push(data.results[0].data[i].row[0]);
-                            }
-
-                            prototypes.userbases = o;
-                            deferred.resolve(data);
-                        })
-                            .
-                        error(function() {
-                            console.log('Error in loading model');
-                            deferred.reject();
-                        });
-                    })
-                        .
-                    error(function() {
-                        console.log('Error in loading model');
-                        deferred.reject();
-                    });
+    
+                        
+                    for (var i = 0; i < data.results[1].data.length; i++) {
+                        var t = data.results[1].data[i].row[0];
+                        prototypes[t].push(data.results[1].data[i].row[1]);
+                    }
+                    
                 }).
                 error(function() {
                     console.log('Error in loading model');
@@ -263,9 +239,11 @@
             },
 
 
-            get_prototype_object_list: function(nodetype) {
+            get_prototype_object_list: function() {
 
-                var cmd = "{ \"statements\": [ { \"statement\": \"match (u:" + nodetype + ") return u.name;\"} ] }";
+                var cmd = "{ \"statements\": [ \
+                    { \"statement\": \"match(n) return distinct labels(n);\"}, \
+                    { \"statement\": \"match (u) return labels(u), u.name;\"} ] }";
                 var url = '/db/data/transaction/commit';
 
                 var req = {

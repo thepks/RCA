@@ -10,19 +10,11 @@
             templateUrl: 'nodeAnalysis.html',
             link: function(scope, element) {
 
-                scope.enquiryTypes = ['Process', 'Userbase', 'Location'];
-                scope.enquiryType = scope.enquiryTypes[0];
+                scope.enquiryType = '';
                 scope.depth = 2;
-                scope.processes = [];
-                scope.locations = [];
-                scope.userbases= [];
-                
+                scope.types = {};
+
                 scope.enquiryObject = '';
-
-                scope.isEnquiryType = function(p) {
-                    return p === scope.enquiryType;
-                };
-
 
                 scope.evaluate = function() {
                     NodeTemplateService.load_analysis_results_to_template(scope.enquiryType, scope.enquiryObject, scope.depth).
@@ -36,10 +28,7 @@
                 scope.load_lists = function() {
                     NodeTemplateService.load_model_data().
                     then(function() {
-                       var data = NodeTemplateService.get_model_data();
-                       scope.processes = data.processes;
-                       scope.locations = data.locations;
-                       scope.userbases = data.userbases;
+                       scope.types = NodeTemplateService.get_model_data();
                     }, function() {
                         console.log("Failed to load")
                     });

@@ -5,28 +5,16 @@
         <span class="col-sm-2">
             <label>Enquiry Type</label>
             <select class="form-control" ng-model="enquiryType" 
-                     ng-options="n for n in enquiryTypes">
+                     ng-options="n for n in types['types']">
             </select>
         </span>
         <span class="col-sm-3">
-            <span ng-show="isEnquiryType('Process')">
-                <label>Process</label>
+            <span>
+                <label>Value</label>
                 <select class="form-control" ng-model="enquiryObject" 
-                  ng-options="n for n in processes">
+                  ng-options="n for n in types[enquiryType]">
                 </select>
             </span>
-            <span ng-show="isEnquiryType('Userbase')">
-                <label>Organisation</label>
-                <select class="form-control" ng-model="enquiryObject" 
-                  ng-options="n for n in userbases">
-                </select>
-            </span>
-            <span ng-show="isEnquiryType('Location')">
-                <label>Location</label>
-                <select class="form-control" ng-model="enquiryObject" 
-                  ng-options="n for n in locations">
-                </select>
-            </span>            
         </span>
         <span class="col-sm-2">
             <label>Depth: </label>
