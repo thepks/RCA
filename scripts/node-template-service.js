@@ -512,19 +512,19 @@
                             node_value.ID = nodeID;
                             partner_node_value.ID = partnerID;
 
-                            var currProps = model.nodes[node_label];
+                            var currProps = model.nodes[node];
                             var keyvals = Object.keys(node_value);
                             for (var k = 0; k < keyvals.length; k++) {
                                 if (currProps.indexOf(keyvals[k]) < 0) {
-                                    model.nodes[node_label].push(keyvals[k]);
+                                    model.nodes[node].push(keyvals[k]);
                                 }
                             }
 
-                            currProps = model.nodes[partner_node_label];
+                            currProps = model.nodes[partner_node];
                             keyvals = Object.keys(partner_node_value);
                             for (k = 0; k < keyvals.length; k++) {
                                 if (currProps.indexOf(keyvals[k]) < 0) {
-                                    model.nodes[partner_node_label].push(keyvals[k]);
+                                    model.nodes[partner_node].push(keyvals[k]);
                                 }
                             }
 
