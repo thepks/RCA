@@ -217,7 +217,8 @@
                     .success(function(data) {
                         
                     for (var i = 0; i < data.results[0].data.length; i++) {
-                        prototypes.types.push(data.results[0].data[i].row[0][0])
+                        prototypes.types.push(data.results[0].data[i].row[0][0]);
+                        prototypes[data.results[0].data[i].row[0][0]] = [];
                     }
     
                         
