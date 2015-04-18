@@ -212,6 +212,8 @@
 
                 this.get_prototype_object_list('Process')
                     .success(function(data) {
+                        
+                    prototypes = [];
 
                     for (var i = 0; i < data.results[0].data.length; i++) {
                         prototypes.types.push(data.results[0].data[i].row[0][0]);
