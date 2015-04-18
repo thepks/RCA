@@ -28,6 +28,7 @@
                 scope.load_lists = function() {
                     NodeTemplateService.load_model_data().
                     then(function() {
+                       scope.types = {};
                        scope.types = NodeTemplateService.get_model_data();
                     }, function() {
                         console.log("Failed to load")
